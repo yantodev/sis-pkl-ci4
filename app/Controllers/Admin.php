@@ -32,6 +32,18 @@ class  Admin extends BaseController
         return view('pages/admin/dashboard', $data);
     }
 
+    public function master_sekolah(){
+        $session = session();
+        $data = [
+            'title' => "Master Sekolah",
+            'users' => $session->get('name'),
+            'role' => $session->get('role_id'),
+        ];
+        if (!$session->get('logged_in'))
+            return redirect()->to('/auth');
+        return view('pages/admin/master-sekolah', $data);
+}
+
     /**
      * menu master data
      */

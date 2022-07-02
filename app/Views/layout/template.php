@@ -16,10 +16,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href=<?= base_url('/assets/template/plugins/fontawesome-free/css/all.min.css') ?>>
+    <link rel="stylesheet" href=<?= base_url('assets/template/plugins/fontawesome-free/css/all.min.css') ?>>
     <!-- Theme style -->
-    <link rel="stylesheet" href=<?= base_url('/assets/template/dist/css/adminlte.min.css') ?>>
-    <link rel="stylesheet" href="<?= base_url('/assets/css/style.css'); ?>">
+    <link rel="stylesheet" href=<?= base_url('assets/template/dist/css/adminlte.min.css') ?>>
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css'); ?>">
     <script>
         $(document).ready(function () {
             $(".preloader").fadeOut();
@@ -31,12 +31,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
     <?= $this->include('layout/navbar'); ?>
-    <?= $this->include('layout/sidebar'); ?>
+    <?php if($role == '2'):?>
+    <?= $this->include('layout/sidebar-admin.php'); ?>
+    <?php endif;?>
     <?= $this->include('layout/header'); ?>
     <?= $this->include('./flash/flash'); ?>
     <div class="preloader">
         <div class="loading">
-            <img src="<?= base_url();?>/assets/img/gif-muhka.gif" width="300">
+            <img src="<?= base_url(); ?>/assets/img/gif-muhka.gif" width="300">
         </div>
     </div>
     <?= $this->renderSection('content'); ?>
@@ -58,36 +60,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-<script src="<?= base_url(); ?>/assets/sweetalert2/dist/sweetalert2.all.min.js"></script>
+<script src=<?= base_url('assets/sweetalert2/dist/sweetalert2.all.min.js'); ?>></script>
 
 <!-- jQuery -->
-<script src=<?= base_url('/assets/template/plugins/jquery/jquery.min.js') ?>></script>
+<script src=<?= base_url('assets/template/plugins/jquery/jquery.min.js') ?>></script>
 <!-- Bootstrap 4 -->
-<script src=<?= base_url('/assets/js/datatables-demo.js'); ?>></script>
+<script src=<?= base_url('assets/js/datatables-demo.js'); ?>></script>
 <!-- Page level plugins -->
 <!-- DataTables  & Plugins -->
-<script src=<?= base_url('/assets/template/plugins/datatables/jquery.dataTables.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-responsive/js/dataTables.responsive.min.js'); ?>>
+<script src=<?= base_url('assets/template/plugins/datatables/jquery.dataTables.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-responsive/js/dataTables.responsive.min.js'); ?>>
 </script>
-<script src=<?= base_url('/assets/template/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'); ?>>
+<script src=<?= base_url('assets/template/plugins/datatables-responsive/js/responsive.bootstrap4.min.js'); ?>>
 </script>
-<script src=<?= base_url('/assets/template/plugins/datatables-buttons/js/dataTables.buttons.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/jszip/jszip.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/pdfmake/pdfmake.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/pdfmake/vfs_fonts.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-buttons/js/buttons.print.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>></script>
-<script src=<?= base_url('/assets/template/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-buttons/js/dataTables.buttons.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.bootstrap4.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/jszip/jszip.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/pdfmake/pdfmake.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/pdfmake/vfs_fonts.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.print.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>></script>
+<script src=<?= base_url('assets/template/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>></script>
 <!-- AdminLTE App -->
-<script src=<?= base_url('/assets/template/dist/js/adminlte.min.js') ?>></script>
-<script src=<?= base_url('/assets/config/config.js') ?>></script>
-<script src="<?= base_url() ?>/assets/yantodev/Flashdata.js"></script>
-<script src=<?= base_url('/assets/yantodev/Iduka.js') ?>></script>
-<script src=<?= base_url('/assets/yantodev/Guru.js') ?>></script>
-<script src=<?= base_url('/assets/yantodev/auth/logout.js') ?>></script>
+<script src=<?= base_url('assets/template/dist/js/adminlte.min.js') ?>></script>
+<script src=<?= base_url('assets/config/config.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/Flashdata.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/Iduka.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/Guru.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/auth/logout.js') ?>></script>
 
 <script>
     $(function () {
