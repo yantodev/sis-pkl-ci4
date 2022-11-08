@@ -10,10 +10,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class JurusanModel extends Model {
-
-    protected $table = 'tbl_jurusan';
+class UsersModel extends Model
+{
+    protected $table = 'user_details';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['jurusan', 'singkatan_jurusan', 'kelompok'];
+    protected $allowedFields = ['email', 'image', 'password', 'role_pkl', 'is_active'];
 }
