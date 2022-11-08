@@ -2,11 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\GuruModel;
+use App\Models\IdukaModel;
+use App\Models\JurusanModel;
+use App\Models\MajorModel;
+use App\Models\MasterDataModel;
+use App\Models\SchoolModel;
+use App\Models\TpModel;
+use App\Models\UserDetailModel;
+use App\Models\UsersModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\YantoDevConfig;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,6 +28,16 @@ use Psr\Log\LoggerInterface;
  *     class Home extends BaseController
  *
  * For security be sure to declare any new methods as protected or private.
+ * @property MajorModel $major
+ * @property TpModel $tp
+ * @property UsersModel $usersModel
+ * @property IdukaModel $idukaModel
+ * @property GuruModel $guruModel
+ * @property SchoolModel $schoolModel
+ * @property YantoDevConfig $config
+ * @property UsersModel $users
+ * @property UserDetailModel $userDetail
+ * @property MasterDataModel $masterData
  */
 class BaseController extends Controller
 {
@@ -48,10 +68,14 @@ class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
-
-        $this->usersModel = new \App\Models\UsersModel();
-        $this->idukaModel = new \App\Models\IdukaModel();
-        $this->jurusanModel = new \App\Models\JurusanModel();
-        $this->guruModel = new \App\Models\GuruModel();
+        $this->config = new YantoDevConfig();
+        $this->users = new UsersModel();
+        $this->idukaModel = new IdukaModel();
+        $this->guruModel = new GuruModel();
+        $this->schoolModel = new SchoolModel();
+        $this->major = new MajorModel();
+        $this->tp = new TpModel();
+        $this->userDetail = new UserDetailModel();
+        $this->masterData =  new MasterDataModel();
     }
 }

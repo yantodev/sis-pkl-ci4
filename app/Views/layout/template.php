@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="en">
 
 <head>
@@ -11,63 +7,57 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="author" content="Eko Cahyanto">
     <link rel="icon" href="<?= base_url('assets/img/logo/favicon.ico'); ?>">
     <title><?= $title ?></title>
-
-    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href=<?= base_url('assets/template/plugins/fontawesome-free/css/all.min.css') ?>>
-    <!-- Theme style -->
     <link rel="stylesheet" href=<?= base_url('assets/template/dist/css/adminlte.min.css') ?>>
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/styles.css'); ?>">
     <script>
         $(document).ready(function () {
-            $(".preloader").fadeOut();
+            $(".preloader").finish();
         })
     </script>
 </head>
 
-<body class="hold-transition sidebar-mini" onload="config('<?= base_url(); ?>')">
+<body class="hold-transition sidebar-mini" onload="config('<?= $_SERVER['app.baseURL'] ?>')">
 <div class="wrapper">
-
     <?= $this->include('layout/navbar'); ?>
-    <?php if($role == '2'):?>
-    <?= $this->include('layout/sidebar-admin.php'); ?>
-    <?php endif;?>
+    <?php
+    switch ($role) {
+        case 1:
+            echo $this->include('layout/sidebar-admin.php');
+            break;
+        case 2:
+            echo $this->include('layout/sidebar-teacher.php');
+            break;
+        case 3:
+            echo $this->include('layout/sidebar-siswa.php');
+            break;
+        default:
+            echo "";
+    }
+    ?>
     <?= $this->include('layout/header'); ?>
     <?= $this->include('./flash/flash'); ?>
     <div class="preloader">
         <div class="loading">
-            <img src="<?= base_url(); ?>/assets/img/gif-muhka.gif" width="300">
+            <img src="<?= base_url('/assets/img/gif-muhka.gif'); ?>" width="300">
         </div>
     </div>
     <?= $this->renderSection('content'); ?>
     <?= $this->include('layout/control-sidebar'); ?>
-
-
-    <!-- Main Footer -->
     <footer class="main-footer">
-        <!-- To the right -->
         <div class="float-right d-none d-sm-inline">
             Template by <a href="https://adminlte.io">AdminLTE.io</a>
         </div>
-        <!-- Default to the left -->
         <strong>Copyright &copy; 2021 - <?= date('Y'); ?> <a
                     href="https://yantodev.github.io">Yantodev</a>.</strong> All rights
-        reserved.
+        reserved. || <a href="https://smkmuhkarangmojo.sch.id">SMK Muhammadiyah Karangmojo</a>
     </footer>
 </div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED SCRIPTS -->
 <script src=<?= base_url('assets/sweetalert2/dist/sweetalert2.all.min.js'); ?>></script>
-
-<!-- jQuery -->
 <script src=<?= base_url('assets/template/plugins/jquery/jquery.min.js') ?>></script>
-<!-- Bootstrap 4 -->
 <script src=<?= base_url('assets/js/datatables-demo.js'); ?>></script>
-<!-- Page level plugins -->
-<!-- DataTables  & Plugins -->
 <script src=<?= base_url('assets/template/plugins/datatables/jquery.dataTables.min.js'); ?>></script>
 <script src=<?= base_url('assets/template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js'); ?>></script>
 <script src=<?= base_url('assets/template/plugins/datatables-responsive/js/dataTables.responsive.min.js'); ?>>
@@ -83,12 +73,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.print.min.js'); ?>></script>
 <script src=<?= base_url('assets/template/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>></script>
 <script src=<?= base_url('assets/template/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>></script>
-<!-- AdminLTE App -->
 <script src=<?= base_url('assets/template/dist/js/adminlte.min.js') ?>></script>
 <script src=<?= base_url('assets/config/config.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Flashdata.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Iduka.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/tp.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Guru.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/users.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/auth/logout.js') ?>></script>
 
 <script>

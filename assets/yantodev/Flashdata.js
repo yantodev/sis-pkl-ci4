@@ -3,6 +3,7 @@ const flashInfo = $('.flash-data').data('flashinfo');
 const flashWarning = $('.flash-data').data('flashwarning');
 const flashSuccess = $('.flash-data').data('flashsuccess');
 const flashSuccessLogin = $('.flash-data').data('flashlogin');
+const flashLogin = $('#flash-data').data('warning-login');
 
 if (flashError) {
     Swal.fire({

@@ -1,6 +1,5 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-
 <div class="card">
     <div class="card-header">
         <h3 class="card-title"><?= $subtitle; ?></h3>
@@ -8,7 +7,8 @@
     <div class="card-body">
         <table id="dataTable" class="table table-bordered table-striped">
             <div>
-                <button class="btn btn-outline-primary" onclick="addGuru()"> <i class="fa fa-plus"></i> Tambah Guru</button>
+                <button class="btn btn-outline-primary" onclick="addGuru()"><i class="fa fa-plus"></i> Tambah Guru
+                </button>
             </div>
             <thead>
             <tr>
@@ -35,7 +35,8 @@
                         <button class="btn btn-primary btn-sm" onclick="updateGuru(<?= $d['id']; ?>)">
                             Edit
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteGuru(<?= $d['id']; ?>)">
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteGuru('<?= $_SERVER['DELETE_TEACHER']; ?>',<?= $d['id']; ?>)">
                             Delete
                         </button>
                     </td>
@@ -45,6 +46,5 @@
         </table>
     </div>
 </div>
-<!-- /.card-body -->
 
 <?= $this->endSection() ?>; ?>

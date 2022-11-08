@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class GuruModel extends Model
 {
-    protected $table = 'tbl_guru';
+    protected $table = 'employee';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $allowedFields = ['email', 'nama', 'nbm','hp', 'jabatan'];

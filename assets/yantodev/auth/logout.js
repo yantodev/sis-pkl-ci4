@@ -9,19 +9,12 @@ function logout() {
         confirmButtonText: 'Yes, logged out it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
-                type: 'GET',
-                url: configUrl + '/auth/logout',
-                success: function () {
-                },
-                error: function (e) {
-                    console.log(e)
-                }
+            fetchingData('/auth/logout').then(response => {
+                console.log(response)
             })
             Swal.fire({
                 icon: 'success',
                 title: 'Logout berhasil',
-                text: 'Terima kasih telah menggunakan aplikasi ini',
             })
             setTimeout(function () {
                 window.location.reload(1);

@@ -9,26 +9,34 @@
 namespace App\Controllers;
 
 use App\Models\UsersModel;
-use CodeIgniter\Model;
+use CodeIgniter\Session\Session;
+use ReflectionException;
 
+/**
+ * @property UsersModel $users
+ * @property Session|mixed|null $session
+ */
 class Auth extends BaseController
 {
-    protected $usersModel;
 
     public function __construct()
     {
-        $this->usersModel = new UsersModel();
+        $this->session = session();
+        $this->users = new UsersModel();
     }
 
-    public function index()
+    public function index(): string
     {
         $data = [
             'title' => "login page",
-            'data' => $this->usersModel->findAll()
+            'data' => $this->users->findAll()
         ];
         return view('auth/index', $data);
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function register()
     {
         //include helper form
@@ -45,54 +53,70 @@ class Auth extends BaseController
                 'role_id' => $this->request->getVar('role'),
                 'email' => $this->request->getVar('email'),
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-                'image' => "default.png"
+                'image' => "default.png",
+                'is_active' => 1
             ];
             $this->usersModel->save($data);
-            $session->setFlashdata('success', 'Register successfull!!!');
-            return redirect()->to('/auth');
+            $session->setFlashdata('success', 'Register successfully!!!');
+            return redirect()->to("/auth");
         } else {
             $data['validation'] = $this->validator;
             echo view('register', $data);
         }
     }
 
-    public function login()
+    public function login(): \CodeIgniter\HTTP\RedirectResponse
     {
-        $session = session();
-        $model = new UsersModel();
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
-        $data = $model->where('email', $email)->first();
+        $data = $this->users->getWhere(['email' => $email])->getFirstRow();
         if ($data) {
-            $pass = $data['password'];
-            $verify_pass = password_verify($password, $pass);
-            if ($verify_pass) {
-                $ses_data = [
-                    'id' => $data['id'],
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'role_id' => $data['role_id'],
-                    'logged_in' => TRUE
+            $pass = $data->password;
+            $verifyPass = password_verify($password, $pass);
+            if ($verifyPass) {
+                $sesData = [
+                    'id' => $data->id,
+                    'email' => $data->email,
+                    'role' => $data->role_pkl,
+                    'logged_in' => true
                 ];
-                $session->set($ses_data);
-                $session->setFlashdata('login', $data['name']);
-                // if ($data['role_id'] == 3)
-                return redirect()->to('/admin');
-                // return redirect()->to('/auth');
-            } else {
-                $session->setFlashdata('error', 'Password salah!!!');
-                return redirect()->to('/auth');
+                $this->session->set($sesData);
+                $this->session->setFlashdata('login', $data->email);
+                if ($data->is_active) {
+                    switch ($data->role_pkl) {
+                        case 1:
+                            return redirect()->to('/admin');
+                        case 2:
+                            return redirect()->to('/teacher');
+                        case 3:
+                            return redirect()->to('/student');
+                        default:
+                            return redirect()->to('/auth');
+                    }
+                }
+                $this->session->setFlashdata('warning', 'Email is not activation!!!');
             }
+            $this->session->setFlashdata('error', 'Password salah!!!');
         } else {
-            $session->setFlashdata('warning', 'Email tidak ditemukan!!!');
-            return redirect()->to('/auth');
+            $this->session->setFlashdata('warning', 'Email not found!!!');
         }
+        return redirect()->to("auth");
     }
-    public function logout()
+
+    public function logout(): \CodeIgniter\HTTP\RedirectResponse
     {
         $session = session();
-        $session->setFlashdata('success', 'Logout berhasil!!!');
+        $session->setFlashdata('success', 'Logout successfully!!!');
         $session->destroy();
-        return redirect()->to('/auth');
+        return redirect()->to("/auth");
+    }
+
+    public function error(): string
+    {
+        $data = [
+            'title' => "error page",
+            'data' => $this->users->findAll()
+        ];
+        return view('auth/error', $data);
     }
 }

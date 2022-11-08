@@ -1,27 +1,20 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-<!-- Main content -->
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"></h5>adsads
-
+                    <h5 class="card-title">adsads</h5>
                     <p class="card-text">
-                        adsadasdsa
                     </p>
                     <p>
                         <img src="" alt="product">
                     </p>
-
-                    <!--                        --><? //= dd($category);?>
                     <a href="#" class="card-link">Card link</a>
                     <a href="#" class="card-link">Another link</a>
                 </div>
             </div>
-
             <div class="card card-primary card-outline">
                 <div class="card-body">
                     <h5 class="card-title">Card title</h5>
@@ -33,9 +26,8 @@
                     <a href="#" class="card-link">Card link</a>
                     <a href="#" class="card-link">Another link</a>
                 </div>
-            </div><!-- /.card -->
+            </div>
         </div>
-        <!-- /.col-md-6 -->
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
@@ -56,17 +48,12 @@
                 </div>
                 <div class="card-body">
                     <h6 class="card-title">Special title treatment</h6>
-
                     <p class="card-text">With supporting text below as a natural lead-in to additional
                         content.</p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </div>
-        <!-- /.col-md-6 -->
     </div>
-    <!-- /.row -->
-</div><!-- /.container-fluid -->
-
-<!-- /.content-wrapper -->
+</div>
 <?= $this->endSection() ?>; ?>

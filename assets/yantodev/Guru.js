@@ -15,20 +15,15 @@ function addGuru() {
         confirmButtonText: "Add",
         showLoaderOnConfirm: true,
         preConfirm: () => {
-            const nbm = Swal.getPopup().querySelector("#nbm").value;
-            const name = Swal.getPopup().querySelector("#name").value;
-            const jabatan = Swal.getPopup().querySelector("#jabatan").value;
-            const hp = Swal.getPopup().querySelector("#hp").value;
-            const email = Swal.getPopup().querySelector("#email").value;
             $.ajax({
                 type: "POST",
-                url: configUrl + "/admin/addGuru",
+                url: baseUrl + "/admin/addGuru",
                 data: {
-                    nbm: nbm,
-                    name: name,
-                    jabatan: jabatan,
-                    hp: hp,
-                    email: email,
+                    nbm: Swal.getPopup().querySelector("#nbm").value,
+                    name: Swal.getPopup().querySelector("#name").value,
+                    jabatan: Swal.getPopup().querySelector("#jabatan").value,
+                    hp: Swal.getPopup().querySelector("#hp").value,
+                    email: Swal.getPopup().querySelector("#email").value,
                 },
                 cache: false,
                 dataType: "json",
@@ -90,20 +85,15 @@ function updateGuru(id) {
         showLoaderOnConfirm: true,
         preConfirm: () => {
             const id = Swal.getPopup().querySelector("#id").value;
-            const nbm = Swal.getPopup().querySelector("#nbm").value;
-            const name = Swal.getPopup().querySelector("#name").value;
-            const jabatan = Swal.getPopup().querySelector("#jabatan").value;
-            const hp = Swal.getPopup().querySelector("#hp").value;
-            const email = Swal.getPopup().querySelector("#email").value;
             $.ajax({
                 type: "POST",
-                url: configUrl + "/admin/updateGuru/" + id,
+                url: baseUrl + "/admin/updateGuru/" + id,
                 data: {
-                    nbm: nbm,
-                    name: name,
-                    jabatan: jabatan,
-                    hp: hp,
-                    email: email
+                    nbm: Swal.getPopup().querySelector("#nbm").value,
+                    name: Swal.getPopup().querySelector("#name").value,
+                    jabatan: Swal.getPopup().querySelector("#jabatan").value,
+                    hp: Swal.getPopup().querySelector("#hp").value,
+                    email: Swal.getPopup().querySelector("#email").value
                 },
                 cache: false,
                 dataType: "json",
@@ -129,7 +119,7 @@ function updateGuru(id) {
     });
 }
 
-function deleteGuru(id) {
+function deleteGuru(url, id) {
     Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -140,20 +130,10 @@ function deleteGuru(id) {
         confirmButtonText: "Yes, delete it!",
     }).then((result) => {
         if (result.isConfirmed) {
-            $.ajax({
-                type: "POST",
-                url: configUrl + "/admin/deleteGuru/" + id,
-                cache: false,
-                dataType: "json",
-                beforeSend: function (e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function () {
-                },
-            }),
+            fetchingData("/admin/deleteGuru/", {id: id}).then(response => {
+                console.log(response)
                 Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            })
             setTimeout(function () {
                 window.location.reload(1);
             }, 1000);
