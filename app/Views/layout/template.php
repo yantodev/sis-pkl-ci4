@@ -80,6 +80,7 @@
 <script src=<?= base_url('assets/yantodev/tp.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Guru.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/users.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/print.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/auth/logout.js') ?>></script>
 
 <script>

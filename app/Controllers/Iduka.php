@@ -73,4 +73,13 @@ class Iduka extends ResourceController
             )
         );
     }
+
+    public function getAllIdukaByMajor($id): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->iduka->findAllByMajorId($id)->getResult()
+            )
+        );
+    }
 }
