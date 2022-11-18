@@ -8,20 +8,31 @@
 
 namespace App\Controllers;
 
+use App\Models\KajurModel;
 use App\Models\MajorModel;
+use App\Models\SuratModel;
 use App\Models\UsersModel;
 use Config\YantoDevConfig;
+use Mpdf\MpdfException;
 use ReflectionException;
 
+/**
+ * @property \CodeIgniter\Session\Session|mixed|null $session
+ * @property SuratModel $surat
+ * @property KajurModel $kajur
+ */
 class  Admin extends BaseController
 {
     protected $usersModel;
 
     public function __construct()
     {
+        $this->session = session();
         $this->config = new YantoDevConfig();
         $this->usersModel = new UsersModel();
         $this->major = new MajorModel();
+        $this->surat = new SuratModel();
+        $this->kajur = new KajurModel();
     }
 
     public function index()
@@ -163,13 +174,77 @@ class  Admin extends BaseController
         return view('pages/admin/tp', $data);
     }
 
+    public function print()
+    {
+        $data = [
+            'title' => "Cetak",
+            'subtitle' => "Cetak Data",
+            'users' => $this->session->get('name'),
+            'role' => $this->session->get('role'),
+            'major' => $this->major->findAll(),
+            'tp' => $this->tp->findAll()
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 1) {
+            return redirect()->to('/auth/error');
+        }
+        return view('pages/admin/print', $data);
+    }
+
+    /**
+     * @throws MpdfException
+     */
+    public function printApplicationLetter($tp, $major, $iduka, $instansi)
+    {
+        $surat = $this->surat->findByTp($tp)->getRow();
+        $master_data = $this->masterData->findByIdukaAndTp($iduka, $tp, $major)->getResult();
+        $kajur = $this->kajur->findByMajor($major)->getRow();
+        if ($surat === null) {
+            $this->session->setFlashdata('info',
+                'Anda belum melengkapi data surat, silahkan lengkapi terlebih dahulu!!!');
+            return redirect()->to('/admin/print');
+        }
+        $data = [
+            'iduka' => $this->idukaModel->find($iduka),
+            'instansi' => $instansi,
+            'surat' => $surat ?: '',
+            'master_data' => $master_data,
+            'kajur' => $kajur
+        ];
+        view('pages/general/permohonan1', $data);
+        view('pages/general/permohonan2', $data);
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/permohonan1', []);
+        $mpdf->WriteHTML($html);
+//
+        $mpdf->AddPage();
+        $mpdf->SetFooter('<p align="left">
+                            1 lembar dikirim ke SMK Muh. Karangmojo<br />
+                            1 lembar untuk arsip Kepala Kompetensi Keahlian<br />
+                            1 lembar untuk arsip IDUKA (Instansi)<br />
+                            *) Coret salah satu
+                        </p>');
+        $html2 = view('pages/general/permohonan2', []);
+        $mpdf->WriteHTML($html2);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $iduka = $this->idukaModel->find($iduka);
+        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'I');
+    }
+
+    /**
+     * @throws MpdfException
+     */
     public function pdf()
     {
         $mpdf = new \Mpdf\Mpdf();
         $html = view('welcome_message', []);
         $mpdf->WriteHTML($html);
-        $this->response->setHeader('Content-Type', 'application/pdf');
-        $mpdf->Output('arjun.pdf', 'I'); // opens in browser
-        //$mpdf->Output('arjun.pdf','D'); // it downloads the file into the user system, with give name
+        $this->response->setHeader('Content - Type', 'application / pdf');
+        $mpdf->Output('arjun . pdf', 'I'); // opens in browser
+        //$mpdf->Output('arjun . pdf','D'); // it downloads the file into the user system, with give name
     }
 }
