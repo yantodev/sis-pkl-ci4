@@ -14,11 +14,11 @@
                 <a href="#" class="d-block"><?= $users; ?></a>
             </div>
         </div>
-        <nav class="mt-2">
+        <nav aria-label="Site menu" class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="<?= base_url('admin'); ?>" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <em class="nav-icon fas fa-tachometer-alt"></em>
                         <p>
                             Dashboard
                         </p>
@@ -26,28 +26,28 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
+                        <em class="nav-icon fas fa-database"></em>
                         <p>
                             Data PKL
-                            <i class="right fas fa-angle-left"></i>
+                            <em class="right fas fa-angle-left"></em>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/iduka'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="<?= base_url('admin/data'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Data Siswa</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/guru'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="<?= base_url('admin/nilai'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Nilai Siswa</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/guru'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="<?= base_url('admin/laporan'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Laporan Siswa</p>
                             </a>
                         </li>
@@ -55,28 +55,28 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-database"></i>
+                        <em class="nav-icon fas fa-database"></em>
                         <p>
                             Master Data
-                            <i class="right fas fa-angle-left"></i>
+                            <em class="right fas fa-angle-left"></em>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?= base_url('admin/iduka'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Iduka</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('admin/guru'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Guru</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('admin/tp'); ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <em class="far fa-circle nav-icon"></em>
                                 <p>Tahun Pelajaran</p>
                             </a>
                         </li>
@@ -84,7 +84,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('admin/master_sekolah'); ?>" class="nav-link">
-                        <i class="nav-icon fa fa-school"></i>
+                        <em class="nav-icon fa fa-school"></em>
                         <p>
                             Master Sekolah
                         </p>
@@ -92,18 +92,18 @@
                 </li>
                 <li class="nav-item">
                     <a href="<?= base_url('admin/print'); ?>" class="nav-link">
-                        <i class="nav-icon fa fa-print"></i>
+                        <em class="nav-icon fa fa-print"></em>
                         <p>Cetak</p>
                     </a>
                 </li>
             </ul>
         </nav>
         <hr style="border-color: white;">
-        <nav class="mt-2">
+        <nav class="mt-2" aria-label="Site menu">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item" onclick="logout()">
                     <div class="nav-link">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <em class="nav-icon fas fa-sign-out-alt"></em>
                         <p>
                             Logout
                         </p>

@@ -40,7 +40,7 @@ class  Admin extends BaseController
         $session = session();
         $data = [
             'title' => "Dashboard",
-            'users' => $session->get('name'),
+            'users' => $session->get('email'),
             'role' => $session->get('role'),
         ];
         if (!$session->get('logged_in')) {
@@ -57,7 +57,7 @@ class  Admin extends BaseController
         $session = session();
         $data = [
             'title' => "Master Sekolah",
-            'users' => $session->get('name'),
+            'users' => $session->get('email'),
             'role' => $session->get('role'),
             'sekolah' => $this->schoolModel->find(1)
         ];
@@ -83,7 +83,7 @@ class  Admin extends BaseController
             'title' => "Iduka",
             'subtitle' => "Data Iduka",
             'role' => $session->get('role'),
-            'users' => $session->get('name'),
+            'users' => $session->get('email'),
             'iduka' => $iduka,
             'jurusan' => $jurusan
         ];
@@ -107,7 +107,7 @@ class  Admin extends BaseController
             'title' => "Guru",
             'subtitle' => "Data Guru",
             'role' => $session->get('role'),
-            'users' => $session->get('name'),
+            'users' => $session->get('email'),
             'guru' => $guru,
         ];
         if (!$session->get('logged_in')) {
@@ -161,7 +161,7 @@ class  Admin extends BaseController
         $data = [
             'title' => "Tahun Pelajaran",
             'subtitle' => "Data Tahun Pelajaran",
-            'users' => $session->get('name'),
+            'users' => $session->get('email'),
             'role' => $session->get('role'),
             'tp' => $this->tp->findAll()
         ];
@@ -179,7 +179,7 @@ class  Admin extends BaseController
         $data = [
             'title' => "Cetak",
             'subtitle' => "Cetak Data",
-            'users' => $this->session->get('name'),
+            'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll()
@@ -196,8 +196,12 @@ class  Admin extends BaseController
     /**
      * @throws MpdfException
      */
-    public function printApplicationLetter($tp, $major, $iduka, $instansi)
+    public function printApplicationLetter()
     {
+        $tp = $this->request->getVar('tp');
+        $major = $this->request->getVar('major_id');
+        $iduka = $this->request->getVar('iduka');
+        $instansi = $this->request->getVar('instansi');
         $surat = $this->surat->findByTp($tp)->getRow();
         $master_data = $this->masterData->findByIdukaAndTp($iduka, $tp, $major)->getResult();
         $kajur = $this->kajur->findByMajor($major)->getRow();
@@ -220,7 +224,7 @@ class  Admin extends BaseController
         $mpdf->showImageErrors = true;
         $html = view('pages/general/permohonan1', []);
         $mpdf->WriteHTML($html);
-//
+
         $mpdf->AddPage();
         $mpdf->SetFooter('<p align="left">
                             1 lembar dikirim ke SMK Muh. Karangmojo<br />

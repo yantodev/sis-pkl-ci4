@@ -18,4 +18,16 @@ class IdukaModel extends Model
             ->where('major', $major_id)
             ->get();
     }
+
+    public function findAllIdukaById($id, $tp)
+    {
+        return $this->db->query('
+            select distinct i.id, i.name
+            from master_data as md
+            inner join iduka i on md.iduka_id = i.id
+            where i.major = 1
+            and md.tp_id = 1
+            order by i.name ASC
+        ');
+    }
 }
