@@ -82,4 +82,13 @@ class Iduka extends ResourceController
             )
         );
     }
+
+    public function findAllIdukaByTp($tp): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->iduka->findAllIdukaByTp($tp)->getResult()
+            )
+        );
+    }
 }

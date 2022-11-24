@@ -1,6 +1,7 @@
 async function getAllIdukaByMajor() {
     let ids = document.getElementById("major_id").value;
     let tp = document.getElementById("tp").value;
+    console.log("major " + ids, "tp" + tp)
     await fetchingData("/Iduka/getAllIdukaByMajor/" + ids + "/" + tp)
         .then(response => {
             if (response.code === 200) {

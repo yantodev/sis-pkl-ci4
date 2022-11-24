@@ -73,4 +73,11 @@ class User extends ResourceController
             $this->config->ApiResponseBuilder($response)
         );
     }
+
+    public function teacher(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder($this->user->findAllTeacher())
+        );
+    }
 }

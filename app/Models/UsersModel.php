@@ -26,7 +26,7 @@ class UsersModel extends Model
             ->get();
     }
 
-    public function findAllSiswa()
+    public function findAllSiswa(): array
     {
         return $this->db->query('
                     select u.id,
@@ -48,7 +48,7 @@ class UsersModel extends Model
         ')->getResult();
     }
 
-    public function findAllSiswaByMajor($major)
+    public function findAllSiswaByMajor($major): array
     {
         return $this->db->query('
                     select u.id,
@@ -69,4 +69,21 @@ class UsersModel extends Model
                     where u.role_pkl = 3 and ud.major_id =' . $major
         )->getResult();
     }
+
+    public function findAllTeacher(): array
+    {
+        return $this->db->query('
+                select u.id,
+                       u.email,
+                       u.image,
+                       ud.user_id as nbm,
+                       ud.name
+                from users u
+                         left join user_details ud on u.id = ud.user_public_id
+                where u.role_pkl = 2
+                order by ud.name ASC
+')->getResult();
+    }
+
+
 }
