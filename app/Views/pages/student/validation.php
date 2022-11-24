@@ -55,7 +55,7 @@
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nama Lengkap">
                     </div>
                     <div class="form-group">
-                        <label>Jurusan</label>
+                        <label>Jenis Kelamin</label>
                         <select class="form-control" id="jk" name="jk">
                             <option value="">--Pilih Jenis Kelamin--</option>
                             <option value="1">Laki-laki</option>

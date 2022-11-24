@@ -339,4 +339,15 @@ if (!function_exists('bulan')) {
                 break;
         }
     }
+
+    function jk($data)
+    {
+        if ($data == 1) {
+            return 'Laki-laki';
+        } else if ($data == 2) {
+            return 'Perempuan';
+        } else {
+            return "";
+        }
+    }
 }

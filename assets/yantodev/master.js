@@ -30,8 +30,6 @@ async function addPendamping() {
 async function editTutor(id) {
     let result = await findTutorById(id);
     let iduka = await findIdukaByTp(result.tpId);
-    let tp = await findTp();
-    console.log(result)
     Swal.fire({
         title: "Edit Guru Pendamping",
         html: `
@@ -142,29 +140,49 @@ async function findIdukaById(id) {
 
 async function findIdukaByTp(tp) {
     let iduka = [];
-    await fetchingData('/Iduka/findAllIdukaByTp/' + tp).then(response => {
-        for (const element of response.result) {
-            let id = element.id;
-            let name = element.name;
-            iduka.push("<option value=" + id + ">" + name + "</option>");
-        }
-    }).catch(error => {
-        console.log(error)
-    })
+    await fetchingData('/Iduka/findAllIdukaByTp/' + tp)
+        .then(response => {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.name;
+                iduka.push("<option value=" + id + ">" + name + "</option>");
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    return iduka;
+}
+
+async function findIdukaByMajor(major) {
+    let iduka = [];
+    await fetchingData('/Iduka/findAllIdukaByMajor/' + major)
+        .then(response => {
+            if (response.code == 200) {
+                for (const element of response.result) {
+                    let id = element.id;
+                    let name = element.name;
+                    iduka.push("<option value=" + id + ">" + name + "</option>");
+                }
+                console.log(response)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     return iduka;
 }
 
 async function findTp() {
     let tp = [];
-    await fetchingData('/Tp/findAllTp').then(response => {
-        for (const element of response.result) {
-            let id = element.id;
-            let name = element.name;
-            tp.push("<option value=" + id + ">" + name + "</option>");
-        }
-    }).catch(error => {
-        console.log(error)
-    })
+    await fetchingData('/Tp/findAllTp')
+        .then(response => {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.name;
+                tp.push("<option value=" + id + ">" + name + "</option>");
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     return tp;
 }
 
@@ -180,4 +198,20 @@ async function findAllTeacher() {
         console.log(error)
     })
     return teacher;
+}
+
+async function findAllClassByMajor(major) {
+    let result = [];
+    await fetchingData('/RestApi/findAllClassByMajor', {major})
+        .then(response => {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.name;
+                result.push("<option value=" + id + ">" + name + "</option>");
+            }
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    return result;
 }

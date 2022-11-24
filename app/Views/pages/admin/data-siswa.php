@@ -43,7 +43,7 @@
                     <td id="major"><?= $s->iduka; ?></td>
                     <td>
                         <button class="btn btn-primary btn-xs" onclick="
-                                editStudent(<?= $s->nis; ?>)
+                                editStudent(<?= $s->id; ?>)
                                 "> Edit
                         </button>
                     </td>

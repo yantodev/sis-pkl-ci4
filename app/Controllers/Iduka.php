@@ -74,11 +74,13 @@ class Iduka extends ResourceController
         );
     }
 
-    public function getAllIdukaByMajor($id, $tp): \CodeIgniter\HTTP\Response
+    public function findAllIdukaByMajorAndTp(): \CodeIgniter\HTTP\Response
     {
         return $this->respond(
             $this->config->ApiResponseBuilder(
-                $this->iduka->findAllIdukaById($id, $tp)->getResult()
+                $this->iduka->findAllIdukaByIdAndTp(
+                    $this->request->getVar('major'),
+                    $this->request->getVar('tp'))
             )
         );
     }
@@ -87,7 +89,16 @@ class Iduka extends ResourceController
     {
         return $this->respond(
             $this->config->ApiResponseBuilder(
-                $this->iduka->findAllIdukaByTp($tp)->getResult()
+                $this->iduka->findAllIdukaByTp($tp)
+            )
+        );
+    }
+
+    public function findAllIdukaByMajor($major): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->iduka->findAllIdukaByMajor($major)
             )
         );
     }

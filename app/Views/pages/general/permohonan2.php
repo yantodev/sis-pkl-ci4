@@ -100,7 +100,7 @@
             <td style="text-align:center"><?= $i; ?></td>
             <td><?= $d->nis; ?></td>
             <td><?= ucwords(strtolower($d->name)); ?></td>
-            <td><?= $d->jk; ?></td>
+            <td><?= jk($d->jk); ?></td>
             <td><?= $d->kelas; ?></td>
             <td><?= $d->jurusan; ?></td>
         </tr>

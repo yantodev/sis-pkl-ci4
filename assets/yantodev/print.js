@@ -1,8 +1,12 @@
 async function getAllIdukaByMajor() {
-    let ids = document.getElementById("major_id").value;
+    let major = document.getElementById("major_id").value;
     let tp = document.getElementById("tp").value;
-    console.log("major " + ids, "tp" + tp)
-    await fetchingData("/Iduka/getAllIdukaByMajor/" + ids + "/" + tp)
+    console.log("major " + major, "tp " + tp)
+    await fetchingData('/Iduka/findAllIdukaByMajorAndTp',
+        {
+            major: document.getElementById("major_id").value,
+            tp: document.getElementById("tp").value
+        })
         .then(response => {
             if (response.code === 200) {
                 let iduka = document.getElementById("iduka");

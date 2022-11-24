@@ -250,7 +250,7 @@ class  Admin extends BaseController
         $iduka = $this->request->getVar('iduka');
         $instansi = $this->request->getVar('instansi');
         $surat = $this->surat->findByTp($tp)->getRow();
-        $master_data = $this->masterData->findByIdukaAndTp($iduka, $tp, $major)->getResult();
+        $master_data = $this->masterData->findByIdukaAndTp($iduka, $tp);
         $kajur = $this->kajur->findByMajor($major)->getRow();
         if ($surat === null) {
             $this->session->setFlashdata('info',
