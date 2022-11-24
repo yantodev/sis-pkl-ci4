@@ -27,13 +27,17 @@ class User extends ResourceController
         $this->user = new UsersModel();
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function addUser(): \CodeIgniter\HTTP\Response
     {
         $request = [
             'role_pkl' => $this->request->getVar('role'),
             'email' => $this->request->getVar('email'),
             'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
-            'image' => "default.png"
+            'image' => "default.png",
+            'is_active' => $this->request->getVar('isActive')
         ];
         return $this->respond(
             $this->config->ApiResponseBuilder(

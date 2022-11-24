@@ -8,9 +8,11 @@
 
 namespace App\Controllers;
 
+use App\Models\ClassModel;
 use App\Models\IdukaModel;
 use App\Models\MajorModel;
 use App\Models\TutorModel;
+use App\Models\UserDetailModel;
 use App\Models\UsersModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
@@ -25,6 +27,8 @@ use ReflectionException;
  * @property string $error
  * @property UsersModel $user
  * @property TutorModel $tutor
+ * @property UserDetailModel $userDetail
+ * @property ClassModel $class
  */
 class RestApi extends ResourceController
 {
@@ -34,9 +38,11 @@ class RestApi extends ResourceController
     {
         $this->config = new YantoDevConfig();
         $this->user = new UsersModel();
+        $this->userDetail = new UserDetailModel();
         $this->major = new MajorModel();
         $this->iduka = new IdukaModel();
         $this->tutor = new TutorModel();
+        $this->class = new ClassModel();
         $this->ok = 'OK';
         $this->error = 'ERROR';
     }
@@ -154,6 +160,24 @@ class RestApi extends ResourceController
         return $this->respond(
             $this->config->ApiResponseBuilder(
                 $this->tutor->findById($this->request->getVar('id'))
+            )
+        );
+    }
+
+    public function findStudentById(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->userDetail->findById($this->request->getVar('id'))
+            )
+        );
+    }
+
+    public function findAllClassByMajor(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->class->findAllBy($this->request->getVar('major'))
             )
         );
     }

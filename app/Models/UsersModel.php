@@ -29,7 +29,7 @@ class UsersModel extends Model
     public function findAllSiswa(): array
     {
         return $this->db->query('
-                    select u.id,
+                    select ud.id,
                            ud.name,
                            ud.jk,
                            ud.user_id as nis,
@@ -51,7 +51,7 @@ class UsersModel extends Model
     public function findAllSiswaByMajor($major): array
     {
         return $this->db->query('
-                    select u.id,
+                    select ud.id,
                            ud.name,
                            ud.jk,
                            ud.user_id as nis,

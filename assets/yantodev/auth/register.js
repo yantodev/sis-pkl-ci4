@@ -42,7 +42,8 @@ function register() {
                             fetchingData("/User/addUser", {
                                 role: role,
                                 email: email,
-                                password: password
+                                password: password,
+                                isActive: 1
                             }).then(response => {
                                 console.log(response)
                                 if (response.code === 200) {

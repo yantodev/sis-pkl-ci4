@@ -19,7 +19,7 @@ class MasterDataModel extends Model
             ->get();
     }
 
-    public function findByIdukaAndTp($iduka, $tp, $major)
+    public function findByIdukaAndTp($iduka, $tp): array
     {
         return $this->db->query('
                 select ud.name    as name,
@@ -34,8 +34,7 @@ class MasterDataModel extends Model
                          inner join major m on i.major = m.id
                          left join class c on ud.class_id = c.id
                 where md.iduka_id = ' . $iduka . ' 
-                    and md.tp_id = ' . $tp . '
-                    and md.iduka_id = ' . $major
-        );
+                    and md.tp_id = ' . $tp
+        )->getResult();
     }
 }

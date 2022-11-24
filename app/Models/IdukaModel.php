@@ -19,26 +19,34 @@ class IdukaModel extends Model
             ->get();
     }
 
-    public function findAllIdukaById($id, $tp)
+    public function findAllIdukaByIdAndTp($major, $tp): array
     {
-        return $this->db->query('
-            select distinct i.id, i.name
-            from master_data as md
-            inner join iduka i on md.iduka_id = i.id
-            where i.major = ' . $id . '
-            and md . tp_id = ' . $tp . '
-            order by i . name ASC
-        ');
+        return $this->db->table('master_data md')
+            ->distinct('md.iduka_id')
+            ->select('i.id, i.name')
+            ->join('iduka i', 'md.iduka_id = i.id ')
+            ->where('md.tp_id', $tp)
+            ->orderBy('i.name', 'ASC')
+            ->get()->getResult();
     }
 
-    public function findAllIdukaByTp($tp)
+    public function findAllIdukaByTp($tp): array
     {
-        return $this->db->query('
-            select distinct i.id, i.name
-            from master_data as md
-            inner join iduka i on md.iduka_id = i.id
-            and md . tp_id = ' . $tp . '
-            order by i . name ASC
-        ');
+        return $this->db->table('master_data md')
+            ->distinct('md.iduka_id')
+            ->select('i.id, i.name')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->where('md.tp_id', $tp)
+            ->orderBy('i.name', 'ASC')
+            ->get()->getResult();
+    }
+
+    public function findAllIdukaByMajor($major): array
+    {
+        return $this->db->table('iduka')
+            ->select('*')
+            ->where('major', $major)
+            ->orderBy('name', 'ASC')
+            ->get()->getResult();
     }
 }
