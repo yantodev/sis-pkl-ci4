@@ -11,6 +11,7 @@ namespace App\Controllers;
 use App\Models\KajurModel;
 use App\Models\MajorModel;
 use App\Models\SuratModel;
+use App\Models\TutorModel;
 use App\Models\UsersModel;
 use Config\YantoDevConfig;
 use Mpdf\MpdfException;
@@ -20,6 +21,7 @@ use ReflectionException;
  * @property \CodeIgniter\Session\Session|mixed|null $session
  * @property SuratModel $surat
  * @property KajurModel $kajur
+ * @property TutorModel $tutor
  */
 class  Admin extends BaseController
 {
@@ -33,6 +35,7 @@ class  Admin extends BaseController
         $this->major = new MajorModel();
         $this->surat = new SuratModel();
         $this->kajur = new KajurModel();
+        $this->tutor = new TutorModel();
     }
 
     public function index()
@@ -75,15 +78,17 @@ class  Admin extends BaseController
 
     public function pendamping()
     {
+        $tp = $this->request->getVar('tp') ?: false;
         $major = $this->request->getVar('major') ?: false;
         $data = [
             'title' => "Data Guru Pendamping",
             'subtitle' => "Guru Pendamping Siswa",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
-            'siswa' => $major != null ? $this->users->findAllSiswaByMajor($major) : $this->users->findAllSiswa(),
+            'tutor' => $major != null ? $this->tutor->findByTpAndMajor($tp, $major) : $this->tutor->findAllBy(),
             'major' => $this->major->findAll(),
-            'tp' => $this->tp->findAll()
+            'tp' => $this->tp->findAll(),
+            'teacher' => $this->users->findAllTeacher()
         ];
         if (!$this->session->get('logged_in')) {
             return redirect()->to('/auth');
