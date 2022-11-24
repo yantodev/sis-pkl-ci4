@@ -39,6 +39,13 @@ class Tp extends ResourceController
         );
     }
 
+    public function findAllTp(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder($this->tp->findAll())
+        );
+    }
+
     public function findById(): \CodeIgniter\HTTP\Response
     {
         return $this->respond(

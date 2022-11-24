@@ -5,7 +5,7 @@
         <div class="card-header">
             <h3 class="card-title"><?= $title;?></h3>
         </div>
-        <form>
+        <form method="post">
             <div class="card-body">
                 <label class="ml-3 mb-0" for="ks">Nama Sekolah</label>
                 <div class="form-group">

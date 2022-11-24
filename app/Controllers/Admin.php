@@ -52,6 +52,48 @@ class  Admin extends BaseController
         return view('pages/admin/dashboard', $data);
     }
 
+    public function data()
+    {
+        $major = $this->request->getVar('major') ?: false;
+        $data = [
+            'title' => "Data",
+            'subtitle' => "Data Siswa",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'siswa' => $major != null ? $this->users->findAllSiswaByMajor($major) : $this->users->findAllSiswa(),
+            'major' => $this->major->findAll(),
+            'tp' => $this->tp->findAll()
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 1) {
+            return redirect()->to('/auth/error');
+        }
+        return view('pages/admin/data-siswa', $data);
+    }
+
+    public function pendamping()
+    {
+        $major = $this->request->getVar('major') ?: false;
+        $data = [
+            'title' => "Data Guru Pendamping",
+            'subtitle' => "Guru Pendamping Siswa",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'siswa' => $major != null ? $this->users->findAllSiswaByMajor($major) : $this->users->findAllSiswa(),
+            'major' => $this->major->findAll(),
+            'tp' => $this->tp->findAll()
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 1) {
+            return redirect()->to('/auth/error');
+        }
+        return view('pages/admin/data-pendamping', $data);
+    }
+
     public function master_sekolah()
     {
         $session = session();

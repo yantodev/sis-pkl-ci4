@@ -51,6 +51,12 @@
                                 <p>Laporan Siswa</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/pendamping'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Guru Pendamping</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
