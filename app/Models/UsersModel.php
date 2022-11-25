@@ -36,7 +36,8 @@ class UsersModel extends Model
                            c.name   as kelas,
                            m.name   as jurusan,
                            i.name   as iduka,
-                           t.name as tp
+                           t.name as tp,
+                           md.id as masterDataId
                     from users u
                              inner join user_details ud on u.id = ud.user_public_id
                              inner join class c on ud.class_id = c.id
@@ -58,7 +59,8 @@ class UsersModel extends Model
                            c.name   as kelas,
                            m.name   as jurusan,
                            i.name   as iduka,
-                           t.name as tp
+                           t.name as tp,
+                           md.id as masterDataId
                     from users u
                              inner join user_details ud on u.id = ud.user_public_id
                              inner join class c on ud.class_id = c.id

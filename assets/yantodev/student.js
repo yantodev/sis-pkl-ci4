@@ -3,7 +3,8 @@ function getStudentByMajor() {
     window.location.href = baseUrl + '/admin/data?major=' + majorId;
 }
 
-async function editStudent(id) {
+async function editStudent(id, masterDataId) {
+    console.log(masterDataId)
     let student = await getDetailStudent(id)
     let kelas = await findAllClassByMajor(student.majorId);
     let major = await findMajor();
@@ -13,21 +14,16 @@ async function editStudent(id) {
         html: `
             <div>
                 <div class="mb-3">
-                    <input class="form-control" type="text" id="name" value="${student.name}"/>
+                    <input class="form-control" type="text" id="name" value="${student.name}" readonly/>
                 </div>
                 <div class="mb-3">
-                     <input class="form-control" type="hidden" id="userId" value="${student.id}"/>
-                </div>
-                <div class="mb-3">
-                    <select class="form-control" type="text" id="kelas" >
+                    <select class="form-control" type="text" id="kelas" readonly>
                         <option value="${student.classId}">${student.kelas}</option>
-                        ${kelas}
                     </select>
                 </div>
                 <div class="mb-3">
-                    <select class="form-control" type="text" id="major" >
+                    <select class="form-control" type="text" id="major" readonly>
                         <option value="${student.majorId}">${student.major}</option>
-                        ${major}
                     </select>
                 </div>
                 <div class="mb-3">
@@ -43,18 +39,10 @@ async function editStudent(id) {
         confirmButtonText: "Update",
         showLoaderOnConfirm: true,
         preConfirm: async () => {
-            let majorId = await findIdukaById(Swal.getPopup().querySelector("#iduka").value)
-                .then(r => {
-                    return r.major
-                })
-            let data = {
-                id: Swal.getPopup().querySelector("#id").value,
-                userId: Swal.getPopup().querySelector("#userId").value,
-                iduka: Swal.getPopup().querySelector("#iduka").value,
-                major: majorId,
-                tp: result.tpId
-            }
-            fetchingData('/RestApi/updateTutor/', data)
+            fetchingData('/RestApi/updateMasterDataStudent/', {
+                id: masterDataId,
+                iduka: Swal.getPopup().querySelector("#iduka").value
+            })
                 .then(response => {
                     if (response.code === 200) {
                         Swal.fire({
