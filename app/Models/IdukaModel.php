@@ -25,6 +25,7 @@ class IdukaModel extends Model
             ->distinct('md.iduka_id')
             ->select('i.id, i.name')
             ->join('iduka i', 'md.iduka_id = i.id ')
+            ->where('i.major', $major)
             ->where('md.tp_id', $tp)
             ->orderBy('i.name', 'ASC')
             ->get()->getResult();
