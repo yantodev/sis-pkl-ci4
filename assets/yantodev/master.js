@@ -224,3 +224,16 @@ async function findAllClassByMajor(major) {
         })
     return result;
 }
+
+async function findMajorByClass(id) {
+    return fetchingData('/RestApi/findMajorByClass', {id})
+        .then(response => {
+            if (response.code == 200) {
+                return response.result
+            }
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}

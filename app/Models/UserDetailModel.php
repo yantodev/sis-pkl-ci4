@@ -24,7 +24,8 @@ class UserDetailModel extends Model
                 'ud.name, ud.user_id as nis, ud.nisn, ud.tp as tpId,
                  m.id as majorId, m.name as major,
                 c.id as classId, c.name as kelas,
-                i.id as idukaId, i.name as iduka
+                i.id as idukaId, i.name as iduka,
+                tp.name as tp
                 ')
             ->join('user_details ud', 'u.id = ud.user_public_id')
             ->join('major m', 'm.id = ud.major_id')

@@ -73,7 +73,7 @@ class  Admin extends BaseController
         if ($this->session->get('role') != 1) {
             return redirect()->to('/auth/error');
         }
-        return view('pages/admin/data-siswa', $data);
+        return view('pages/admin/data-student-pkl', $data);
     }
 
     public function pendamping()
@@ -219,6 +219,24 @@ class  Admin extends BaseController
             return redirect()->to('/auth/error');
         }
         return view('pages/admin/tp', $data);
+    }
+
+    public function student()
+    {
+        $data = [
+            'title' => "Siswa",
+            'subtitle' => "Data Siswa",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'data' => $this->users->findAllStudent()
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 1) {
+            return redirect()->to('/auth/error');
+        }
+        return view('pages/admin/data-student', $data);
     }
 
     public function print()

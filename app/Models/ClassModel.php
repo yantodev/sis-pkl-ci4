@@ -26,4 +26,12 @@ class ClassModel extends Model
             ->where('is_active', 1)
             ->get()->getResult();
     }
+
+    public function findByMajorId($majorId)
+    {
+        return $this->db->table('class')
+            ->select('*')
+            ->where('major_id', $majorId)
+            ->get()->getRow();
+    }
 }

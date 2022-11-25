@@ -6,8 +6,6 @@ function getStudentByMajor() {
 async function editStudent(id, masterDataId) {
     console.log(masterDataId)
     let student = await getDetailStudent(id)
-    let kelas = await findAllClassByMajor(student.majorId);
-    let major = await findMajor();
     let iduka = await findIdukaByMajor(student.majorId);
     Swal.fire({
         title: "Edit Siswa",

@@ -14,9 +14,6 @@
                 <?php endforeach; ?>
             </select>
         </div>
-        <!--        <button class="btn btn-outline-primary" onclick="addIduka()">-->
-        <!--            <i class="fa fa-plus"></i> Tambah Iduka-->
-        <!--        </button>-->
         <table id="dataTable" class="table table-bordered table-striped">
             <thead>
             <tr>
