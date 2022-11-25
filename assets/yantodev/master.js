@@ -163,6 +163,7 @@ async function findIdukaByMajor(major) {
                     let name = element.name;
                     iduka.push("<option value=" + id + ">" + name + "</option>");
                 }
+            } else {
                 console.log(response)
             }
         }).catch(error => {
@@ -189,10 +190,14 @@ async function findTp() {
 async function findAllTeacher() {
     let teacher = [];
     await fetchingData('/User/teacher').then(response => {
-        for (const element of response.result) {
-            let id = element.id;
-            let name = element.name;
-            teacher.push("<option value=" + id + ">" + name + "</option>");
+        if (response.code == 200) {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.name;
+                teacher.push("<option value=" + id + ">" + name + "</option>");
+            }
+        } else {
+            console.log(response)
         }
     }).catch(error => {
         console.log(error)
@@ -204,10 +209,14 @@ async function findAllClassByMajor(major) {
     let result = [];
     await fetchingData('/RestApi/findAllClassByMajor', {major})
         .then(response => {
-            for (const element of response.result) {
-                let id = element.id;
-                let name = element.name;
-                result.push("<option value=" + id + ">" + name + "</option>");
+            if (response.code == 200) {
+                for (const element of response.result) {
+                    let id = element.id;
+                    let name = element.name;
+                    result.push("<option value=" + id + ">" + name + "</option>");
+                }
+            } else {
+                console.log(response)
             }
         })
         .catch(error => {

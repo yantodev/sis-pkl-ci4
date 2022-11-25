@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <em class="nav-icon fas fa-database"></em>
+                        <em class="nav-icon fas fa-bookmark"></em>
                         <p>
                             Data PKL
                             <em class="right fas fa-angle-left"></em>

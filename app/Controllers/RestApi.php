@@ -11,6 +11,7 @@ namespace App\Controllers;
 use App\Models\ClassModel;
 use App\Models\IdukaModel;
 use App\Models\MajorModel;
+use App\Models\MasterDataModel;
 use App\Models\TutorModel;
 use App\Models\UserDetailModel;
 use App\Models\UsersModel;
@@ -29,6 +30,7 @@ use ReflectionException;
  * @property TutorModel $tutor
  * @property UserDetailModel $userDetail
  * @property ClassModel $class
+ * @property MasterDataModel $masterData
  */
 class RestApi extends ResourceController
 {
@@ -43,6 +45,7 @@ class RestApi extends ResourceController
         $this->iduka = new IdukaModel();
         $this->tutor = new TutorModel();
         $this->class = new ClassModel();
+        $this->masterData = new MasterDataModel();
         $this->ok = 'OK';
         $this->error = 'ERROR';
     }
@@ -178,6 +181,24 @@ class RestApi extends ResourceController
         return $this->respond(
             $this->config->ApiResponseBuilder(
                 $this->class->findAllBy($this->request->getVar('major'))
+            )
+        );
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function updateMasterDataStudent(): \CodeIgniter\HTTP\Response
+    {
+        $data =[
+          'iduka_id' => $this->request->getVar('iduka')
+        ];
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->masterData->update(
+                    $this->request->getVar('id'),
+                    $data
+                )
             )
         );
     }
