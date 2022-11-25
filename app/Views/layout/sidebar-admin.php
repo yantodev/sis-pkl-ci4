@@ -89,6 +89,35 @@
                     </ul>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <em class="nav-icon fas fa-user-friends"></em>
+                        <p>
+                            Master Users
+                            <em class="right fas fa-angle-left"></em>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/teacher'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Guru</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/student'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/users'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a href="<?= base_url('admin/master_sekolah'); ?>" class="nav-link">
                         <em class="nav-icon fa fa-school"></em>
                         <p>

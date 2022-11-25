@@ -83,9 +83,22 @@ class UsersModel extends Model
                 from users u
                          left join user_details ud on u.id = ud.user_public_id
                 where u.role_pkl = 2
-                order by ud.name ASC
-')->getResult();
+                order by ud.name ASC'
+        )->getResult();
     }
 
+    public function findAllStudent(): array
+    {
+        return $this->db->table('users u')
+            ->select('u.id, u.email, 
+                            ud.id as userDetailId, ud.name, ud.user_id as nis, ud.nisn,
+                            c.id as classId, c.name as kelas,
+                            m.id as majorId, m.name as jurusan')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('class c', 'c.id = ud.class_id')
+            ->join('major m', 'm.id = ud.major_id')
+            ->where('u.role_pkl', 3)
+            ->get()->getResult();
+    }
 
 }

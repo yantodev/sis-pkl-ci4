@@ -50,6 +50,18 @@ class RestApi extends ResourceController
         $this->error = 'ERROR';
     }
 
+    public function countData(): \CodeIgniter\HTTP\Response
+    {
+        $data = [
+            'users' => $this->user->countAll(),
+            'users_completed' => $this->userDetail->countCompleted(),
+            'iduka' => $this->iduka->countAll(),
+        ];
+        return $this->respond(
+            $this->config->ApiResponseBuilder($data)
+        );
+    }
+
     public function findAllMajor(): \CodeIgniter\HTTP\Response
     {
         $result = $this->config->ApiResponseBuilder($this->major->findAll());
@@ -190,12 +202,43 @@ class RestApi extends ResourceController
      */
     public function updateMasterDataStudent(): \CodeIgniter\HTTP\Response
     {
-        $data =[
-          'iduka_id' => $this->request->getVar('iduka')
+        $data = [
+            'iduka_id' => $this->request->getVar('iduka')
         ];
         return $this->respond(
             $this->config->ApiResponseBuilder(
                 $this->masterData->update(
+                    $this->request->getVar('id'),
+                    $data
+                )
+            )
+        );
+    }
+
+    public function findMajorByClass(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->class->find(
+                    $this->request->getVar('id')
+                )
+            )
+        );
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function updateUserDetails(): \CodeIgniter\HTTP\Response
+    {
+        $data = [
+            'name' => $this->request->getVar('name'),
+            'class_id' => $this->request->getVar('classId'),
+            'major_id' => $this->request->getVar('major')
+        ];
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->userDetail->update(
                     $this->request->getVar('id'),
                     $data
                 )
