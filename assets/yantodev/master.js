@@ -1,3 +1,22 @@
+$(document).ready(async function () {
+    let users, completed, uncompleted, iduka;
+    await fetchingData('/RestApi/countData')
+        .then(async response => {
+            users = await response.result.users;
+            completed = await response.result.users_completed[0].total;
+            iduka = await response.result.iduka;
+            uncompleted = users - completed;
+            document.getElementById('count-users').innerHTML = users;
+            document.getElementById('count-profile-completed').innerHTML = completed;
+            document.getElementById('count-profile-uncompleted').innerHTML = uncompleted;
+            document.getElementById('count-iduka').innerHTML = iduka;
+        })
+        .catch(error => {
+            console.log(error)
+        })
+
+});
+
 function pendamping() {
     let major = document.getElementById("major").value;
     let tp = document.getElementById("tp1").value;

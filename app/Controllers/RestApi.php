@@ -50,6 +50,18 @@ class RestApi extends ResourceController
         $this->error = 'ERROR';
     }
 
+    public function countData(): \CodeIgniter\HTTP\Response
+    {
+        $data = [
+            'users' => $this->user->countAll(),
+            'users_completed' => $this->userDetail->countCompleted(),
+            'iduka' => $this->iduka->countAll(),
+        ];
+        return $this->respond(
+            $this->config->ApiResponseBuilder($data)
+        );
+    }
+
     public function findAllMajor(): \CodeIgniter\HTTP\Response
     {
         $result = $this->config->ApiResponseBuilder($this->major->findAll());

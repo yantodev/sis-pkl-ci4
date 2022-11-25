@@ -17,6 +17,19 @@ class UserDetailModel extends Model
     protected $useSoftDeletes = true;
     protected $allowedFields = ['user_id', 'nisn', 'name', 'tp', 'jk', 'class_id', 'major_id', 'user_public_id'];
 
+    public function countCompleted(): array
+    {
+        return $this->db->table('users u')
+            ->selectCount('ud.name', 'total')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('major m', 'm.id = ud.major_id')
+            ->join('class c', 'c.id = ud.class_id')
+            ->join('master_data md', 'md.nis = ud.user_id')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->join('tp', 'tp.id = md.tp_id')
+            ->get()->getResult();
+    }
+
     public function findById($id)
     {
         return $this->db->table('users u')

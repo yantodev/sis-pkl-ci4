@@ -1,17 +1,40 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Welcome, <?= $users; ?></h5>
-                    <p class="card-text">
-                    </p>
-                    <p>
-                        <img src="<?= base_url();?>/assets/img/users/default.png" width="100px" alt="product">
-                    </p>
-                </div>
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+            <div class="info-box-content">
+                <h3 class="info-box-number" id="count-users">0</h3>
+                <span class="info-box-text">Total Users</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
+            <div class="info-box-content">
+                <h3 class="info-box-number" id="count-profile-completed"></h3>
+                <span class="info-box-text">Completed Profile</span>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix hidden-md-up"></div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
+            <div class="info-box-content">
+                <h3 class="info-box-number" id="count-profile-uncompleted"></h3>
+                <span class="info-box-text">Uncompleted Profile</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-friends"></i></span>
+            <div class="info-box-content">
+                <h3 class="info-box-number" id="count-iduka"></h3>
+                <span class="info-box-text">DU/DI</span>
             </div>
         </div>
     </div>
