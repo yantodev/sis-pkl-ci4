@@ -1,8 +1,4 @@
-let baseUrl = '';
-
-function config(url) {
-    baseUrl = url;
-}
+let baseUrl = window.location.origin;
 
 async function fetchingData(url = '', data = {}) {
     return fetch(baseUrl + url, {

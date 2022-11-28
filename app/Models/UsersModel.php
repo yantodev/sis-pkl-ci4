@@ -74,23 +74,25 @@ class UsersModel extends Model
 
     public function findAllTeacher(): array
     {
-        return $this->db->query('
-                select u.id,
+        return $this->db->table('users u')
+            ->select('u.id,
                        u.email,
                        u.image,
-                       ud.user_id as nbm,
-                       ud.name
-                from users u
-                         left join user_details ud on u.id = ud.user_public_id
-                where u.role_pkl = 2
-                order by ud.name ASC'
-        )->getResult();
+                       ud.id as userDetailId,
+                       ud.name,
+                       t.nbm, t.hp, t.position')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('teacher t', 'u.id = t.user_public_id')
+            ->where('u.role_pkl', 2)
+            ->orderBy('t.name', 'ASC')
+            ->get()->getResult();
     }
 
     public function findAllStudent(): array
     {
         return $this->db->table('users u')
-            ->select('u.id, u.email, 
+            ->select('u.id,
+                            u.email, 
                             ud.id as userDetailId, ud.name, ud.user_id as nis, ud.nisn,
                             c.id as classId, c.name as kelas,
                             m.id as majorId, m.name as jurusan')
@@ -98,6 +100,22 @@ class UsersModel extends Model
             ->join('class c', 'c.id = ud.class_id')
             ->join('major m', 'm.id = ud.major_id')
             ->where('u.role_pkl', 3)
+            ->get()->getResult();
+    }
+
+    public function findTeacherById($id): array
+    {
+        return $this->db->table('users u')
+            ->select('u.email,
+                       u.image,
+                       ud.id,
+                       ud.name,
+                       t.nbm, t.hp, t.position')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('teacher t', 'u.id = t.user_public_id')
+            ->where('u.role_pkl', 2)
+            ->where('ud.id', $id)
+            ->orderBy('t.name', 'ASC')
             ->get()->getResult();
     }
 

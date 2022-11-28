@@ -221,6 +221,24 @@ class  Admin extends BaseController
         return view('pages/admin/tp', $data);
     }
 
+    public function teacher()
+    {
+        $data = [
+            'title' => "Siswa",
+            'subtitle' => "Data Siswa",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'data' => $this->users->findAllTeacher()
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 1) {
+            return redirect()->to('/auth/error');
+        }
+        return view('pages/admin/data-teacher', $data);
+    }
+
     public function student()
     {
         $data = [
