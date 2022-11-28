@@ -40,7 +40,7 @@
                     <td id="major"><?= $s->iduka; ?></td>
                     <td>
                         <button class="btn btn-primary btn-xs" onclick="
-                                editStudent(<?= $s->id; ?>,<?= $s->masterDataId; ?>)
+                                editStudent(<?= $s->id; ?>,<?= $s->masterDataId != null ? $s->masterDataId : "false"; ?>)
                                 "> Edit
                         </button>
                     </td>

@@ -38,14 +38,14 @@ class UserDetailModel extends Model
                  m.id as majorId, m.name as major,
                 c.id as classId, c.name as kelas,
                 i.id as idukaId, i.name as iduka,
-                tp.name as tp
+                tp.id as tpId, tp.name as tp
                 ')
             ->join('user_details ud', 'u.id = ud.user_public_id')
-            ->join('major m', 'm.id = ud.major_id')
-            ->join('class c', 'c.id = ud.class_id')
-            ->join('master_data md', 'md.nis = ud.user_id')
-            ->join('iduka i', 'i.id = md.iduka_id')
-            ->join('tp', 'tp.id = md.tp_id')
+            ->join('major m', 'm.id = ud.major_id', 'left')
+            ->join('class c', 'c.id = ud.class_id', 'left')
+            ->join('master_data md', 'md.nis = ud.user_id', 'left')
+            ->join('iduka i', 'i.id = md.iduka_id', 'left')
+            ->join('tp', 'tp.id = ud.tp', 'left')
             ->where('ud.id', $id)
             ->get()->getRow();
     }

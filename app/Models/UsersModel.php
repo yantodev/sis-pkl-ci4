@@ -42,9 +42,9 @@ class UsersModel extends Model
                              inner join user_details ud on u.id = ud.user_public_id
                              inner join class c on ud.class_id = c.id
                              inner join major m on ud.major_id = m.id
-                             inner join master_data md on md.nis = ud.user_id
-                             inner join iduka i on i.id = md.iduka_id
-                             inner join tp t on t.id = md.tp_id
+                             left join master_data md on md.nis = ud.user_id
+                             left join iduka i on i.id = md.iduka_id
+                             inner join tp t on t.id = ud.tp
                     where u.role_pkl = 3;
         ')->getResult();
     }
@@ -65,9 +65,9 @@ class UsersModel extends Model
                              inner join user_details ud on u.id = ud.user_public_id
                              inner join class c on ud.class_id = c.id
                              inner join major m on ud.major_id = m.id
-                             inner join master_data md on md.nis = ud.user_id
-                             inner join iduka i on i.id = md.iduka_id
-                             inner join tp t on t.id = md.tp_id
+                             left join master_data md on md.nis = ud.user_id
+                             left join iduka i on i.id = md.iduka_id
+                             inner join tp t on t.id = ud.tp
                     where u.role_pkl = 3 and ud.major_id =' . $major
         )->getResult();
     }
@@ -95,11 +95,14 @@ class UsersModel extends Model
                             u.email, 
                             ud.id as userDetailId, ud.name, ud.user_id as nis, ud.nisn,
                             c.id as classId, c.name as kelas,
-                            m.id as majorId, m.name as jurusan')
+                            m.id as majorId, m.name as jurusan,
+                            tp.name as tp')
             ->join('user_details ud', 'u.id = ud.user_public_id')
-            ->join('class c', 'c.id = ud.class_id')
-            ->join('major m', 'm.id = ud.major_id')
+            ->join('class c', 'c.id = ud.class_id', 'left')
+            ->join('major m', 'm.id = ud.major_id', 'left')
+            ->join('tp', 'tp.id = ud.tp', 'left')
             ->where('u.role_pkl', 3)
+            ->orderBy('ud.name', 'ASC')
             ->get()->getResult();
     }
 
@@ -116,6 +119,17 @@ class UsersModel extends Model
             ->where('u.role_pkl', 2)
             ->where('ud.id', $id)
             ->orderBy('t.name', 'ASC')
+            ->get()->getResult();
+    }
+
+    public function findAllByDetail(): array
+    {
+        return $this->db->table('users u')
+            ->select('u.id as id, u.email, u.role_pkl, ud.name, ur.name as role')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('user_role ur', 'ur.id = u.role_pkl', 'left')
+            ->whereNotIn('u.role_pkl', [1])
+            ->orderBy('ud.name', 'ASC')
             ->get()->getResult();
     }
 
