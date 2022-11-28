@@ -19,7 +19,7 @@
     </script>
 </head>
 
-<body class="hold-transition sidebar-mini" onload="config('<?= $_SERVER['app.baseURL'] ?>')">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <?= $this->include('layout/navbar'); ?>
     <?php

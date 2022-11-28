@@ -79,7 +79,7 @@
                 </div>
                 <div class="form-group">
                     <select class="form-control" type="text" id="major_id" name="major_id"
-                            onchange="getAllIdukaByMajor()" required>
+                            onchange="getAllIdukaByTp()" required>
                         <option value="">--Pilih Jurusan--</option>
                         <?php foreach ($major as $m): ?>
                             <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>

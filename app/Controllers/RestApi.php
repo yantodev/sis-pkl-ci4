@@ -245,4 +245,14 @@ class RestApi extends ResourceController
             )
         );
     }
+
+    public function findTeacherById(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->user->findTeacherById(
+                    $this->request->getVar('id'))
+            )
+        );
+    }
 }
