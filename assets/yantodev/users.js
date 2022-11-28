@@ -9,18 +9,32 @@ function addUser() {
 
 async function updateUser(id) {
     let student = await getDetailStudent(id)
-    let kelas = await findAllClassByMajor(student.majorId);
+    let kelas = await findAllClassByMajor(student.majorId)
+    let tp = await findTp();
     Swal.fire({
         title: "Edit Siswa",
         html: `
-            <div>
+            <div id="label-swal">
                 <div class="mb-3">
+                <label class="ml-3">NISN</label>
+                    <input class="form-control" type="text" id="nisn" value="${student.nisn}"/>
+                </div>
+                <div class="mb-3">
+                <label class="ml-3">Nama Lengkap</label>
                     <input class="form-control" type="text" id="name" value="${student.name}"/>
                 </div>
                 <div class="mb-3">
+                <label class="ml-3">Kelas</label>
                     <select class="form-control" type="text" id="kelas">
                         <option value="${student.classId}">${student.kelas}</option>
                         ${kelas}
+                    </select>
+                </div>
+                 <div class="mb-3">
+                 <label class="ml-3">Tahun Pelajaran</label>
+                    <select class="form-control" type="text" id="tp">
+                        <option value="${student.tpId}">${student.tp}</option>
+                        ${tp}
                     </select>
                 </div>
             </div>
@@ -34,9 +48,11 @@ async function updateUser(id) {
             if (res != null) {
                 fetchingData('/RestApi/updateUserDetails/', {
                     id,
+                    nisn :Swal.getPopup().querySelector("#nisn").value,
                     name: Swal.getPopup().querySelector("#name").value,
                     major: res.major_id,
-                    classId: Swal.getPopup().querySelector("#kelas").value
+                    classId: Swal.getPopup().querySelector("#kelas").value,
+                    tp: Swal.getPopup().querySelector("#tp").value
                 }).then(response => {
                     if (response.code === 200) {
                         Swal.fire({
@@ -58,5 +74,17 @@ async function updateUser(id) {
 }
 
 function deleteUser() {
+    alert("masih dalam pengembangan")
+}
+
+function editUser(id) {
+    alert("masih dalam pengembangan")
+}
+
+function resetPasswordUser(id) {
+    alert("masih dalam pengembangan")
+}
+
+function resetDetailUser(id) {
     alert("masih dalam pengembangan")
 }

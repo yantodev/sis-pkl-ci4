@@ -202,17 +202,27 @@ class RestApi extends ResourceController
      */
     public function updateMasterDataStudent(): \CodeIgniter\HTTP\Response
     {
+
+        $id = $this->request->getVar('id');
         $data = [
-            'iduka_id' => $this->request->getVar('iduka')
+            'nis' => $this->request->getVar('nis'),
+            'iduka_id' => $this->request->getVar('iduka'),
+            'tp_id' => $this->request->getVar('tp')
         ];
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->masterData->update(
-                    $this->request->getVar('id'),
-                    $data
+        if (!$id) {
+            $result = $this->respond(
+                $this->config->ApiResponseBuilder(
+                    $this->masterData->save($data)
                 )
-            )
-        );
+            );
+        } else {
+            $result = $this->respond(
+                $this->config->ApiResponseBuilder(
+                    $this->masterData->update($id, ['iduka_id' => $this->request->getVar('iduka')])
+                )
+            );
+        }
+        return $result;
     }
 
     public function findMajorByClass(): \CodeIgniter\HTTP\Response
@@ -234,7 +244,9 @@ class RestApi extends ResourceController
         $data = [
             'name' => $this->request->getVar('name'),
             'class_id' => $this->request->getVar('classId'),
-            'major_id' => $this->request->getVar('major')
+            'major_id' => $this->request->getVar('major'),
+            'tp' => $this->request->getVar('tp'),
+            'nisn'=> $this->request->getVar('nisn')
         ];
         return $this->respond(
             $this->config->ApiResponseBuilder(

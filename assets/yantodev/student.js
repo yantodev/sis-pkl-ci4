@@ -4,6 +4,7 @@ function getStudentByMajor() {
 }
 
 async function editStudent(id, masterDataId) {
+    console.log(masterDataId)
     let student = await getDetailStudent(id)
     let iduka = await findIdukaByMajor(student.majorId);
     Swal.fire({
@@ -36,8 +37,11 @@ async function editStudent(id, masterDataId) {
         confirmButtonText: "Update",
         showLoaderOnConfirm: true,
         preConfirm: async () => {
+            console.log(student)
             fetchingData('/RestApi/updateMasterDataStudent/', {
                 id: masterDataId,
+                nis: student.nis,
+                tp: student.tpId,
                 iduka: Swal.getPopup().querySelector("#iduka").value
             })
                 .then(response => {
@@ -46,6 +50,7 @@ async function editStudent(id, masterDataId) {
                             icon: response.message,
                             title: "data updated successfully!!!",
                         });
+                        console.log(response)
                         setTimeout(function () {
                             window.location.reload(1);
                         }, 2000);

@@ -15,7 +15,7 @@
             <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check-circle"></i></span>
             <div class="info-box-content">
                 <h3 class="info-box-number" id="count-profile-completed"></h3>
-                <span class="info-box-text">Completed Profile</span>
+                <span class="info-box-text">Valid Profile</span>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
             <div class="info-box-content">
                 <h3 class="info-box-number" id="count-profile-uncompleted"></h3>
-                <span class="info-box-text">Uncompleted Profile</span>
+                <span class="info-box-text">Invalid Profile</span>
             </div>
         </div>
     </div>
