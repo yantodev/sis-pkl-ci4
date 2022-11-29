@@ -48,7 +48,7 @@ async function updateUser(id) {
             if (res != null) {
                 fetchingData('/RestApi/updateUserDetails/', {
                     id,
-                    nisn :Swal.getPopup().querySelector("#nisn").value,
+                    nisn: Swal.getPopup().querySelector("#nisn").value,
                     name: Swal.getPopup().querySelector("#name").value,
                     major: res.major_id,
                     classId: Swal.getPopup().querySelector("#kelas").value,
@@ -78,7 +78,45 @@ function deleteUser() {
 }
 
 function editUser(id) {
-    alert("masih dalam pengembangan")
+    Swal.fire({
+            title: "Edit Role",
+            html: `
+            <div id="label-swal">
+                 <div class="mb-3">
+                 <label class="ml-3">User Role</label>
+                    <select class="form-control" type="text" id="role">
+                        <option>--Pilih Role--</option>
+                        <option value="2">Guru</option>
+                        <option value="3">Siswa</option>
+                    </select>
+                </div>
+            </div>
+                `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: "Update",
+            showLoaderOnConfirm: true,
+            preConfirm: async () => {
+
+                fetchingData('/User/updateUserRole/', {
+                    id,
+                    role: Swal.getPopup().querySelector("#role").value
+                }).then(response => {
+                    if (response.code === 200) {
+                        Swal.fire({
+                            icon: response.message,
+                            title: "data updated successfully!!!",
+                        });
+                        setTimeout(function () {
+                            window.location.reload(1);
+                        }, 2000);
+                    }
+                }).catch(error => {
+                    Swal.fire(error.name, error.message, 'error');
+                })
+            },
+        }
+    )
 }
 
 function resetPasswordUser(id) {

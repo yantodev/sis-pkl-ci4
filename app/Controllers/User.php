@@ -84,4 +84,19 @@ class User extends ResourceController
             $this->config->ApiResponseBuilder($this->user->findAllTeacher())
         );
     }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function updateUserRole(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->user->update(
+                    $this->request->getVar('id'),
+                    ['role_pkl' => $this->request->getVar('role')]
+                )
+            )
+        );
+    }
 }
