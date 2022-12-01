@@ -52,7 +52,7 @@ class Student extends BaseController
             return redirect()->to('/auth');
         }
         if ($this->session->get('role') != 3) {
-            $session->destroy();
+            $this->session->destroy();
             return redirect()->to('/auth/error');
         }
         if ($response && $res) {
@@ -68,7 +68,14 @@ class Student extends BaseController
                 'rules' => 'required|is_unique[user_details.user_id]',
                 'errors' => [
                     'required' => '{field} harus diisi!!!',
-                    'is_unique' => '{field} sudah ada!Silahkan gunakan NIS lainnya'
+                    'is_unique' => '{field} sudah ada! Silahkan gunakan NIS lainnya'
+                ]
+            ],
+            'user_public_id' => [
+                'rules' => 'required|is_unique[user_details.user_public_id]',
+                'errors' => [
+                    'required' => '{field} harus diisi!!!',
+                    'is_unique' => 'user sudah ada! Silahkan hubungi admin anda!!!'
                 ]
             ]
         ])) {
