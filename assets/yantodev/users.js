@@ -97,7 +97,6 @@ function editUser(id) {
             confirmButtonText: "Update",
             showLoaderOnConfirm: true,
             preConfirm: async () => {
-
                 fetchingData('/User/updateUserRole/', {
                     id,
                     role: Swal.getPopup().querySelector("#role").value
@@ -120,9 +119,49 @@ function editUser(id) {
 }
 
 function resetPasswordUser(id) {
-    alert("masih dalam pengembangan")
-}
-
-function resetDetailUser(id) {
-    alert("masih dalam pengembangan")
+    Swal.fire({
+            title: "Edit Role",
+            html: `
+            <div id="label-swal">
+                 <div class="mb-3">
+                 <label class="ml-3">New Password</label>
+                    <input class="form-control" type="password" id="password"/>
+                </div>
+                <div class="mb-3">
+                 <label class="ml-3">Retry Password</label>
+                    <input class="form-control" type="password" id="password2"/>
+                </div>
+            </div>
+                `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: "Update",
+            showLoaderOnConfirm: true,
+            preConfirm: async () => {
+                let pass = Swal.getPopup().querySelector("#password").value;
+                let passRetry = Swal.getPopup().querySelector("#password2").value;
+                console.log(pass, passRetry)
+                if (pass === passRetry) {
+                    fetchingData('/User/resetPasswordUser/', {
+                        id,
+                        password: pass
+                    }).then(response => {
+                        if (response.code === 200) {
+                            Swal.fire({
+                                icon: response.message,
+                                title: "data updated successfully!!!",
+                            });
+                            setTimeout(function () {
+                                window.location.reload(1);
+                            }, 2000);
+                        }
+                    }).catch(error => {
+                        Swal.fire(error.name, error.message, 'error');
+                    })
+                } else {
+                    Swal.fire("Opss!!!", "Password tidak sama", 'error');
+                }
+            },
+        }
+    )
 }
