@@ -21,23 +21,25 @@
 
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-    <?= $this->include('layout/navbar'); ?>
     <?php
     switch ($role) {
         case 1:
+            echo $this->include('layout/navbar');
             echo $this->include('layout/sidebar-admin.php');
+            echo $this->include('layout/header');
             break;
         case 2:
             echo $this->include('layout/sidebar-teacher.php');
             break;
         case 3:
+            echo $this->include('layout/navbar-siswa');
             echo $this->include('layout/sidebar-siswa.php');
+            echo $this->include('layout/header-siswa');
             break;
         default:
             echo "";
     }
     ?>
-    <?= $this->include('layout/header'); ?>
     <?= $this->include('./flash/flash'); ?>
     <div class="preloader">
         <div class="loading">

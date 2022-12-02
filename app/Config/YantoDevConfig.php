@@ -35,4 +35,36 @@ class YantoDevConfig extends BaseConfig
         ];
     }
 
+    public function formValidationUserDetail(): array
+    {
+        return [
+            'nis' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi!!!',
+                ]
+            ],
+            'name' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi!!!'
+                ]
+            ],
+            'nisn' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi!!!'
+                ]
+            ],
+            'profile' => [
+                'rules' => 'max_size[profile,10240]|is_image[profile]|mime_in[profile,image/jpeg,
+                image/png,image/jpg]',
+                'errors' => [
+                    'mime_in' => 'Yang anda pilih bukan image!!!',
+                    'max_size' => 'Ukuran foto terlalu besar!!!',
+                    'is_image' => 'Yang dipilih bukan image!!!'
+                ]
+            ],
+        ];
+    }
 }

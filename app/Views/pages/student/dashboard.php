@@ -8,10 +8,19 @@
                     <h3>Welcome, <b><?= $data->name; ?></b></h3>
                 </div>
                 <div class="card-body">
-                    <h4>
-                        Saat ini anda terdaftar PKL di <b><?= $dataIduka['name'];?></b>
-                        yang beralamat di <b><?= $dataIduka['address'];?></b>
-                    </h4>
+                    <div class="row">
+                        <div class="col-lg-3" style="text-align: center">
+                            <img src="<?= base_url('/assets/img/users/' . $data->image); ?>"
+                                 class="img-circle elevation-2"
+                                 alt="User Image" width="150px">
+                        </div>
+                        <div class="col-lg-9">
+                            <h4>
+                                Saat ini anda terdaftar PKL di <b><?= $dataIduka['name']; ?></b>
+                                yang beralamat di <b><?= $dataIduka['address']; ?></b>
+                            </h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

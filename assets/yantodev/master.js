@@ -17,6 +17,11 @@ $(document).ready(async function () {
 
 });
 
+function changeStatus(data) {
+    console.log(data)
+    return 'readonly'
+}
+
 function pendamping() {
     let major = document.getElementById("major").value;
     let tp = document.getElementById("tp1").value;

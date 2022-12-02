@@ -20,9 +20,13 @@ class UsersModel extends Model
     public function findUserDetailByEmail($email)
     {
         return $this->db->table('users as u')
-            ->select('u.id as id, u.email, u.password, u.role_pkl, u.is_active,
-                            ud.id as ids, ud.name, ud.user_id as nis, ud.major_id, ud.tp')
+            ->select('u.id as id, u.email, u.password, u.role_pkl, u.is_active, u.image,
+                            ud.id as ids, ud.name, ud.user_id as nis, ud.major_id,
+                            ud.nisn, ud.jk, tp.id as idTp, tp.name as tp,
+                            c.name as class, c.id as classId')
             ->join('user_details as ud', 'u.id = ud.user_public_id')
+            ->join('tp', 'tp.id = ud.tp')
+            ->join('class c', 'c.id = ud.class_id')
             ->where('u.email', $email)
             ->get();
     }
