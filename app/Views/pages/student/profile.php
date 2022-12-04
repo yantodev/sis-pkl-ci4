@@ -11,6 +11,7 @@
         <form action="<?= base_url('student/updateProfile'); ?>" method="post" enctype="multipart/form-data">
             <input type="text" class="form-control" id="id" name="id" value="<?= $data->id; ?>" hidden>
             <input type="text" class="form-control" id="ids" name="ids" value="<?= $data->ids; ?>" hidden>
+            <input type="text" class="form-control" id="oldImage" name="oldImage" value="<?= $data->image; ?>" hidden>
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
@@ -68,14 +69,21 @@
                 </div>
                 <div class="form-group">
                     <label>Photo Profile</label>
-                    <div class="custom-file">
-                        <input type="file"
-                               class="custom-file-input <?= ($validation->hasError('profile')) ? 'is-invalid' : ''; ?>"
-                               id="profile" name="profile">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('profile'); ?>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <img src="<?= base_url('/assets/img/users/' . $data->image); ?>" alt="profile"
+                                 class="img-thumbnail img-preview">
                         </div>
-                        <label class="custom-file-label" for="profile">Pilih Foto</label>
+                        <div class="custom-file col-sm-10">
+                            <input type="file"
+                                   class="custom-file-input <?= ($validation->hasError('profile')) ? 'is-invalid' : ''; ?>"
+                                   id="profile" name="profile"
+                                   onchange="imagePreview()">
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('profile'); ?>
+                            </div>
+                            <label class="custom-file-label" for="profile"><?= $data->image; ?></label>
+                        </div>
                     </div>
                 </div>
             </div>

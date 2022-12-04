@@ -57,10 +57,8 @@ class YantoDevConfig extends BaseConfig
                 ]
             ],
             'profile' => [
-                'rules' => 'max_size[profile,10240]|is_image[profile]|mime_in[profile,image/jpeg,
-                image/png,image/jpg]',
+                'rules' => 'max_size[profile,10240]|is_image[profile]',
                 'errors' => [
-                    'mime_in' => 'Yang anda pilih bukan image!!!',
                     'max_size' => 'Ukuran foto terlalu besar!!!',
                     'is_image' => 'Yang dipilih bukan image!!!'
                 ]

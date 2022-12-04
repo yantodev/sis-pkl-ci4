@@ -169,10 +169,17 @@ class Student extends BaseController
             return redirect()->to('/student/profile')->withInput();
         }
 
+        $oldImage = $this->request->getVar('oldImage');
         $fileImage = $this->request->getFile('profile');
-        dd($fileImage);
-        $imageName = $fileImage->getRandomName();
-        $fileImage->move('assets/img/users', $imageName);
+        if ($fileImage->getError() == 4) {
+            $imageName = $oldImage;
+        } else {
+            $imageName = $fileImage->getRandomName();
+            $fileImage->move('assets/img/users', $imageName);
+            if ($oldImage != 'default.png') {
+                unlink('assets/img/users/' . $oldImage);
+            }
+        }
 
 
         $major = $this->class->find($this->request->getVar('class_id'));
@@ -189,7 +196,7 @@ class Student extends BaseController
 
             $this->users->update(
                 $this->request->getVar('id'), [
-                'image' => $fileImage]);
+                'image' => $imageName]);
             $this->userDetail->update($this->request->getVar('ids'), $data);
 
             $this->session->setFlashdata('success', 'Data is updated!!!');
