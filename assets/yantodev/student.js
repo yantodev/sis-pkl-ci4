@@ -73,7 +73,7 @@ async function getDetailStudent(id) {
         })
 }
 
-function imagePreview(){
+function imagePreview() {
     const imageProfile = document.querySelector('#profile');
     const imageLabel = document.querySelector('.custom-file-label');
     const imagePreview = document.querySelector('.img-preview');
@@ -83,7 +83,42 @@ function imagePreview(){
     const fileImage = new FileReader();
     fileImage.readAsDataURL(imageProfile.files[0]);
 
-    fileImage.onload = function (e){
+    fileImage.onload = function (e) {
         imagePreview.src = e.target.result;
     }
+}
+
+async function updateIdukaStudent(nis, id) {
+    let iduka = await findIdukaById(id).then(x => {
+            return x.name
+        }
+    );
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "PKL di " + iduka,
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetchingData('/RestApi/updateIdukaStudent', {
+                nis, id
+            }).then(response => {
+                if (response.code === 200) {
+                    Swal.fire({
+                        icon: response.message,
+                        title: "Pengajuan lokasi PKL Berhasil!!!",
+                    });
+                    console.log(response)
+                    setTimeout(function () {
+                        window.location.reload(1);
+                    }, 2000);
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+    });
 }

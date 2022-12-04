@@ -46,7 +46,7 @@ class Student extends BaseController
             'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
             'master' => $res,
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
-            'dataIduka' => $this->idukaModel->find($res ? $res->iduka_id : null)
+            'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
         if (!$this->session->get('logged_in')) {
             return redirect()->to('/auth');
@@ -144,7 +144,7 @@ class Student extends BaseController
             'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
             'master' => $res,
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
-            'dataIduka' => $this->idukaModel->find($res ? $res->iduka_id : null)
+            'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
         if (!$this->session->get('logged_in')) {
             return redirect()->to('/auth');
@@ -204,5 +204,37 @@ class Student extends BaseController
         }
         $this->session->setFlashdata('error', 'major is null');
         return redirect()->to('/student/profile');
+    }
+
+    public function iduka(){
+        $response = $this->users->findUserDetailByEmail(
+            $this->session->get('email'))->getRow();
+        $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
+        $data = [
+            'title' => "Daftar Iduka",
+            'validation' => \Config\Services::validation(),
+            'users' => $this->session->get('email'),
+            'users_id' => $this->session->get('id'),
+            'role' => $this->session->get('role'),
+            'data' => $response,
+            'iduka' => $this->idukaModel->findAllByMajorId($response->major_id)->getResult(),
+            'major' => $this->major->findAll(),
+            'tp' => $this->tp->findAll(),
+            'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
+            'master' => $res,
+            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
+            'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
+        ];
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 3) {
+            $this->session->destroy();
+            return redirect()->to('/auth/error');
+        }
+        if ($response && $res) {
+            return view('pages/student/iduka', $data);
+        }
+        return view('pages/student/validation', $data);
     }
 }

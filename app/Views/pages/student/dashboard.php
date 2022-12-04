@@ -16,8 +16,8 @@
                         </div>
                         <div class="col-lg-9">
                             <h4>
-                                Saat ini anda terdaftar PKL di <b><?= $dataIduka['name']; ?></b>
-                                yang beralamat di <b><?= $dataIduka['address']; ?></b>
+                                Saat ini anda terdaftar PKL di <b><?= $dataIduka->name; ?></b>
+                                yang beralamat di <b><?= $dataIduka->address; ?></b>
                             </h4>
                         </div>
                     </div>

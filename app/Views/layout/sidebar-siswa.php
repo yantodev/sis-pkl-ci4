@@ -49,13 +49,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="<?= base_url('admin/iduka'); ?>" class="nav-link">
+                                <a href="<?= base_url('student/iduka'); ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Lokasi PKL</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?= base_url('admin/guru'); ?>" class="nav-link">
+                                <a href="<?= base_url('student/idCard'); ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>ID CARD</p>
                                 </a>
