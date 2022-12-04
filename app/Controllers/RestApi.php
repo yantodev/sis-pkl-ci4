@@ -267,4 +267,16 @@ class RestApi extends ResourceController
             )
         );
     }
+
+    public function updateIdukaStudent(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->masterData->updateByNis(
+                    $this->request->getVar('nis'),
+                    $this->request->getVar('id')
+                )
+            )
+        );
+    }
 }

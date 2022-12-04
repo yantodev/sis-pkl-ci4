@@ -10,7 +10,7 @@
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-default">
                 <i class="fa fa-sticky-note"></i> Permohonan PKL
             </button>
-            <button class="btn btn-primary btn-lg" onclick="printApplicationLetter()">
+            <button class="btn btn-primary btn-lg" onclick="printTestAPI()">
                 <i class="fa fa-sticky-note"></i> Kop Surat
             </button>
         </div>

@@ -37,4 +37,12 @@ class MasterDataModel extends Model
                     and md.tp_id = ' . $tp
         )->getResult();
     }
+
+    public function updateByNis($nis, $id): bool
+    {
+        return $this->db->table('master_data')
+            ->set('iduka_id', $id)
+            ->where('nis', $nis)
+            ->update();
+    }
 }

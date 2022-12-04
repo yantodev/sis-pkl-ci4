@@ -9,13 +9,14 @@ class IdukaModel extends Model
     protected $table = 'iduka';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['name', 'address', 'major'];
+    protected $allowedFields = ['name', 'major'];
 
     public function findAllByMajorId($major_id)
     {
-        return $this->db->table('iduka')
+        return $this->db->table('iduka i')
             ->select('*')
-            ->where('major', $major_id)
+            ->join('detail_iduka di', 'di.id_iduka = i.id')
+            ->where('i.major', $major_id)
             ->get();
     }
 
@@ -49,5 +50,14 @@ class IdukaModel extends Model
             ->where('major', $major)
             ->orderBy('name', 'ASC')
             ->get()->getResult();
+    }
+
+    public function findById($id)
+    {
+        return $this->db->table('iduka i')
+            ->select('*')
+            ->join('detail_iduka di', 'di.id_iduka = i.id')
+            ->where('i.id', $id)
+            ->get()->getRow();
     }
 }

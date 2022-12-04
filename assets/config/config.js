@@ -18,3 +18,7 @@ async function fetchingData(url = '', data = {}) {
         console.log(error)
     })
 }
+
+function printTestAPI(){
+    console.log("test")
+}

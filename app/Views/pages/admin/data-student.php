@@ -34,7 +34,7 @@
                     <td id="name"><?= $d->jurusan; ?></td>
                     <td id="name"><?= $d->tp; ?></td>
                     <td>
-                        <button class="btn btn-primary btn-xs" onclick="updateUser(<?= $d->userDetailId;?>)">
+                        <button class="btn btn-primary btn-xs" onclick="updateUser(<?= $d->userDetailId; ?>)">
                             Edit
                         </button>
                     </td>
@@ -44,6 +44,4 @@
         </table>
     </div>
 </div>
-<!-- /.card-body -->
-
 <?= $this->endSection() ?>; ?>

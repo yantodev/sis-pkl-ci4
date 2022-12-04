@@ -84,4 +84,35 @@ class User extends ResourceController
             $this->config->ApiResponseBuilder($this->user->findAllTeacher())
         );
     }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function updateUserRole(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->user->update(
+                    $this->request->getVar('id'),
+                    ['role_pkl' => $this->request->getVar('role')]
+                )
+            )
+        );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function resetPasswordUser(): \CodeIgniter\HTTP\Response
+    {
+        $password = $this->request->getVar('password');
+        return $this->respond(
+            $this->config->ApiResponseBuilder(
+                $this->user->update(
+                    $this->request->getVar('id'),
+                    ['password' => password_hash($password)]
+                )
+            )
+        );
+    }
 }
