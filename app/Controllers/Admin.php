@@ -312,7 +312,7 @@ class  Admin extends BaseController
             return redirect()->to('/admin/print');
         }
         $data = [
-            'iduka' => $this->idukaModel->find($iduka),
+            'iduka' => $this->idukaModel->findById($iduka),
             'instansi' => $instansi,
             'surat' => $surat ?: '',
             'master_data' => $master_data,
@@ -337,7 +337,7 @@ class  Admin extends BaseController
         $mpdf->WriteHTML($html2);
         $this->response->setHeader('Content-Type', 'application/pdf');
         $iduka = $this->idukaModel->find($iduka);
-        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'I');
+        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'D');
     }
 
     /**
