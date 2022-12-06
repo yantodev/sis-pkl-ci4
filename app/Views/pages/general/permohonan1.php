@@ -48,8 +48,8 @@
 </table>
 
 <p>Kepada<br/>
-    Yth.<b><?= $instansi . " " . $iduka['name']; ?></b><br/>
-    di <?= $iduka['address']; ?>
+    Yth.<b><?= $instansi . " " . $iduka->name; ?></b><br/>
+    di <?= $iduka->address; ?>
 </p>
 <p class="justify">
     <i>Assalamu’alaikum wr. wb.</i><br/>
