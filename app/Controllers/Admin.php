@@ -337,7 +337,7 @@ class  Admin extends BaseController
         $mpdf->WriteHTML($html2);
         $this->response->setHeader('Content-Type', 'application/pdf');
         $iduka = $this->idukaModel->find($iduka);
-        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'D');
+        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'I');
     }
 
     /**
