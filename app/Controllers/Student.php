@@ -206,7 +206,8 @@ class Student extends BaseController
         return redirect()->to('/student/profile');
     }
 
-    public function iduka(){
+    public function iduka()
+    {
         $response = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
@@ -217,11 +218,6 @@ class Student extends BaseController
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
             'data' => $response,
-            'iduka' => $this->idukaModel->findAllByMajorId($response->major_id)->getResult(),
-            'major' => $this->major->findAll(),
-            'tp' => $this->tp->findAll(),
-            'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
-            'master' => $res,
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
             'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
@@ -232,9 +228,6 @@ class Student extends BaseController
             $this->session->destroy();
             return redirect()->to('/auth/error');
         }
-        if ($response && $res) {
-            return view('pages/student/iduka', $data);
-        }
-        return view('pages/student/validation', $data);
+        return view('pages/student/iduka', $data);
     }
 }
