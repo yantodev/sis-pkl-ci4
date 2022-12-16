@@ -99,6 +99,7 @@ class UsersModel extends Model
             ->select('u.id,
                             u.email, 
                             ud.id as userDetailId, ud.name, ud.user_id as nis, ud.nisn,
+                            ud.jk,
                             c.id as classId, c.name as kelas,
                             m.id as majorId, m.name as jurusan,
                             tp.name as tp')
@@ -111,20 +112,18 @@ class UsersModel extends Model
             ->get()->getResult();
     }
 
-    public function findTeacherById($id): array
+    public function findTeacherById($id)
     {
         return $this->db->table('users u')
-            ->select('u.email,
-                       u.image,
-                       ud.id,
-                       ud.name,
+            ->select('u.id, u.email, u.image,
+                       ud.id as ids, ud.name,
                        t.nbm, t.hp, t.position')
             ->join('user_details ud', 'u.id = ud.user_public_id')
             ->join('teacher t', 'u.id = t.user_public_id')
             ->where('u.role_pkl', 2)
-            ->where('ud.id', $id)
+            ->where('u.id', $id)
             ->orderBy('t.name', 'ASC')
-            ->get()->getResult();
+            ->get()->getRow();
     }
 
     public function findAllByDetail(): array
@@ -136,6 +135,17 @@ class UsersModel extends Model
             ->whereNotIn('u.role_pkl', [1])
             ->orderBy('ud.name', 'ASC')
             ->get()->getResult();
+    }
+
+    public function findTeacherDetailByEmail($email)
+    {
+        return $this->db->table('users as u')
+            ->select('u.id as id, u.email, u.password, u.role_pkl, u.is_active, u.image,
+                            ud.id as ids, ud.name, ud.user_id as nis, ud.major_id,
+                            ud.nisn, ud.jk')
+            ->join('user_details as ud', 'u.id = ud.user_public_id')
+            ->where('u.email', $email)
+            ->get();
     }
 
 }

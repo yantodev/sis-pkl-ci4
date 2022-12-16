@@ -19,6 +19,16 @@ async function fetchingData(url = '', data = {}) {
     })
 }
 
-function printTestAPI(){
+function printTestAPI() {
     console.log("test")
+}
+
+function getJk(data) {
+    if (data === "1") {
+        return "Laki-laki";
+    } else if (data === "2") {
+        return "Perempuan";
+    } else {
+        return ""
+    }
 }

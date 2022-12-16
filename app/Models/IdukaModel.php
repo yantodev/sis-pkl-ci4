@@ -7,17 +7,28 @@ use CodeIgniter\Model;
 class IdukaModel extends Model
 {
     protected $table = 'iduka';
+    protected $validationRules = 'id';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $allowedFields = ['name', 'major'];
 
-    public function findAllByMajorId($major_id)
+    public function findAllByMajorId($majorId): array
     {
+        if (is_null($majorId)) {
+            return $this->db->table('iduka i')
+                ->select('i.id, i.name, i.major as majorId, di.address, major.name as major')
+                ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
+                ->join('major', 'major.id = i.major')
+                ->where('i.deleted_at', null)
+                ->get()->getResult();
+        }
         return $this->db->table('iduka i')
-            ->select('*')
-            ->join('detail_iduka di', 'di.id_iduka = i.id')
-            ->where('i.major', $major_id)
-            ->get();
+            ->select('i.id, i.name, i.major as majorId, di.address, major.name as major')
+            ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
+            ->join('major', 'major.id = i.major')
+            ->where('i.major', $majorId)
+            ->where('i.deleted_at', null)
+            ->get()->getResult();
     }
 
     public function findAllIdukaByIdAndTp($major, $tp): array
@@ -28,6 +39,7 @@ class IdukaModel extends Model
             ->join('iduka i', 'md.iduka_id = i.id ')
             ->where('i.major', $major)
             ->where('md.tp_id', $tp)
+            ->where('i.deleted_at', null)
             ->orderBy('i.name', 'ASC')
             ->get()->getResult();
     }
@@ -39,6 +51,7 @@ class IdukaModel extends Model
             ->select('i.id, i.name')
             ->join('iduka i', 'i.id = md.iduka_id')
             ->where('md.tp_id', $tp)
+            ->where('i.deleted_at', null)
             ->orderBy('i.name', 'ASC')
             ->get()->getResult();
     }
@@ -48,6 +61,7 @@ class IdukaModel extends Model
         return $this->db->table('iduka')
             ->select('*')
             ->where('major', $major)
+            ->where('deleted_at', null)
             ->orderBy('name', 'ASC')
             ->get()->getResult();
     }
@@ -56,8 +70,9 @@ class IdukaModel extends Model
     {
         return $this->db->table('iduka i')
             ->select('*')
-            ->join('detail_iduka di', 'di.id_iduka = i.id')
+            ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
             ->where('i.id', $id)
+            ->where('i.deleted_at', null)
             ->get()->getRow();
     }
 }

@@ -109,6 +109,10 @@ final class Utils
             if (\file_exists($installed) && \is_readable($installed)) {
                 $packages = \json_decode(\file_get_contents($installed), true);
 
+                if (!\is_array($packages)) {
+                    continue;
+                }
+
                 foreach ($packages as $package) {
                     if (isset($package['extra'][$key]) && \is_array($package['extra'][$key])) {
                         $extras = \array_replace($extras, $package['extra'][$key]);
@@ -117,7 +121,7 @@ final class Utils
 
                 $folder = \dirname($folder);
 
-                if (\file_exists($folder.'/composer.json') && \is_readable($folder.'/composer.json')) {
+                if (\file_exists($folder . '/composer.json') && \is_readable($folder . '/composer.json')) {
                     $composer = \json_decode(\file_get_contents($folder.'/composer.json'), true);
 
                     if (isset($composer['extra'][$key]) && \is_array($composer['extra'][$key])) {

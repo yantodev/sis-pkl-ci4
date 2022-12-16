@@ -29,7 +29,9 @@
             echo $this->include('layout/header');
             break;
         case 2:
+            echo $this->include('layout/navbar-siswa');
             echo $this->include('layout/sidebar-teacher.php');
+            echo $this->include('layout/header-siswa');
             break;
         case 3:
             echo $this->include('layout/navbar-siswa');

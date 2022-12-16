@@ -16,6 +16,7 @@
                 <th>NIS</th>
                 <th>NISN</th>
                 <th>Nama</th>
+                <th>Jenis Kelamin</th>
                 <th>Kelas</th>
                 <th>Jurusan</th>
                 <th>Tahun Pelajaran</th>
@@ -27,12 +28,13 @@
             <?php foreach ($data as $d) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td id="name"><?= $d->nis; ?></td>
-                    <td id="name"><?= $d->nisn; ?></td>
-                    <td id="name"><?= $d->name; ?></td>
-                    <td id="name"><?= $d->kelas; ?></td>
-                    <td id="name"><?= $d->jurusan; ?></td>
-                    <td id="name"><?= $d->tp; ?></td>
+                    <td><?= $d->nis; ?></td>
+                    <td><?= $d->nisn; ?></td>
+                    <td><?= $d->name; ?></td>
+                    <td><?= jk($d->jk); ?></td>
+                    <td><?= $d->kelas; ?></td>
+                    <td><?= $d->jurusan; ?></td>
+                    <td><?= $d->tp; ?></td>
                     <td>
                         <button class="btn btn-primary btn-xs" onclick="updateUser(<?= $d->userDetailId; ?>)">
                             Edit
