@@ -4,7 +4,6 @@ function getStudentByMajor() {
 }
 
 async function editStudent(id, masterDataId) {
-    console.log(masterDataId)
     let student = await getDetailStudent(id)
     let iduka = await findIdukaByMajor(student.majorId);
     Swal.fire({
@@ -45,9 +44,9 @@ async function editStudent(id, masterDataId) {
                 iduka: Swal.getPopup().querySelector("#iduka").value
             })
                 .then(response => {
-                    if (response.code === 200) {
+                    if (response.responseData.responseCode === 200) {
                         Swal.fire({
-                            icon: response.message,
+                            icon: response.responseData.responseMsg,
                             title: "data updated successfully!!!",
                         });
                         console.log(response)
@@ -63,7 +62,7 @@ async function editStudent(id, masterDataId) {
 async function getDetailStudent(id) {
     return fetchingData('/RestApi/findStudentById', {id})
         .then(response => {
-            if (response.code == 200) {
+            if (response.responseData.responseCode === 200) {
                 return response.result
             }
             console.log(response)

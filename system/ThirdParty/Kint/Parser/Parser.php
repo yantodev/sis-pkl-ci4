@@ -34,6 +34,7 @@ use Kint\Zval\ResourceValue;
 use Kint\Zval\Value;
 use ReflectionObject;
 use stdClass;
+use TypeError;
 
 class Parser
 {
@@ -191,6 +192,10 @@ class Parser
 
     public function childHasPath(InstanceValue $parent, Value $child)
     {
+        if ('__PHP_Incomplete_Class' === $parent->classname) {
+            return false;
+        }
+
         if ('object' === $parent->type && (null !== $parent->access_path || $child->static || $child->const)) {
             if (Value::ACCESS_PUBLIC === $child->access) {
                 return true;
@@ -434,7 +439,7 @@ class Parser
 
         $rep = new Representation('Properties');
 
-        if (KINT_PHP74) {
+        if (KINT_PHP74 && '__PHP_Incomplete_Class' != $object->classname) {
             $rprops = $reflector->getProperties();
 
             foreach ($rprops as $rprop) {
@@ -515,16 +520,20 @@ class Parser
                 $child->access_path = $object->access_path;
 
                 if (!KINT_PHP72 && \is_int($child->name)) {
-                    $child->access_path = 'array_values((array) '.$child->access_path.')['.$i.']'; // @codeCoverageIgnore
+                    $child->access_path = 'array_values((array) ' . $child->access_path . ')[' . $i . ']'; // @codeCoverageIgnore
                 } elseif (\preg_match('/^[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*$/', $child->name)) {
-                    $child->access_path .= '->'.$child->name;
+                    $child->access_path .= '->' . $child->name;
                 } else {
-                    $child->access_path .= '->{'.\var_export((string) $child->name, true).'}';
+                    $child->access_path .= '->{' . \var_export((string)$child->name, true) . '}';
                 }
             }
 
             $stash = $val;
-            $copy[$i] = $refmarker;
+            try {
+                $copy[$i] = $refmarker;
+            } catch (TypeError $e) {
+                $child->reference = true;
+            }
             if ($val === $refmarker) {
                 $child->reference = true;
                 $val = $stash;

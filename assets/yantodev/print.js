@@ -26,9 +26,11 @@ async function getAllIdukaByMajor() {
 async function getAllIdukaByTp() {
     await fetchingData('/Iduka/findAllIdukaByMajorAndTp',
         {
-            tp: document.getElementById("tp").value
+            tp: document.getElementById("tp").value,
+            major: document.getElementById("major_id").value,
         })
         .then(response => {
+            console.log(response)
             if (response.code === 200) {
                 let iduka = document.getElementById("iduka");
                 let result;

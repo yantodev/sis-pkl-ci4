@@ -17,6 +17,8 @@ use App\Models\UserDetailModel;
 use App\Models\UsersModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
+use Config\APIResponseBuilder;
+use Config\BaseResponse;
 use Config\YantoDevConfig;
 use ReflectionException;
 
@@ -31,6 +33,8 @@ use ReflectionException;
  * @property UserDetailModel $userDetail
  * @property ClassModel $class
  * @property MasterDataModel $masterData
+ * @property APIResponseBuilder $ResponseBuilder
+ * @property BaseResponse $BaseResponse
  */
 class RestApi extends ResourceController
 {
@@ -38,6 +42,8 @@ class RestApi extends ResourceController
 
     public function __construct()
     {
+        $this->ResponseBuilder = new APIResponseBuilder();
+        $this->BaseResponse = new BaseResponse();
         $this->config = new YantoDevConfig();
         $this->user = new UsersModel();
         $this->userDetail = new UserDetailModel();
@@ -46,8 +52,6 @@ class RestApi extends ResourceController
         $this->tutor = new TutorModel();
         $this->class = new ClassModel();
         $this->masterData = new MasterDataModel();
-        $this->ok = 'OK';
-        $this->error = 'ERROR';
     }
 
     public function countData(): \CodeIgniter\HTTP\Response
@@ -57,58 +61,37 @@ class RestApi extends ResourceController
             'users_completed' => $this->userDetail->countCompleted(),
             'iduka' => $this->iduka->countAll(),
         ];
-        return $this->respond(
-            $this->config->ApiResponseBuilder($data)
-        );
+        $response = $this->ResponseBuilder->ok($data);
+        return $this->respond($response);
     }
 
     public function findAllMajor(): \CodeIgniter\HTTP\Response
     {
-        $result = $this->config->ApiResponseBuilder($this->major->findAll());
+        $data = $this->major->findAll();
+        if (!is_null($data)) {
+            $response = $this->BaseResponse->ResponseMajorDto($data);
+            $result = $this->ResponseBuilder->ok($response);
+        } else {
+            $result = $this->ResponseBuilder->noContent('data not found');
+        }
         return $this->respond($result);
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function addIduka(): \CodeIgniter\HTTP\Response
-    {
-        $data = [
-            'name' => $this->request->getVar('name'),
-            'address' => $this->request->getVar('address'),
-            'major' => $this->request->getVar('major')
-        ];
-        return $this->respond($this->config->ApiResponseBuilder($this->iduka->insert($data)));
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function updateIduka(): \CodeIgniter\HTTP\Response
-    {
-        $data = [
-            'name' => $this->request->getVar('name'),
-            'address' => $this->request->getVar('address'),
-            'major' => $this->request->getVar('major'),
-        ];
-        return $this->respond($this->config->ApiResponseBuilder(
-            $this->iduka->update($this->request->getVar('id'), $data)));
-    }
-
-    public function deleteIduka(): \CodeIgniter\HTTP\Response
-    {
-        return $this->respond(
-            $this->config->ApiResponseBuilder($this->iduka->delete($this->request->getVar('id')))
-        );
     }
 
     public function detailMajor(): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->major->find($this->request->getVar('id'))
-            )
-        );
+        $id = $this->request->getVar('id');
+        $responseDetailMajor = $this->major->find($id);
+        try {
+            if (is_null($responseDetailMajor)) {
+                $response = $this->ResponseBuilder->noContent('data with id ' . $id . ' not found');
+            }
+            $response = $this->ResponseBuilder->ok(
+                $this->BaseResponse->ResponseDetailMajor($responseDetailMajor)
+            );
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function getUserByEmail(): \CodeIgniter\HTTP\Response
@@ -120,9 +103,15 @@ class RestApi extends ResourceController
             'name' => $result->name,
             'email' => $result->email,
         ];
-        return $this->respond(
-            $this->config->ApiResponseBuilder($data)
-        );
+        try {
+            if (is_null($result)) {
+                $response = $this->ResponseBuilder->noContent('data with email ' . $email . ' not found');
+            }
+            $response = $this->ResponseBuilder->ok($data);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     /**
@@ -181,11 +170,14 @@ class RestApi extends ResourceController
 
     public function findStudentById(): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->userDetail->findById($this->request->getVar('id'))
-            )
-        );
+        $id = $this->request->getVar('id');
+        try {
+            $result = $this->userDetail->findById($id);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->noContent("student with id " . $id . " not found");
+        }
+        return $this->respond($response);
     }
 
     public function findAllClassByMajor(): \CodeIgniter\HTTP\Response
@@ -209,20 +201,18 @@ class RestApi extends ResourceController
             'iduka_id' => $this->request->getVar('iduka'),
             'tp_id' => $this->request->getVar('tp')
         ];
-        if (!$id) {
-            $result = $this->respond(
-                $this->config->ApiResponseBuilder(
-                    $this->masterData->save($data)
-                )
-            );
-        } else {
-            $result = $this->respond(
-                $this->config->ApiResponseBuilder(
-                    $this->masterData->update($id, ['iduka_id' => $this->request->getVar('iduka')])
-                )
-            );
+        try {
+            if (!$id) {
+                $response = $this->ResponseBuilder->ok($this->masterData->save($data));
+            } else {
+                $response = $this->ResponseBuilder->ok($this->masterData->update($id,
+                    ['iduka_id' => $this->request->getVar('iduka')]));
+            }
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
         }
-        return $result;
+
+        return $this->respond($response);
     }
 
     public function findMajorByClass(): \CodeIgniter\HTTP\Response
@@ -246,7 +236,8 @@ class RestApi extends ResourceController
             'class_id' => $this->request->getVar('classId'),
             'major_id' => $this->request->getVar('major'),
             'tp' => $this->request->getVar('tp'),
-            'nisn'=> $this->request->getVar('nisn')
+            'nisn' => $this->request->getVar('nisn'),
+            'jk' => $this->request->getVar('jk')
         ];
         return $this->respond(
             $this->config->ApiResponseBuilder(
@@ -260,12 +251,14 @@ class RestApi extends ResourceController
 
     public function findTeacherById(): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->user->findTeacherById(
-                    $this->request->getVar('id'))
-            )
-        );
+        $id = $this->request->getVar('id');
+        try {
+            $result = $this->user->findTeacherById($id);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function updateIdukaStudent(): \CodeIgniter\HTTP\Response

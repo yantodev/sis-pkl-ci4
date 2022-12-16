@@ -9,5 +9,5 @@ class MajorModel extends Model
     protected $table = 'major';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['name', 'code'];
+    protected $allowedFields = ['id', 'name', 'code'];
 }

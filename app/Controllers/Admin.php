@@ -124,8 +124,9 @@ class  Admin extends BaseController
     public function iduka()
     {
         $session = session();
+        $majorId = $this->request->getVar('jurusan');
         $jurusan = $this->major->findAll();
-        $iduka = $this->idukaModel->where(['major' => $this->request->getVar('jurusan')])->findAll();
+        $iduka = $this->idukaModel->findAllByMajorId($majorId);
         $data = [
             'title' => "Iduka",
             'subtitle' => "Data Iduka",
@@ -224,8 +225,8 @@ class  Admin extends BaseController
     public function teacher()
     {
         $data = [
-            'title' => "Siswa",
-            'subtitle' => "Data Siswa",
+            'title' => "Guru",
+            'subtitle' => "Data Guru",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'data' => $this->users->findAllTeacher()
