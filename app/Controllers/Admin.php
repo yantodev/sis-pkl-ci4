@@ -11,6 +11,7 @@ namespace App\Controllers;
 use App\Models\KajurModel;
 use App\Models\MajorModel;
 use App\Models\SuratModel;
+use App\Models\TeacherModel;
 use App\Models\TutorModel;
 use App\Models\UsersModel;
 use Config\YantoDevConfig;
@@ -19,13 +20,14 @@ use ReflectionException;
 
 /**
  * @property \CodeIgniter\Session\Session|mixed|null $session
- * @property SuratModel $surat
- * @property KajurModel $kajur
- * @property TutorModel $tutor
  */
 class  Admin extends BaseController
 {
     protected $usersModel;
+    private TeacherModel $teacher;
+    private SuratModel $surat;
+    private KajurModel $kajur;
+    private TutorModel $tutor;
 
     public function __construct()
     {
@@ -36,6 +38,7 @@ class  Admin extends BaseController
         $this->surat = new SuratModel();
         $this->kajur = new KajurModel();
         $this->tutor = new TutorModel();
+        $this->teacher = new TeacherModel();
     }
 
     public function index()
@@ -339,6 +342,29 @@ class  Admin extends BaseController
         $this->response->setHeader('Content-Type', 'application/pdf');
         $iduka = $this->idukaModel->find($iduka);
         $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'I');
+    }
+
+    /**
+     * @throws MpdfException
+     */
+    public function printAssignmentLetter()
+    {
+        $tp = $this->request->getVar('tp-tugas');
+        $teacherId = $this->request->getVar('teacher');
+        $result = $this->teacher->findByUserPublicId($teacherId);
+        $iduka = $this->tutor->findByTeacherIdAndTp($teacherId, $tp);
+        $data = [
+            'result' => $result,
+            'surat' => $this->surat->findByTp($tp)->getRow(),
+            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
+        ];
+        view('pages/general/cetak-surat-tugas', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-surat-tugas', []);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $mpdf->Output('Surat Tugas ' . $result->name . '. pdf', 'I');
     }
 
     /**

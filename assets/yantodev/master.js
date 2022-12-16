@@ -181,7 +181,7 @@ async function findIdukaByMajor(major) {
     let iduka = [];
     await fetchingData('/Iduka/findAllIdukaByMajor/' + major)
         .then(response => {
-            if (response.code == 200) {
+            if (response.responseData.responseCode == 200) {
                 for (const element of response.result) {
                     let id = element.id;
                     let name = element.name;

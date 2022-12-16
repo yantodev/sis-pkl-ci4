@@ -27,12 +27,14 @@ class MasterDataModel extends Model
                        i.name     as iduka,
                        ud.jk,
                        m.name     as jurusan,
-                       c.name     as kelas
+                       c.name     as kelas,
+                       di.address as alamat
                 from master_data as md
-                         inner join user_details as ud on md.nis = ud.user_id
-                         inner join iduka i on md.iduka_id = i.id
-                         inner join major m on i.major = m.id
-                         left join class c on ud.class_id = c.id
+                        inner join user_details as ud on md.nis = ud.user_id
+                        inner join iduka i on md.iduka_id = i.id
+                        inner join major m on i.major = m.id
+                        left join class c on ud.class_id = c.id
+                        left join detail_iduka di on di.id_iduka = i.id
                 where md.iduka_id = ' . $iduka . ' 
                     and md.tp_id = ' . $tp
         )->getResult();

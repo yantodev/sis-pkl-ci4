@@ -231,6 +231,7 @@ class RestApi extends ResourceController
      */
     public function updateUserDetails(): \CodeIgniter\HTTP\Response
     {
+        $id = $this->request->getVar('id');
         $data = [
             'name' => $this->request->getVar('name'),
             'class_id' => $this->request->getVar('classId'),
@@ -239,14 +240,13 @@ class RestApi extends ResourceController
             'nisn' => $this->request->getVar('nisn'),
             'jk' => $this->request->getVar('jk')
         ];
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->userDetail->update(
-                    $this->request->getVar('id'),
-                    $data
-                )
-            )
-        );
+        try {
+            $result = $this->userDetail->update($id, $data);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function findTeacherById(): \CodeIgniter\HTTP\Response

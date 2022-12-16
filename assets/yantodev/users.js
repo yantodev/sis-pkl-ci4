@@ -64,9 +64,9 @@ async function updateUser(id) {
                     tp: Swal.getPopup().querySelector("#tp").value,
                     jk: Swal.getPopup().querySelector("#jk").value,
                 }).then(response => {
-                    if (response.code === 200) {
+                    if (response.responseData.responseCode === 200) {
                         Swal.fire({
-                            icon: response.message,
+                            icon: response.responseData.responseMsg,
                             title: "data updated successfully!!!",
                         });
                         setTimeout(function () {

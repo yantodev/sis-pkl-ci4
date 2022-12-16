@@ -5,7 +5,7 @@ async function getAllIdukaByMajor() {
             tp: document.getElementById("tp").value
         })
         .then(response => {
-            if (response.code === 200) {
+            if (response.responseData.responseCode === 200) {
                 let iduka = document.getElementById("iduka");
                 let result;
                 for (const element of response.result) {
@@ -31,7 +31,7 @@ async function getAllIdukaByTp() {
         })
         .then(response => {
             console.log(response)
-            if (response.code === 200) {
+            if (response.responseData.responseCode === 200) {
                 let iduka = document.getElementById("iduka");
                 let result;
                 for (const element of response.result) {
@@ -47,4 +47,21 @@ async function getAllIdukaByTp() {
                 text: error
             })
         });
+}
+
+function findTeacherByTp() {
+    fetchingData("/Teacher/findTeacherByTp", {
+        tp: document.getElementById("tp-tugas").value
+    }).then(response => {
+        if (response.responseData.responseCode === 200) {
+            let teacher = document.getElementById("teacher");
+            let result;
+            for (const element of response.result) {
+                result = "<option value=" + element.user_public_id + ">" + element.name + "</option>"
+                teacher.innerHTML += result
+            }
+        }
+    }).catch(error => {
+        console.log(error)
+    })
 }
