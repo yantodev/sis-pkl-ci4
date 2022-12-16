@@ -11,11 +11,13 @@ namespace App\Controllers;
 use App\Models\UsersModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
+use Config\APIResponseBuilder;
 use Config\YantoDevConfig;
 
 /**
  * @property YantoDevConfig $config
  * @property UsersModel $user
+ * @property APIResponseBuilder $ResponseBuilder
  */
 class User extends ResourceController
 {
@@ -23,6 +25,7 @@ class User extends ResourceController
 
     public function __construct()
     {
+        $this->ResponseBuilder = new APIResponseBuilder();
         $this->config = new YantoDevConfig();
         $this->user = new UsersModel();
     }
@@ -68,14 +71,20 @@ class User extends ResourceController
     {
         $email = $this->request->getVar('email');
         $result = $this->user->getWhere(['email' => $email])->getRow();
-        $response = [
+        $data = [
             'id' => $result->id,
             'name' => $result->name,
             'email' => $result->email,
         ];
-        return $this->respond(
-            $this->config->ApiResponseBuilder($response)
-        );
+        try {
+            if (is_null($result)) {
+                $response = $this->ResponseBuilder->noContent('data with email ' . $email . ' not found');
+            }
+            $response = $this->ResponseBuilder->ok($data);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function teacher(): \CodeIgniter\HTTP\Response

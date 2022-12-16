@@ -125,7 +125,7 @@ function deleteTutor(id) {
 async function findTutorById(id) {
     return fetchingData('/RestApi/findTutorById', {id})
         .then(response => {
-            if (response.code == 200) {
+            if (response.code === 200) {
                 return response.result
             }
             console.log(response)

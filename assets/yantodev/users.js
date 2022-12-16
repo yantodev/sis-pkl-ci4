@@ -11,30 +11,39 @@ async function updateUser(id) {
     let student = await getDetailStudent(id)
     let kelas = await findAllClassByMajor(student.majorId)
     let tp = await findTp();
+    console.log(student)
     Swal.fire({
         title: "Edit Siswa",
         html: `
             <div id="label-swal">
-                <div class="mb-3">
-                <label class="ml-3">NISN</label>
+                <div class="form-group">
+                <label for="nisn">NISN</label>
                     <input class="form-control" type="text" id="nisn" value="${student.nisn}"/>
                 </div>
-                <div class="mb-3">
-                <label class="ml-3">Nama Lengkap</label>
+                <div class="form-group">
+                <label for="name" ">Nama Lengkap</label>
                     <input class="form-control" type="text" id="name" value="${student.name}"/>
                 </div>
-                <div class="mb-3">
-                <label class="ml-3">Kelas</label>
+                <div class="form-group">
+                <label for="kelas">Kelas</label>
                     <select class="form-control" type="text" id="kelas">
                         <option value="${student.classId}">${student.kelas}</option>
                         ${kelas}
                     </select>
                 </div>
-                 <div class="mb-3">
-                 <label class="ml-3">Tahun Pelajaran</label>
+                 <div class="form-group">
+                 <label for="tp">Tahun Pelajaran</label>
                     <select class="form-control" type="text" id="tp">
                         <option value="${student.tpId}">${student.tp}</option>
                         ${tp}
+                    </select>
+                </div>
+                <div class="form-group">
+                 <label for="jk">Jenis Kelamin</label>
+                    <select class="form-control" type="text" id="jk">
+                        <option value="${student.jk}">${getJk(student.jk)}</option>
+                        <option value="1">Laki-laki</option>
+                        <option value="2">Perempuan</option>
                     </select>
                 </div>
             </div>
@@ -52,7 +61,8 @@ async function updateUser(id) {
                     name: Swal.getPopup().querySelector("#name").value,
                     major: res.major_id,
                     classId: Swal.getPopup().querySelector("#kelas").value,
-                    tp: Swal.getPopup().querySelector("#tp").value
+                    tp: Swal.getPopup().querySelector("#tp").value,
+                    jk: Swal.getPopup().querySelector("#jk").value,
                 }).then(response => {
                     if (response.code === 200) {
                         Swal.fire({

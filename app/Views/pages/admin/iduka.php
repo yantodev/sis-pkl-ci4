@@ -19,6 +19,7 @@
             <thead>
             <tr>
                 <th width="10px">No</th>
+                <th>Jurusan</th>
                 <th>Iduka</th>
                 <th>Alamat</th>
                 <th>Action</th>
@@ -29,14 +30,15 @@
             <?php foreach ($iduka as $d) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td id="name"><?= $d['name']; ?></td>
-                    <td id="address"><?= $d['address']; ?></td>
+                    <td id="name"><?= $d->major; ?></td>
+                    <td id="name"><?= $d->name; ?></td>
+                    <td id="address"><?= $d->address; ?></td>
                     <td>
                         <button class="btn btn-primary btn-xs"
-                                onclick="updateIduka(<?= $d['id']; ?>, <?= $d['major']; ?>)">
+                                onclick="updateIduka(<?= $d->id; ?>, <?= $d->majorId; ?>)">
                             Edit
                         </button>
-                        <button class="btn btn-danger btn-xs" onclick="deleteIduka(<?= $d['id']; ?>)">
+                        <button class="btn btn-danger btn-xs" onclick="deleteIduka(<?= $d->id; ?>)">
                             Delete
                         </button>
                     </td>

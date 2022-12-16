@@ -35,6 +35,7 @@ class UserDetailModel extends Model
         return $this->db->table('users u')
             ->select(
                 'ud.name, ud.user_id as nis, ud.nisn, ud.tp as tpId,
+                ud.jk,
                  m.id as majorId, m.name as major,
                 c.id as classId, c.name as kelas,
                 i.id as idukaId, i.name as iduka,
@@ -48,5 +49,23 @@ class UserDetailModel extends Model
             ->join('tp', 'tp.id = ud.tp', 'left')
             ->where('ud.id', $id)
             ->get()->getRow();
+    }
+
+    public function updateTeacher($id, $data): array
+    {
+        $userDetail = $this->db->table('user_details')
+            ->set('user_id', $data['nbm'])
+            ->where('user_public_id', $id)
+            ->update();
+        $teacher = $this->db->table('teacher')
+            ->set('nbm', $data['nbm'])
+            ->set('name', $data['name'])
+            ->where('user_public_id', $id)
+            ->update();
+
+        return [
+            'user_detail' => $userDetail,
+            'teacher' => $teacher
+        ];
     }
 }

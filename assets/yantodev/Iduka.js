@@ -40,10 +40,12 @@ function addIduka() {
                     address: Swal.getPopup().querySelector("#address").value,
                     major: Swal.getPopup().querySelector("#major").value
                 }).then(response => {
-                    if (response.code === 200) {
+                    console.log(response)
+                    if (response.responseData.responseCode === 200) {
                         Swal.fire({
                             icon: "success",
-                            title: "Added data successfully!!!"
+                            title: "Added data successfully!!!",
+                            text: response.responseData.responseMsg
                         })
                         setTimeout(function () {
                             window.location.reload(1);
@@ -119,9 +121,10 @@ async function updateIduka(idIduka, idMajor) {
                     name: Swal.getPopup().querySelector("#name").value,
                     address: Swal.getPopup().querySelector("#address").value,
                 }).then(response => {
-                    if (response.code === 200) {
+                    console.log(response)
+                    if (response.responseData.responseCode === 200) {
                         Swal.fire({
-                            icon: response.message,
+                            icon: 'success',
                             title: "data updated successfully!!!",
                         });
                         setTimeout(function () {
@@ -150,6 +153,7 @@ async function detailMajor(id) {
 async function detailIduka(id) {
     return fetchingData('/Iduka/detail', {id: id})
         .then(response => {
+            console.log(response)
             return response;
         })
 }

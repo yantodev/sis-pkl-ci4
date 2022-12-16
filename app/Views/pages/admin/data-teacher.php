@@ -25,12 +25,12 @@
             <?php foreach ($data as $d) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td id="name"><?= $d->nbm; ?></td>
-                    <td id="name"><?= $d->name; ?></td>
-                    <td id="name"><?= $d->position; ?></td>
-                    <td id="name"><?= $d->hp; ?></td>
+                    <td><?= $d->nbm; ?></td>
+                    <td><?= $d->name; ?></td>
+                    <td><?= $d->position; ?></td>
+                    <td><?= $d->hp; ?></td>
                     <td>
-                        <button class="btn btn-primary btn-xs" onclick="updateTeacher(<?= $d->userDetailId; ?>)">
+                        <button class="btn btn-primary btn-xs" onclick="updateTeacher(<?= $d->id; ?>)">
                             Edit
                         </button>
                     </td>
