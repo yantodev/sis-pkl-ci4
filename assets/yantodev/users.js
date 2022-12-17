@@ -1,17 +1,13 @@
-function saveUserDetail() {
-    const data = $('#nis').value;
-    console.log(data)
-}
-
 function addUser() {
     alert("masih dalam pengembangan")
 }
 
 async function updateUser(id) {
     let student = await getDetailStudent(id)
+    console.log(student)
     let kelas = await findAllClassByMajor(student.majorId)
     let tp = await findTp();
-    console.log(student)
+    let major = await findMajor()
     Swal.fire({
         title: "Edit Siswa",
         html: `
@@ -39,6 +35,13 @@ async function updateUser(id) {
                     </select>
                 </div>
                 <div class="form-group">
+                 <label for="major">Pilih Jurusan</label>
+                    <select class="form-control" type="text" id="major">
+                        <option value="${student.majorId}">${student.major}</option>
+                        ${major}
+                    </select>
+                </div>
+                <div class="form-group">
                  <label for="jk">Jenis Kelamin</label>
                     <select class="form-control" type="text" id="jk">
                         <option value="${student.jk}">${getJk(student.jk)}</option>
@@ -59,14 +62,14 @@ async function updateUser(id) {
                     id,
                     nisn: Swal.getPopup().querySelector("#nisn").value,
                     name: Swal.getPopup().querySelector("#name").value,
-                    major: res.major_id,
+                    major: Swal.getPopup().querySelector("#major").value,
                     classId: Swal.getPopup().querySelector("#kelas").value,
                     tp: Swal.getPopup().querySelector("#tp").value,
                     jk: Swal.getPopup().querySelector("#jk").value,
                 }).then(response => {
-                    if (response.code === 200) {
+                    if (response.responseData.responseCode === 200) {
                         Swal.fire({
-                            icon: response.message,
+                            icon: response.responseData.responseMsg,
                             title: "data updated successfully!!!",
                         });
                         setTimeout(function () {

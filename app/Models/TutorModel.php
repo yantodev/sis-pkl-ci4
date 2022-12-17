@@ -70,4 +70,23 @@ class TutorModel extends Model
             ->where('t.deleted_at', null)
             ->get()->getRow();
     }
+
+    public function findByTp($tp): array
+    {
+        return $this->db->table('tutor')
+            ->select('tutor.iduka_id, teacher.name, teacher.nbm, teacher.user_public_id, teacher.position')
+            ->join('teacher', 'teacher.user_public_id = tutor.teacher_id')
+            ->where('tutor.tp_id', $tp)
+            ->get()->getResult();
+    }
+
+    public function findByTeacherIdAndTp($teacherId, $tp)
+    {
+        return $this->db->table('tutor')
+            ->select('tutor.iduka_id as id, teacher.name, teacher.nbm, teacher.user_public_id, teacher.position')
+            ->join('teacher', 'teacher.user_public_id = tutor.teacher_id')
+            ->where('tutor.tp_id', $tp)
+            ->where('tutor.teacher_id', $teacherId)
+            ->get()->getRow();
+    }
 }

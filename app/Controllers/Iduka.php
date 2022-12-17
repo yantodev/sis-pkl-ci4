@@ -74,8 +74,11 @@ class Iduka extends ResourceController
                     'address' => $address
                 ]);
             }
-            $this->detailIduka->updateByIdIduka($id, $address);
-            $response = $this->ResponseBuilder->ok($this->iduka->update($id, $data));
+            $result = [
+                'updateDetail' => $this->detailIduka->updateByIdIduka($id, $address),
+                'updateIduka' => $this->iduka->update($id, $data)
+            ];
+            $response = $this->ResponseBuilder->ok($result);
         } catch (\Exception $e) {
             $response = $this->ResponseBuilder->internalServerError($e->getMessage());
         }
@@ -93,22 +96,33 @@ class Iduka extends ResourceController
 
     public function detail(): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->iduka->findById($this->request->getVar('id'))
-            )
-        );
+        $id = $this->request->getVar('id');
+        try {
+            $result = $this->iduka->findById($id);
+            if (is_null($result)) {
+                $response = $this->ResponseBuilder->noContent("data with id " . $id . " not found");
+            } else {
+                $response = $this->ResponseBuilder->ok($result);
+            }
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function findAllIdukaByMajorAndTp(): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->iduka->findAllIdukaByIdAndTp(
-                    $this->request->getVar('major'),
-                    $this->request->getVar('tp'))
-            )
-        );
+        $data = [
+            'major' => $this->request->getVar('major'),
+            'tp' => $this->request->getVar('tp')
+        ];
+        try {
+            $result = $this->iduka->findAllIdukaByIdAndTp($data);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 
     public function findAllIdukaByTp($tp): \CodeIgniter\HTTP\Response
@@ -122,10 +136,12 @@ class Iduka extends ResourceController
 
     public function findAllIdukaByMajor($major): \CodeIgniter\HTTP\Response
     {
-        return $this->respond(
-            $this->config->ApiResponseBuilder(
-                $this->iduka->findAllIdukaByMajor($major)
-            )
-        );
+        try {
+            $result = $this->iduka->findAllIdukaByMajor($major);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
     }
 }
