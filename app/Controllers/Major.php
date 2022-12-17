@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Admin Controller
+ * The Major Controller
  * @author  Eko Cahyanto
  * mail to: ekocahyanto007@gmail.com
  */

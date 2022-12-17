@@ -253,4 +253,16 @@ class Teacher extends BaseController
         }
         return $this->respond($response);
     }
+
+    public function findTeacherByTp(): \CodeIgniter\HTTP\Response
+    {
+        $tp = $this->request->getVar('tp');
+        try {
+            $result = $this->tutor->findByTp($tp);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
+    }
 }

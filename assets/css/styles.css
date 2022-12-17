@@ -16,12 +16,60 @@
     font: 14px arial;
 }
 
-#validation{
+#validation {
     margin-top: 20px;
     display: flex;
     justify-content: center;
 }
 
-#label-swal{
+#label-swal {
+    text-align: left;
+}
+
+table tr th, table tr td {
+}
+
+
+.center {
+    vertical-align: top;
+    text-align: center;
+}
+
+.top {
+    text-align: left;
+    vertical-align: top;
+}
+
+.container {
+    margin-left: 50px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+.column {
+    float: left;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+}
+
+.column-name {
+    float: left;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+
+/* hapus floats setelah columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.title {
     text-align: left;
 }

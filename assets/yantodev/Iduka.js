@@ -70,17 +70,15 @@ function addIduka() {
 }
 
 async function updateIduka(idIduka, idMajor) {
-    let ids = '';
-    let majorName = '';
-    let name = '';
-    let address = '';
+    let id, ids, majorName, name, address;
     await detailMajor(idMajor).then(async r => {
         ids = await r.result.id;
         majorName = await r.result.name
     })
     await detailIduka(idIduka).then(async r => {
-        name = await r.result.name
-        address = await r.result.address
+        id = await r.id
+        name = await r.name
+        address = await r.address
     })
     await fetchingData('/RestApi/findAllMajor').then(response => {
         let major = [];
@@ -116,12 +114,11 @@ async function updateIduka(idIduka, idMajor) {
             showLoaderOnConfirm: true,
             preConfirm: () => {
                 fetchingData('/Iduka/updateIduka/', {
-                    id: Swal.getPopup().querySelector("#id").value,
+                    id,
                     major: Swal.getPopup().querySelector("#major").value,
                     name: Swal.getPopup().querySelector("#name").value,
                     address: Swal.getPopup().querySelector("#address").value,
                 }).then(response => {
-                    console.log(response)
                     if (response.responseData.responseCode === 200) {
                         Swal.fire({
                             icon: 'success',
@@ -153,8 +150,13 @@ async function detailMajor(id) {
 async function detailIduka(id) {
     return fetchingData('/Iduka/detail', {id: id})
         .then(response => {
-            console.log(response)
-            return response;
+            if (response.responseData.responseCode === 200) {
+                return response.result;
+            }
+            Swal.fire('warning', response.responseData.responseMsg)
+        })
+        .catch(error => {
+            console.log(error)
         })
 }
 

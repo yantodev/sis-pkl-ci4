@@ -102,7 +102,7 @@ class UsersModel extends Model
                             ud.jk,
                             c.id as classId, c.name as kelas,
                             m.id as majorId, m.name as jurusan,
-                            tp.name as tp')
+                            tp.name as tp, tp.id as tpId')
             ->join('user_details ud', 'u.id = ud.user_public_id')
             ->join('class c', 'c.id = ud.class_id', 'left')
             ->join('major m', 'm.id = ud.major_id', 'left')

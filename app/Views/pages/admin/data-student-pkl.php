@@ -3,7 +3,9 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title"><?= $subtitle; ?></h3>
+        <h3 class="card-title"><?= $subtitle; ?>
+            <button class="badge btn-danger" onclick="syncData()">Sync Data</button>
+        </h3>
     </div>
     <div class="card-body">
         <div class="form-group">
