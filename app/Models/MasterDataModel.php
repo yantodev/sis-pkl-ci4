@@ -9,7 +9,7 @@ class MasterDataModel extends Model
     protected $table = 'master_data';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['nis', 'iduka_id', 'tp_id'];
+    protected $allowedFields = ['user_public_id', 'nis', 'iduka_id', 'tp_id'];
 
     public function findByNis($nis)
     {
@@ -44,6 +44,15 @@ class MasterDataModel extends Model
     {
         return $this->db->table('master_data')
             ->set('iduka_id', $id)
+            ->where('nis', $nis)
+            ->update();
+    }
+
+    public function updateByDataNis($nis, array $data): bool
+    {
+        return $this->db->table('master_data')
+            ->set('user_public_id', $data['id'])
+            ->set('tp_id', $data['tpId'])
             ->where('nis', $nis)
             ->update();
     }

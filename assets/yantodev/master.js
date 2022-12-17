@@ -88,8 +88,7 @@ async function editTutor(id) {
                 .then(response => {
                     if (response.code === 200) {
                         Swal.fire({
-                            icon: response.message,
-                            title: "data updated successfully!!!",
+                            icon: response.message, title: "data updated successfully!!!",
                         });
                         setTimeout(function () {
                             window.location.reload(1);
@@ -260,4 +259,60 @@ async function findMajorByClass(id) {
         .catch(error => {
             console.log(error)
         })
+}
+
+function syncData() {
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Data yang sudah di sinkronisasi tidak bisa dikembalikan lagi!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Saya yakin!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetchingData("/RestApi/syncData")
+                .then(response => {
+                    let result = response.result
+                    let code = response.responseData.responseCode
+                    if (code === 200) {
+                        result.forEach(loopData)
+                        Swal.fire("Sukses!", "Data telah di sinkronisasi.", "success");
+                    } else {
+                        Swal.fire("Opss!", "Data gagal di sinkronisasi.", "error");
+                    }
+                })
+            // setTimeout(function () {
+            //     window.location.reload(1);
+            // }, 2000);
+        }
+    });
+}
+
+function loopData(data) {
+    fetchingData("/RestApi/cekMasterData", {
+        nis: data.nis
+    }).then(response => {
+        let result = response.result
+        if (result) {
+            updateMasterDataByNis(data)
+        } else {
+            console.log("nis tidak ada")
+        }
+    })
+}
+
+function updateMasterDataByNis(data) {
+    fetchingData("/RestApi/updateMasterDataByNis",
+        {
+            nis: data.nis,
+            tpId: data.tpId,
+            id: data.id
+        }
+    ).then(response => {
+        console.log(response)
+    }).catch(error => {
+        console.log(error)
+    })
 }

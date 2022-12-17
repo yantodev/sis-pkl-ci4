@@ -272,4 +272,43 @@ class RestApi extends ResourceController
             )
         );
     }
+
+    public function syncData(): \CodeIgniter\HTTP\Response
+    {
+        try {
+            $result = $this->user->findAllStudent();
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
+    }
+
+    public function cekMasterData(): \CodeIgniter\HTTP\Response
+    {
+        $nis = $this->request->getVar('nis');
+        try {
+            $result = $this->masterData->findByNis($nis)->getRow();
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
+    }
+
+    public function updateMasterDataByNis(): \CodeIgniter\HTTP\Response
+    {
+        $nis = $this->request->getVar('nis');
+        $data = [
+            'tpId' => $this->request->getVar('tpId'),
+            'id' => $this->request->getVar('id')
+        ];
+        try {
+            $result = $this->masterData->updateByDataNis($nis, $data);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
+    }
 }
