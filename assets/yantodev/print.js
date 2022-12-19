@@ -1,16 +1,20 @@
 async function getAllIdukaByMajor() {
-    await fetchingData('/Iduka/findAllIdukaByMajorAndTp',
-        {
-            major: document.getElementById("major_id").value,
-            tp: document.getElementById("tp").value
-        })
+    let major2 = document.getElementById("major_id2").value
+    let tp2 = document.getElementById("tp2").value
+    let data = {
+        major: major2 ? major2 : document.getElementById("major_id").value,
+        tp: tp2 ? tp2 : document.getElementById("tp").value
+    }
+    await fetchingData('/Iduka/findAllIdukaByMajorAndTp', data)
         .then(response => {
             if (response.responseData.responseCode === 200) {
                 let iduka = document.getElementById("iduka");
+                let iduka2 = document.getElementById("iduka2");
                 let result;
                 for (const element of response.result) {
                     result = "<option value=" + element.id + ">" + element.name + "</option>"
                     iduka.innerHTML += result
+                    iduka2.innerHTML += result
                 }
             }
         })

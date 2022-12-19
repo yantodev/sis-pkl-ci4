@@ -27,6 +27,7 @@
 <script src=<?= base_url('assets/yantodev/print.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/master.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/teacher.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/nomor-surat.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/auth/logout.js') ?>></script>
 
 <script>

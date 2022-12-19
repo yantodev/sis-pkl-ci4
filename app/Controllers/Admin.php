@@ -9,36 +9,51 @@
 namespace App\Controllers;
 
 use App\Models\KajurModel;
+use App\Models\KategoriSuratModel;
 use App\Models\MajorModel;
+use App\Models\NomorSuratModel;
 use App\Models\SuratModel;
 use App\Models\TeacherModel;
 use App\Models\TutorModel;
 use App\Models\UsersModel;
+use CodeIgniter\API\ResponseTrait;
+use Config\APIResponseBuilder;
+use Config\IApplicationConstantConfig;
 use Config\YantoDevConfig;
 use Mpdf\MpdfException;
 use ReflectionException;
 
 /**
  * @property \CodeIgniter\Session\Session|mixed|null $session
+ * @property APIResponseBuilder $ResponseBuilder
+ * @property IApplicationConstantConfig $IApplicationConstant
  */
 class  Admin extends BaseController
 {
+    use ResponseTrait;
+
     protected $usersModel;
     private TeacherModel $teacher;
     private SuratModel $surat;
     private KajurModel $kajur;
     private TutorModel $tutor;
+    private KategoriSuratModel $kategoriSurat;
+    private NomorSuratModel $nomorModel;
 
     public function __construct()
     {
         $this->session = session();
         $this->config = new YantoDevConfig();
+        $this->ResponseBuilder = new APIResponseBuilder();
+        $this->IApplicationConstant = new IApplicationConstantConfig();
         $this->usersModel = new UsersModel();
         $this->major = new MajorModel();
         $this->surat = new SuratModel();
         $this->kajur = new KajurModel();
         $this->tutor = new TutorModel();
         $this->teacher = new TeacherModel();
+        $this->kategoriSurat = new KategoriSuratModel();
+        $this->nomorModel = new NomorSuratModel();
     }
 
     public function index()
@@ -49,13 +64,11 @@ class  Admin extends BaseController
             'users' => $session->get('email'),
             'role' => $session->get('role'),
         ];
-        if (!$session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($session->get('role') != 1) {
-            return redirect()->to('/auth/error');
-        }
-        return view('pages/admin/dashboard', $data);
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/dashboard',
+            $data
+        );
     }
 
     public function data()
@@ -70,13 +83,12 @@ class  Admin extends BaseController
             'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll()
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
-        }
-        return view('pages/admin/data-student-pkl', $data);
+
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/data-student-pkl',
+            $data
+        );
     }
 
     public function pendamping()
@@ -94,10 +106,10 @@ class  Admin extends BaseController
             'teacher' => $this->users->findAllTeacher()
         ];
         if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/data-pendamping', $data);
     }
@@ -111,11 +123,11 @@ class  Admin extends BaseController
             'role' => $session->get('role'),
             'sekolah' => $this->schoolModel->find(1)
         ];
-        if (!$session->get('logged_in')) {
-            return redirect()->to('/auth');
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/master-sekolah', $data);
     }
@@ -126,23 +138,22 @@ class  Admin extends BaseController
 
     public function iduka()
     {
-        $session = session();
         $majorId = $this->request->getVar('jurusan');
         $jurusan = $this->major->findAll();
         $iduka = $this->idukaModel->findAllByMajorId($majorId);
         $data = [
             'title' => "Iduka",
             'subtitle' => "Data Iduka",
-            'role' => $session->get('role'),
-            'users' => $session->get('email'),
+            'role' => $this->session->get('role'),
+            'users' => $this->session->get('email'),
             'iduka' => $iduka,
             'jurusan' => $jurusan
         ];
-        if (!$session->get('logged_in')) {
-            return redirect()->to('/auth');
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
         }
-        if ($session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+        if ($this->session->get('role') != 1) {
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/iduka', $data);
     }
@@ -161,11 +172,11 @@ class  Admin extends BaseController
             'users' => $session->get('email'),
             'guru' => $guru,
         ];
-        if (!$session->get('logged_in')) {
-            return redirect()->to('/auth');
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/guru', $data);
     }
@@ -206,21 +217,82 @@ class  Admin extends BaseController
         $this->guruModel->delete($this->request->getVar('id'));
     }
 
+    public function nomor()
+    {
+        $id = $this->request->getVar('id');
+        $tp = $this->request->getVar('tp');
+        $category = $this->request->getVar('category');
+        $nomor = $this->request->getVar('nomor');
+        $tgl = $this->request->getVar('tgl');
+        if ($tp && $category && $nomor && $tgl) {
+            $request = [
+                'nomor' => $nomor,
+                'tanggal' => $tgl,
+                'tp_id' => $tp,
+                'kategori_surat_id' => $category
+            ];
+            if ($id) {
+                try {
+                    $result = $this->nomorModel->update($id, $request);
+                    $response = $this->ResponseBuilder->ok($result);
+                    return $this->respond($response);
+                } catch (ReflectionException $e) {
+                    $this->session->setFlashdata('error', $e);
+                }
+            } else {
+                try {
+                    $this->nomorModel->insert($request);
+                    $this->session->setFlashdata('success', 'tambah nomor surat berhasil');
+                    return redirect()->to('admin/nomor');
+                } catch (ReflectionException $e) {
+                    $this->session->setFlashdata('error', $e);
+                }
+            }
+
+        } elseif ($id) {
+            $result = $this->nomorModel->findAllById($id);
+            $response = $this->ResponseBuilder->ok($result);
+            return $this->respond($response);
+        }
+        $data = [
+            'title' => "Nomor Surat",
+            'subtitle' => "Data Nomor Surat",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'tp' => $this->tp->findAll(),
+            'category' => $this->kategoriSurat->findAll(),
+            'data' => $this->nomorModel->findAllBy()
+        ];
+
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/nomor-surat',
+            $data
+        );
+    }
+
+    public function deleteNomor(): \CodeIgniter\HTTP\Response
+    {
+        $id = $this->request->getVar('id');
+        $result = $this->nomorModel->delete($id);
+        $response = $this->ResponseBuilder->ok($result);
+        return $this->respond($response);
+    }
+
     public function tp()
     {
-        $session = session();
         $data = [
             'title' => "Tahun Pelajaran",
             'subtitle' => "Data Tahun Pelajaran",
-            'users' => $session->get('email'),
-            'role' => $session->get('role'),
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
             'tp' => $this->tp->findAll()
         ];
-        if (!$session->get('logged_in')) {
-            return redirect()->to('/auth');
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
         }
-        if ($session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+        if ($this->session->get('role') != 1) {
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/tp', $data);
     }
@@ -235,10 +307,10 @@ class  Admin extends BaseController
             'data' => $this->users->findAllTeacher()
         ];
         if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/data-teacher', $data);
     }
@@ -253,10 +325,10 @@ class  Admin extends BaseController
             'data' => $this->users->findAllStudent()
         ];
         if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/data-student', $data);
     }
@@ -265,16 +337,16 @@ class  Admin extends BaseController
     {
         $data = [
             'title' => "Users",
-            'subtitle' => "Data Siswa",
+            'subtitle' => "Data Users",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'data' => $this->users->findAllByDetail()
         ];
         if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/data-users', $data);
     }
@@ -290,10 +362,10 @@ class  Admin extends BaseController
             'tp' => $this->tp->findAll()
         ];
         if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
+            return redirect()->to($this->IApplicationConstant->auth);
         }
         if ($this->session->get('role') != 1) {
-            return redirect()->to('/auth/error');
+            return redirect()->to($this->IApplicationConstant->authError);
         }
         return view('pages/admin/print', $data);
     }
@@ -311,8 +383,10 @@ class  Admin extends BaseController
         $masterData = $this->masterData->findByIdukaAndTp($iduka, $tp);
         $kajur = $this->kajur->findByMajor($major)->getRow();
         if ($surat === null) {
-            $this->session->setFlashdata('info',
-                'Anda belum melengkapi data surat, silahkan lengkapi terlebih dahulu!!!');
+            $this->session->setFlashdata(
+                'info',
+                'Anda belum melengkapi data surat, silahkan lengkapi terlebih dahulu!!!'
+            );
             return redirect()->to('/admin/print');
         }
         $data = [
@@ -339,9 +413,9 @@ class  Admin extends BaseController
                         </p>');
         $html2 = view('pages/general/permohonan2', []);
         $mpdf->WriteHTML($html2);
-        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $iduka = $this->idukaModel->find($iduka);
-        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '. pdf', 'I');
+        $mpdf->Output('Surat Permohonan ' . $iduka["name"] . '.pdf', 'I');
     }
 
     /**
@@ -363,20 +437,30 @@ class  Admin extends BaseController
         $mpdf->showImageErrors = true;
         $html = view('pages/general/cetak-surat-tugas', []);
         $mpdf->WriteHTML($html);
-        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $mpdf->Output('Surat Tugas ' . $result->name . '. pdf', 'I');
     }
 
     /**
      * @throws MpdfException
      */
-    public function pdf()
+    public function printCoveringLetter()
     {
+        $tp = $this->request->getVar('tp2');
+        $major = $this->request->getVar('major_id2');
+        $result = $this->major->find($major);
+        $data = [
+            'instansi' => $this->request->getVar('instansi'),
+            'result' => $result,
+            'surat' => $this->surat->findByTp($tp)->getRow(),
+//            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
+        ];
+        view('pages/general/cetak-surat-pengantar', $data);
         $mpdf = new \Mpdf\Mpdf();
-        $html = view('welcome_message', []);
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-surat-pengantar', []);
         $mpdf->WriteHTML($html);
-        $this->response->setHeader('Content - Type', 'application / pdf');
-        $mpdf->Output('arjun . pdf', 'I'); // opens in browser
-        //$mpdf->Output('arjun . pdf','D'); // it downloads the file into the user system, with give name
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('Surat Pengantar.pdf', 'I');
     }
 }

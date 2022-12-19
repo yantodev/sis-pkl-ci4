@@ -151,7 +151,7 @@ async function findMajor() {
 async function findIdukaById(id) {
     return fetchingData('/Iduka/detail', {id})
         .then(response => {
-            if (response.code == 200) {
+            if (response.responseData.responseCode == 200) {
                 return response.result
             }
             console.log(response)
@@ -262,6 +262,7 @@ async function findMajorByClass(id) {
 }
 
 function syncData() {
+    let results = [];
     Swal.fire({
         title: "Apakah kamu yakin?",
         text: "Data yang sudah di sinkronisasi tidak bisa dikembalikan lagi!",
@@ -270,37 +271,54 @@ function syncData() {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya, Saya yakin!",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetchingData("/RestApi/syncData")
-                .then(response => {
-                    let result = response.result
-                    let code = response.responseData.responseCode
-                    if (code === 200) {
-                        result.forEach(loopData)
-                        Swal.fire("Sukses!", "Data telah di sinkronisasi.", "success");
-                    } else {
-                        Swal.fire("Opss!", "Data gagal di sinkronisasi.", "error");
+        showLoaderOnConfirm: true,
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then(result => {
+        Swal.fire({
+            icon: "info",
+            title: 'Please Wait!',
+            html: 'Data on processing synchronization...',
+            allowOutsideClick: Swal.showLoading()
+        });
+        Swal.showLoading()
+        fetchingData("/RestApi/syncData")
+            .then(async response => {
+                let result = response.result
+                let code = response.responseData.responseCode
+                if (code === 200) {
+                    for (const element of result) {
+                        await fetchingData("/RestApi/cekMasterData", {
+                            nis: element.nis
+                        }).then(response => {
+                            let result = response.result
+                            if (result) {
+                                updateMasterDataByNis(element)
+                                results.push("<tr>" +
+                                    "<td>" + element.nis + "</td>" +
+                                    "<td>" + element.name + "</td>" +
+                                    "<td>Success</td>" +
+                                    "</tr>")
+                            } else {
+                                results.push("<tr>" +
+                                    "<td>" + element.nis + "</td>" +
+                                    "<td>" + element.name + "</td>" +
+                                    "<td>Gagal</td>" +
+                                    "</td>" +
+                                    "</tr>")
+                            }
+                        })
                     }
-                })
-            // setTimeout(function () {
-            //     window.location.reload(1);
-            // }, 2000);
-        }
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Done!!!',
+                        html: `<h2>Data synchronization is success...</h2>`,
+                        allowOutsideClick: !Swal.showLoading()
+                    });
+                } else {
+                    Swal.fire("Opss!", "Data gagal di sinkronisasi.", "error");
+                }
+            })
     });
-}
-
-function loopData(data) {
-    fetchingData("/RestApi/cekMasterData", {
-        nis: data.nis
-    }).then(response => {
-        let result = response.result
-        if (result) {
-            updateMasterDataByNis(data)
-        } else {
-            console.log("nis tidak ada")
-        }
-    })
 }
 
 function updateMasterDataByNis(data) {
@@ -311,8 +329,30 @@ function updateMasterDataByNis(data) {
             id: data.id
         }
     ).then(response => {
-        console.log(response)
+        return response.result
     }).catch(error => {
         console.log(error)
     })
+}
+
+function modal() {
+    console.log("test modal")
+}
+
+async function findAllCategory() {
+    let category = [];
+    await fetchingData('/RestApi/findCategory').then(response => {
+        if (response.responseData.responseCode == 200) {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.name;
+                category.push("<option value=" + id + ">" + name + "</option>");
+            }
+        } else {
+            console.log(response)
+        }
+    }).catch(error => {
+        console.log(error)
+    })
+    return category;
 }

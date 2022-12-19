@@ -26,9 +26,13 @@
     text-align: left;
 }
 
-table tr th, table tr td {
+table tr th, table tr td #nomor {
 }
 
+#nomor-table {
+    width: 5px;
+    text-align: center;
+}
 
 .center {
     vertical-align: top;

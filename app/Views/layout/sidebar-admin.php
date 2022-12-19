@@ -75,9 +75,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/guru'); ?>" class="nav-link">
-                                <em class="far fa-circle nav-icon"></em>
-                                <p>Guru</p>
+                            <a href="<?= base_url('admin/nomor'); ?>" class="nav-link">
+                                <em class="fa fa-sort-numeric-down nav-icon"></em>
+                                <p>Nomor Surat</p>
                             </a>
                         </li>
                         <li class="nav-item">
