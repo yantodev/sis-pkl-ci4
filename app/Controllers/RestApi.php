@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Models\ClassModel;
 use App\Models\IdukaModel;
+use App\Models\KategoriSuratModel;
 use App\Models\MajorModel;
 use App\Models\MasterDataModel;
 use App\Models\TutorModel;
@@ -40,6 +41,8 @@ class RestApi extends ResourceController
 {
     use ResponseTrait;
 
+    private KategoriSuratModel $categoryModel;
+
     public function __construct()
     {
         $this->ResponseBuilder = new APIResponseBuilder();
@@ -52,6 +55,7 @@ class RestApi extends ResourceController
         $this->tutor = new TutorModel();
         $this->class = new ClassModel();
         $this->masterData = new MasterDataModel();
+        $this->categoryModel = new KategoriSuratModel();
     }
 
     public function countData(): \CodeIgniter\HTTP\Response
@@ -305,6 +309,17 @@ class RestApi extends ResourceController
         ];
         try {
             $result = $this->masterData->updateByDataNis($nis, $data);
+            $response = $this->ResponseBuilder->ok($result);
+        } catch (\Exception $e) {
+            $response = $this->ResponseBuilder->internalServerError($e->getMessage());
+        }
+        return $this->respond($response);
+    }
+
+    public function findCategory(): \CodeIgniter\HTTP\Response
+    {
+        try {
+            $result = $this->categoryModel->findAll();
             $response = $this->ResponseBuilder->ok($result);
         } catch (\Exception $e) {
             $response = $this->ResponseBuilder->internalServerError($e->getMessage());

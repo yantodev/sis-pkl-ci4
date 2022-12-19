@@ -45,7 +45,7 @@ class Student extends BaseController
             'tp' => $this->tp->findAll(),
             'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
             'master' => $res,
-            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
+            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
             'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
         if (!$this->session->get('logged_in')) {
@@ -218,7 +218,7 @@ class Student extends BaseController
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
             'data' => $response,
-            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
+            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
             'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
         if (!$this->session->get('logged_in')) {
