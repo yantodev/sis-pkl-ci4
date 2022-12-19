@@ -8,7 +8,7 @@ async function findById(id) {
 
 function addTp() {
     Swal.fire({
-        title: "Add Iduka",
+        title: "Tambah Tahun Pelajaran",
         html: `
             <div>
                 <div class="mb-3">
