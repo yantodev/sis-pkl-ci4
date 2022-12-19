@@ -8,16 +8,21 @@
     <div class="card-body">
         <div class="wrapper">
             <button class="btn btn-primary btn-lg" data-toggle="modal"
-                    data-target="#modal-default">
+                    data-target="#modal-default" onclick="modal()">
                 <em class="fa fa-print"> Permohonan PKL</em>
             </button>
             <button class="btn btn-primary btn-lg" data-toggle="modal"
                     data-target="#modal-surat-tugas">
                 <em class="fa fa-print"> Surat Tugas</em>
             </button>
+            <button class="btn btn-primary btn-lg" data-toggle="modal"
+                    data-target="#modal-surat-pengantar">
+                <em class="fa fa-print"> Surat Pengantar</em>
+            </button>
         </div>
     </div>
 </div>
 <?= $this->include('pages/admin/modal/modal-cetak-surat-permohonan'); ?>
 <?= $this->include('pages/admin/modal/modal-cetak-surat-tugas'); ?>
+<?= $this->include('pages/admin/modal/modal-cetak-surat-pengantar'); ?>
 <?= $this->endSection() ?>; ?>

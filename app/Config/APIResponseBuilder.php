@@ -9,8 +9,16 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * @property IApplicationConstantConfig $IApplicationConstant
+ */
 class APIResponseBuilder extends BaseConfig
 {
+    public function __construct()
+    {
+        $this->IApplicationConstant = new IApplicationConstantConfig();
+    }
+
     public function ok($result): array
     {
         return [
@@ -62,5 +70,16 @@ class APIResponseBuilder extends BaseConfig
                 'total_data' => 0
             ]
         ];
+    }
+
+    public function ReturnViewValidation($session, $url, $data)
+    {
+        if (!$session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
+        }
+        if ($session->get('role') != 1) {
+            return redirect()->to($this->IApplicationConstant->authError);
+        }
+        return view($url, $data);
     }
 }
