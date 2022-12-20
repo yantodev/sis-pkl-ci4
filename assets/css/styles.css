@@ -34,6 +34,11 @@ table tr th, table tr td #nomor {
     text-align: center;
 }
 
+#kelas {
+    width: 100px;
+    text-align: left;
+}
+
 .center {
     vertical-align: top;
     text-align: center;

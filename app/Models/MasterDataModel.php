@@ -59,14 +59,37 @@ class MasterDataModel extends Model
 
     public function findByTpAndMajor($tp, $major): array
     {
-        return $this->db->table('master_data md')
-            ->select('md.id, ud.name')
-            ->join('tp', 'tp.id = md.tp_id')
-            ->join('iduka i', 'i.id = md.iduka_id')
-            ->join('major m', 'm.id = i.major')
-            ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
-            ->where('md.tp_id', $tp)
-            ->where('m.id', $major)
-            ->get()->getResult();
+        if ($tp && $major) {
+            $response = $this->db->table('master_data md')
+                ->select(
+                    'md.id, ud.name, i.id as idukaId, i.name as idukaName,
+                ud.user_id as nis, class.name as kelas, m.name as majorName,
+                di.address, tp.name as tpName')
+                ->join('tp', 'tp.id = md.tp_id')
+                ->join('iduka i', 'i.id = md.iduka_id')
+                ->join('detail_iduka di', 'di.id_iduka = i.id')
+                ->join('major m', 'm.id = i.major')
+                ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+                ->join('class', 'class.id = ud.class_id', 'left')
+                ->where('md.tp_id', $tp)
+                ->where('m.id', $major)
+                ->orderBy('i.name', 'ASC')
+                ->get()->getResult();
+        } else {
+            $response = $this->db->table('master_data md')
+                ->select(
+                    'md.id, ud.name, i.id as idukaId, i.name as idukaName,
+                ud.user_id as nis, class.name as kelas, m.name as majorName,
+                di.address, tp.name as tpName')
+                ->join('tp', 'tp.id = md.tp_id')
+                ->join('iduka i', 'i.id = md.iduka_id')
+                ->join('detail_iduka di', 'di.id_iduka = i.id')
+                ->join('major m', 'm.id = i.major')
+                ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+                ->join('class', 'class.id = ud.class_id', 'left')
+                ->orderBy('i.name', 'ASC')
+                ->get()->getResult();
+        }
+        return $response;
     }
 }

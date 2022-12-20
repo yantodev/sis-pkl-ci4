@@ -19,16 +19,11 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control" type="text" id="major_id2" name="major_id2"
-                                onchange="getAllIdukaByMajor()" required>
+                                required>
                             <option value="">--Pilih Jurusan--</option>
                             <?php foreach ($major as $m): ?>
                                 <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
                             <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" type="text" id="iduka2" name="iduka2" required>
-                            <option value="">--Pilih Iduka--</option>
                         </select>
                     </div>
                     <div class="form-group">
