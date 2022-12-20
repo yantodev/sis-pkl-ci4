@@ -21,7 +21,10 @@ use Config\APIResponseBuilder;
 use Config\IApplicationConstantConfig;
 use Config\YantoDevConfig;
 use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use ReflectionException;
+
 
 /**
  * @property \CodeIgniter\Session\Session|mixed|null $session
@@ -123,16 +126,60 @@ class  Admin extends BaseController
             'subtitle' => "Rekap Data Lokasi PKL",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
-            'data' => $major != null ? $this->masterData->findByTpAndMajor($tp, $major) : $this->tutor->findAllBy(),
+            'data' => $this->masterData->findByTpAndMajor($tp, $major),
             'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll(),
-            'teacher' => $this->users->findAllTeacher()
+            'teacher' => $this->users->findAllTeacher(),
+            'dataTp' => $tp,
+            'dataMajor' => $major
         ];
         return $this->ResponseBuilder->ReturnViewValidation(
             $this->session,
             'pages/admin/rekap-data',
             $data
         );
+    }
+
+    public function rekapExcel()
+    {
+        $tp = $this->request->getVar('tp');
+        $major = $this->request->getVar('major');
+        $spreadsheet = new Spreadsheet();
+        $data = $this->masterData->findByTpAndMajor($tp, $major);
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Rekap Data Siswa PKL')
+            ->setCellValue('A2', 'Tahun Pelajaran ' . ($tp != null ? $data[0]->tpName : 'Semua'))
+            ->setCellValue('A4', 'Tahun Pelajaran')
+            ->setCellValue('B4', 'NIS')
+            ->setCellValue('C4', 'Nama Lengkap')
+            ->setCellValue('D4', 'Jurusan')
+            ->setCellValue('E4', 'Kelas')
+            ->setCellValue('F4', 'Iduka')
+            ->setCellValue('G4', 'Alamat');
+
+        $column = 5;
+
+        foreach ($data as $d) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $column, $d->tpName)
+                ->setCellValue('B' . $column, $d->nis)
+                ->setCellValue('C' . $column, $d->name)
+                ->setCellValue('D' . $column, $d->majorName)
+                ->setCellValue('E' . $column, $d->kelas)
+                ->setCellValue('F' . $column, $d->idukaName)
+                ->setCellValue('G' . $column, $d->address);
+
+            $column++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = date('Y-m-d-His') . '-Data-User';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 
     public function master_sekolah()
@@ -363,13 +410,11 @@ class  Admin extends BaseController
             'role' => $this->session->get('role'),
             'data' => $this->users->findAllByDetail()
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to($this->IApplicationConstant->auth);
-        }
-        if ($this->session->get('role') != 1) {
-            return redirect()->to($this->IApplicationConstant->authError);
-        }
-        return view('pages/admin/data-users', $data);
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/data-users',
+            $data,
+        );
     }
 
     public function print()
@@ -382,13 +427,11 @@ class  Admin extends BaseController
             'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll()
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to($this->IApplicationConstant->auth);
-        }
-        if ($this->session->get('role') != 1) {
-            return redirect()->to($this->IApplicationConstant->authError);
-        }
-        return view('pages/admin/print', $data);
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/print',
+            $data,
+        );
     }
 
     /**
@@ -469,11 +512,11 @@ class  Admin extends BaseController
     {
         $tp = $this->request->getVar('tp2');
         $major = $this->request->getVar('major_id2');
-        $result = $this->major->find($major);
+        $result = $this->masterData->findByTpAndMajor($tp, $major);
         $data = [
             'instansi' => $this->request->getVar('instansi'),
             'result' => $result,
-            'surat' => $this->surat->findByTp($tp)->getRow(),
+            'surat' => $this->nomorModel->findByTp($tp),
 //            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
         ];
         view('pages/general/cetak-surat-pengantar', $data);

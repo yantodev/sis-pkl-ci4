@@ -36,4 +36,12 @@ class NomorSuratModel extends Model
             ->where('nomor_surat.deleted_at', null)
             ->get()->getRow();
     }
+
+    public function findByTp($tp)
+    {
+        return $this->db->table('nomor_surat')
+            ->select('*')
+            ->where('tp_id', $tp)
+            ->get()->getRow();
+    }
 }
