@@ -43,6 +43,11 @@ class Teacher extends BaseController
         $response = $this->users->findTeacherDetailByEmail(
             $this->session->get('email'))->getRow();
         $tutor = $this->tutor->findByTeacherId($response->id);
+        if ($tutor) {
+            $dataStudent = $this->masterData->findByIdukaAndTp($tutor->idIduka, $tutor->tpId);
+        } else {
+            $dataStudent = null;
+        }
         $data = [
             'title' => "Dashboard",
             'validation' => \Config\Services::validation(),
@@ -51,7 +56,7 @@ class Teacher extends BaseController
             'role' => $this->session->get('role'),
             'data' => $response,
             'tutor' => $tutor,
-            'student' => $this->masterData->findByIdukaAndTp($tutor->idIduka, $tutor->tpId)
+            'student' => $dataStudent
         ];
         if (!$this->session->get('logged_in')) {
             return redirect()->to('/auth');

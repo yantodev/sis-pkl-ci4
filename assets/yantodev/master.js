@@ -25,8 +25,13 @@ function changeStatus(data) {
 function pendamping() {
     let major = document.getElementById("major").value;
     let tp = document.getElementById("tp1").value;
-    console.log(major, tp)
     window.location.href = baseUrl + '/admin/pendamping?major=' + major + '&tp=' + tp;
+}
+
+function rekapDataPKL() {
+    let major = document.getElementById("major").value;
+    let tp = document.getElementById("tp1").value;
+    window.location.href = baseUrl + '/admin/rekap?major=' + major + '&tp=' + tp;
 }
 
 async function addPendamping() {

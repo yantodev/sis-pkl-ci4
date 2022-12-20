@@ -57,6 +57,12 @@
                                 <p>Guru Pendamping</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('admin/rekap'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Rekap Data</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
