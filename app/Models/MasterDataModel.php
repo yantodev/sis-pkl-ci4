@@ -56,4 +56,17 @@ class MasterDataModel extends Model
             ->where('nis', $nis)
             ->update();
     }
+
+    public function findByTpAndMajor($tp, $major): array
+    {
+        return $this->db->table('master_data md')
+            ->select('md.id, ud.name')
+            ->join('tp', 'tp.id = md.tp_id')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->join('major m', 'm.id = i.major')
+            ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+            ->where('md.tp_id', $tp)
+            ->where('m.id', $major)
+            ->get()->getResult();
+    }
 }

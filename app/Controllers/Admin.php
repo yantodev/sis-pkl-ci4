@@ -114,6 +114,27 @@ class  Admin extends BaseController
         return view('pages/admin/data-pendamping', $data);
     }
 
+    public function rekap()
+    {
+        $tp = $this->request->getVar('tp') ?: false;
+        $major = $this->request->getVar('major') ?: false;
+        $data = [
+            'title' => "Rekap Data",
+            'subtitle' => "Rekap Data Lokasi PKL",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'data' => $major != null ? $this->masterData->findByTpAndMajor($tp, $major) : $this->tutor->findAllBy(),
+            'major' => $this->major->findAll(),
+            'tp' => $this->tp->findAll(),
+            'teacher' => $this->users->findAllTeacher()
+        ];
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/rekap-data',
+            $data
+        );
+    }
+
     public function master_sekolah()
     {
         $session = session();
@@ -463,4 +484,5 @@ class  Admin extends BaseController
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $mpdf->Output('Surat Pengantar.pdf', 'I');
     }
+
 }
