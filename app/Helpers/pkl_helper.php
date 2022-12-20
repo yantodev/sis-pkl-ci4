@@ -340,14 +340,25 @@ if (!function_exists('bulan')) {
         }
     }
 
-    function jk($data)
+    function jk($data): string
     {
         if ($data == 1) {
             return 'Laki-laki';
-        } else if ($data == 2) {
+        } elseif ($data == 2) {
             return 'Perempuan';
         } else {
             return "";
+        }
+    }
+
+    function statusPKL($data): string
+    {
+        if ($data == 1) {
+            return "Diterima";
+        } elseif ($data == 2) {
+            return "Ditolak";
+        } else {
+            return "Belum Verifikasi";
         }
     }
 }
