@@ -62,7 +62,7 @@ class MasterDataModel extends Model
         if ($tp && $major) {
             $response = $this->db->table('master_data md')
                 ->select(
-                    'md.id, ud.name, i.id as idukaId, i.name as idukaName,
+                    'md.id, md.status, ud.name, i.id as idukaId, i.name as idukaName,
                 ud.user_id as nis, class.name as kelas, m.name as majorName,
                 di.address, tp.name as tpName')
                 ->join('tp', 'tp.id = md.tp_id')
@@ -78,7 +78,7 @@ class MasterDataModel extends Model
         } else {
             $response = $this->db->table('master_data md')
                 ->select(
-                    'md.id, ud.name, i.id as idukaId, i.name as idukaName,
+                    'md.id, md.status, ud.name, i.id as idukaId, i.name as idukaName,
                 ud.user_id as nis, class.name as kelas, m.name as majorName,
                 di.address, tp.name as tpName')
                 ->join('tp', 'tp.id = md.tp_id')

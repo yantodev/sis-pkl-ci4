@@ -32,6 +32,7 @@
                 <th>Kelas</th>
                 <th>Iduka</th>
                 <th>Alamat</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -45,15 +46,23 @@
                     <td id="kelas"><?= $d->kelas; ?></td>
                     <td id="name"><?= $d->idukaName; ?></td>
                     <td id="name"><?= $d->address; ?></td>
+                    <td id="name"><?= statusPKL($d->status); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="<?= base_url('admin/rekapExcel?major=' . $dataMajor . '&tp=' . $dataTp); ?>">
-            <button class="btn btn-info">
-                <em class="fa fa-file-excel"></em> Export Excel
-            </button>
-        </a>
+        <div>
+            <a href="<?= base_url('admin/rekapExcel?major=' . $dataMajor . '&tp=' . $dataTp); ?>">
+                <button class="btn bg-gradient-green">
+                    <em class="fa fa-file-excel"></em> Export Excel
+                </button>
+            </a>
+            <a href="<?= base_url('admin/rekapPDF?major=' . $dataMajor . '&tp=' . $dataTp); ?>">
+                <button class="btn bg-gradient-red">
+                    <em class="fa fa-file-pdf"></em> Export PDF
+                </button>
+            </a>
+        </div>
     </div>
 </div>
 <?= $this->endSection() ?>; ?>

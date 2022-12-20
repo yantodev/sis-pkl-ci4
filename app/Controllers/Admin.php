@@ -155,7 +155,8 @@ class  Admin extends BaseController
             ->setCellValue('D4', 'Jurusan')
             ->setCellValue('E4', 'Kelas')
             ->setCellValue('F4', 'Iduka')
-            ->setCellValue('G4', 'Alamat');
+            ->setCellValue('G4', 'Alamat')
+            ->setCellValue('H4', 'Alamat');
 
         $column = 5;
 
@@ -167,19 +168,44 @@ class  Admin extends BaseController
                 ->setCellValue('D' . $column, $d->majorName)
                 ->setCellValue('E' . $column, $d->kelas)
                 ->setCellValue('F' . $column, $d->idukaName)
-                ->setCellValue('G' . $column, $d->address);
+                ->setCellValue('G' . $column, $d->address)
+                ->setCellValue('H' . $column, statusPKL($d->status));
 
             $column++;
         }
 
         $writer = new Xlsx($spreadsheet);
-        $filename = date('Y-m-d-His') . '-Data-User';
+        $filename = date('Y-m-d-His') . '-Rekap-Siswa';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+    }
+
+    public function rekapPDF()
+    {
+        $tp = $this->request->getVar('tp');
+        $major = $this->request->getVar('major');
+        $data = [
+            'title' => "Rekap Data",
+            'subtitle' => "Rekap Data Lokasi PKL",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'data' => $this->masterData->findByTpAndMajor($tp, $major),
+            'major' => $major,
+            'tp' => $tp,
+            'teacher' => $this->users->findAllTeacher(),
+        ];
+
+        view('pages/general/cetak-rekap-siswa', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-rekap-siswa', []);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('Surat Pengantar.pdf', 'I');
     }
 
     public function master_sekolah()
