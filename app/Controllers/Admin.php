@@ -217,7 +217,8 @@ class  Admin extends BaseController
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'validation' => \Config\Services::validation(),
-            'master' => $this->masterData->findById($id)
+            'master' => $this->masterData->findById($id),
+            'statusData' => '',
         ];
         return $this->ResponseBuilder->ReturnViewValidation(
             $this->session,
