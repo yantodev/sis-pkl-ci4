@@ -354,22 +354,22 @@ if (!function_exists('bulan')) {
     function statusPKL($data): string
     {
         if ($data == 1) {
-            return "<span class='badge badge-success'>Diterima</span>";
+            return "<badge class='badge badge-success'> <em class='fas fa-check-circle'></em> VERIFIKASI</badge>";
         } elseif ($data == 2) {
-            return "<span class='badge danger'>Ditolak</span>";
+            return "<badge class='badge danger'><em class='fas fa-times-circle'></em> REJECTED</badge>";
         } else {
-            return "<span class='badge badge-warning'>Belum verifikasi</span>";
+            return "<badge class='badge badge-warning'><em class='fas fa-question-circle'></em> BELUM VERIFIKASI</badge>";
         }
     }
 
     function statusPKLExcel($data): string
     {
         if ($data == 1) {
-            return "Diterima";
+            return "VERIFIKASI";
         } elseif ($data == 2) {
-            return "Ditolak";
+            return "REJECTED";
         } else {
-            return "Belum verifikasi";
+            return "BELUM VERIFIKASI";
         }
     }
 }

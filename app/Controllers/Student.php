@@ -8,12 +8,14 @@ use App\Models\MasterDataModel;
 use App\Models\UserDetailModel;
 use App\Models\UsersModel;
 use CodeIgniter\Session\Session;
+use Config\APIResponseBuilder;
 use Config\YantoDevConfig;
 
 /**
  * @property Session|mixed|null $session
  * @property ClassModel $class
  * @property UserDetailModel $userDetail
+ * @property APIResponseBuilder $ResponseBuilder
  */
 class Student extends BaseController
 {
@@ -22,6 +24,7 @@ class Student extends BaseController
     {
         $this->session = session();
         $this->config = new YantoDevConfig();
+        $this->ResponseBuilder = new APIResponseBuilder();
         $this->usersModel = new UsersModel();
         $this->major = new MajorModel();
         $this->class = new ClassModel();
@@ -46,7 +49,7 @@ class Student extends BaseController
             'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
             'master' => $res,
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
-            'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
+            'dataIduka' => $this->masterData->findByUserPublicId($response->id),
         ];
         if (!$this->session->get('logged_in')) {
             return redirect()->to('/auth');
@@ -229,5 +232,27 @@ class Student extends BaseController
             return redirect()->to('/auth/error');
         }
         return view('pages/student/iduka', $data);
+    }
+
+    public function verifikasi()
+    {
+        $response = $this->users->findUserDetailByEmail(
+            $this->session->get('email'))->getRow();
+        $id = $this->request->getVar('id');
+        $data = [
+            'title' => "Verifikasi Data",
+            'users' => $this->session->get('email'),
+            'users_id' => $this->session->get('id'),
+            'role' => $this->session->get('role'),
+            'validation' => \Config\Services::validation(),
+            'data' => $response,
+            'master' => $this->masterData->findById($id),
+            'statusData' => $this->request->getVar('statusData')
+        ];
+        return $this->ResponseBuilder->ReturnViewValidationStudent(
+            $this->session,
+            'pages/admin/verifikasi-data-pkl',
+            $data
+        );
     }
 }

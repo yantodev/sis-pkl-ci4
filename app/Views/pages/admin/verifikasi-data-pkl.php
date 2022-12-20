@@ -9,12 +9,15 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form action="<?= base_url('admin/verificationData'); ?>" method="post" enctype="multipart/form-data">
-            <input type="text" class="form-control" id="id" name="id" value="<?= $data->id; ?>" hidden>
-            <input type="text" class="form-control" id="oldImage" name="oldImage" value="<?= $data->image; ?>" hidden>
+            <input type="text" class="form-control" id="id" name="id" value="<?= $master->id; ?>" hidden>
+            <input type="text" class="form-control" id="oldImage" name="oldImage" value="<?= $master->image; ?>" hidden>
+            <input type="text" class="form-control" id="statusData" name="statusData" value="<?= $statusData; ?>"
+                   hidden>
             <div class="card-body">
                 <div class="form-group">
                     <label for="exampleInputPassword1">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<?= $data->name; ?>" readonly>
+                    <input type="text" class="form-control" id="name" name="name" value="<?= $master->name; ?>"
+                           readonly>
                     <div class="invalid-feedback">
                         <?= $validation->getError('name'); ?>
                     </div>
@@ -22,7 +25,7 @@
                 <div class="form-group">
                     <label for="nis">NIS (Nomor Induk Siswa)</label>
                     <input type="text" class="form-control <?= $validation->hasError('nis') ? 'is-invalid' : ''; ?>"
-                           id="nis" name="nis" <?= old('nis'); ?> value="<?= $data->nis; ?>" readonly>
+                           id="nis" name="nis" <?= old('nis'); ?> value="<?= $master->nis; ?>" readonly>
                     <div class="invalid-feedback">
                         <?= $validation->getError('nis'); ?>
                     </div>
@@ -30,7 +33,7 @@
                 <div class="form-group">
                     <label for="iduka">Iduka</label>
                     <input type="text" class="form-control <?= $validation->hasError('iduka') ? 'is-invalid' : ''; ?>"
-                           id="iduka" name="iduka" <?= old('iduka'); ?> value="<?= $data->iduka; ?>" readonly>
+                           id="iduka" name="iduka" <?= old('iduka'); ?> value="<?= $master->iduka; ?>" readonly>
                     <div class="invalid-feedback">
                         <?= $validation->getError('iduka'); ?>
                     </div>
@@ -38,7 +41,7 @@
                 <div class="form-group">
                     <label for="address">Alamat Iduka</label>
                     <input type="text" class="form-control <?= $validation->hasError('address') ? 'is-invalid' : ''; ?>"
-                           id="address" name="address" <?= old('address'); ?> value="<?= $data->address; ?>" readonly>
+                           id="address" name="address" <?= old('address'); ?> value="<?= $master->address; ?>" readonly>
                     <div class="invalid-feedback">
                         <?= $validation->getError('address'); ?>
                     </div>
@@ -59,7 +62,7 @@
                     <label>Photo Surat Balasan</label>
                     <div class="row">
                         <div class="col-sm-2">
-                            <img src="<?= base_url('/assets/img/verifikasi/' . $data->image); ?>" alt="profile"
+                            <img src="<?= base_url('/assets/img/verifikasi/' . $master->image); ?>" alt="profile"
                                  class="img-thumbnail img-preview">
                         </div>
                         <div class="custom-file col-sm-10">
@@ -70,7 +73,7 @@
                             <div class="invalid-feedback">
                                 <?= $validation->getError('image'); ?>
                             </div>
-                            <label class="custom-file-label" for="profile"><?= $data->image; ?></label>
+                            <label class="custom-file-label" for="profile"><?= $master->image; ?></label>
                         </div>
                     </div>
                 </div>

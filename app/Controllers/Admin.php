@@ -217,7 +217,7 @@ class  Admin extends BaseController
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'validation' => \Config\Services::validation(),
-            'data' => $this->masterData->findById($id)
+            'master' => $this->masterData->findById($id)
         ];
         return $this->ResponseBuilder->ReturnViewValidation(
             $this->session,
@@ -232,6 +232,7 @@ class  Admin extends BaseController
         helper(['form']);
         $id = $this->request->getVar('id');
         $status = $this->request->getVar('status');
+        $statusData = $this->request->getVar('statusData');
         $oldImage = $this->request->getVar('oldImage');
         $fileImage = $this->request->getFile('image');
         try {
@@ -252,7 +253,11 @@ class  Admin extends BaseController
                 'status' => $status
             ]);
             $this->session->setFlashdata('success', 'Data is updated!!!');
-            return redirect()->to('/admin/rekap');
+            if ($statusData == 'student') {
+                return redirect()->to('/student');
+            } else {
+                return redirect()->to('/admin/rekap');
+            }
         } catch (ReflectionException $e) {
             $this->session->setFlashdata('error', $e);
         }
