@@ -26,11 +26,12 @@
             <thead>
             <tr>
                 <th width="10px">No</th>
-                <th>NIP/NBM</th>
-                <th>Nama</th>
-                <th>Iduka</th>
                 <th>Tahun Pelajaran</th>
-                <th>Action</th>
+                <th>NIS</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>Iduka</th>
+                <th>Alamat</th>
             </tr>
             </thead>
             <tbody>
@@ -38,73 +39,21 @@
             <?php foreach ($data as $d) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
+                    <td id="name"><?= $d->tpName; ?></td>
+                    <td id="name"><?= $d->nis; ?></td>
                     <td id="name"><?= $d->name; ?></td>
-                    <td id="name"><?= $d->name; ?></td>
-                    <td id="name"><?= $d->name; ?></td>
-                    <td id="name"><?= $d->name; ?></td>
-                    <td>
-                        <button class="btn btn-primary btn-xs" onclick="
-                                editTutor(<?= $d->id; ?>)" data-toggle="modal" data-target="#modal-edit"> Edit
-                        </button>
-                        <button class="btn btn-danger btn-xs" onclick="
-                                deleteTutor(<?= $d->id; ?>)" data-toggle="modal" data-target="#modal-edit"> Hapus
-                        </button>
-                    </td>
+                    <td id="kelas"><?= $d->kelas; ?></td>
+                    <td id="name"><?= $d->idukaName; ?></td>
+                    <td id="name"><?= $d->address; ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
-        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-default">
-            <i class="fa fa-plus"></i> Tambah Pendamping
-        </button>
-    </div>
-</div>
-<div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Cetak Surat Permohonan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <select class="form-control" type="text" id="tp" name="tp" required>
-                        <option value="">--Pilih Tahun Pelajaran--</option>
-                        <?php foreach ($tp as $m): ?>
-                            <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control" type="text" id="major_id" name="major_id"
-                            onchange="getAllIdukaByTp()" required>
-                        <option value="">--Pilih Jurusan--</option>
-                        <?php foreach ($major as $m): ?>
-                            <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control" type="text" id="iduka" name="iduka" required>
-                        <option value="">--Pilih Iduka--</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select class="form-control" type="text" id="teacher" name="teacher" required>
-                        <option value="">--Pilih Guru--</option>
-                        <?php foreach ($teacher as $t): ?>
-                            <option value="<?= $t->id; ?>"><?= $t->name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" onclick="addPendamping()">Save</button>
-            </div>
-        </div>
+        <a href="<?= base_url('admin/rekapExcel?major=' . $dataMajor . '&tp=' . $dataTp); ?>">
+            <button class="btn btn-info">
+                <em class="fa fa-file-excel"></em> Export Excel
+            </button>
+        </a>
     </div>
 </div>
 <?= $this->endSection() ?>; ?>
