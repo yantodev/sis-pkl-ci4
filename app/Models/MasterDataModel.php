@@ -9,7 +9,7 @@ class MasterDataModel extends Model
     protected $table = 'master_data';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['user_public_id', 'nis', 'iduka_id', 'tp_id'];
+    protected $allowedFields = ['user_public_id', 'nis', 'iduka_id', 'tp_id', 'status', 'image'];
 
     public function findByNis($nis)
     {
@@ -91,5 +91,19 @@ class MasterDataModel extends Model
                 ->get()->getResult();
         }
         return $response;
+    }
+
+    public function findById($id)
+    {
+        return $this->db->table('master_data md')
+            ->select('md.id, md.image,
+                            ud.name, ud.user_id as nis,
+                            i.name as iduka,
+                            di.address')
+            ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->join('detail_iduka di', 'di.id_iduka = md.iduka_id')
+            ->where('md.id', $id)
+            ->get()->getRow();
     }
 }

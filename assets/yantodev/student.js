@@ -87,6 +87,21 @@ function imagePreview() {
     }
 }
 
+function imageVerifikasiPreview() {
+    const imageProfile = document.querySelector('#image');
+    const imageLabel = document.querySelector('.custom-file-label');
+    const imagePreview = document.querySelector('.img-preview');
+
+    imageLabel.textContent = imageProfile.files[0].name;
+
+    const fileImage = new FileReader();
+    fileImage.readAsDataURL(imageProfile.files[0]);
+
+    fileImage.onload = function (e) {
+        imagePreview.src = e.target.result;
+    }
+}
+
 async function updateIdukaStudent(nis, id) {
     let iduka = await findIdukaById(id).then(x => {
             return x.name

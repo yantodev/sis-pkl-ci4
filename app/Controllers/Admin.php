@@ -156,7 +156,7 @@ class  Admin extends BaseController
             ->setCellValue('E4', 'Kelas')
             ->setCellValue('F4', 'Iduka')
             ->setCellValue('G4', 'Alamat')
-            ->setCellValue('H4', 'Alamat');
+            ->setCellValue('H4', 'Status');
 
         $column = 5;
 
@@ -169,7 +169,7 @@ class  Admin extends BaseController
                 ->setCellValue('E' . $column, $d->kelas)
                 ->setCellValue('F' . $column, $d->idukaName)
                 ->setCellValue('G' . $column, $d->address)
-                ->setCellValue('H' . $column, statusPKL($d->status));
+                ->setCellValue('H' . $column, statusPKLExcel($d->status));
 
             $column++;
         }
@@ -206,6 +206,56 @@ class  Admin extends BaseController
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $mpdf->Output('Surat Pengantar.pdf', 'I');
+    }
+
+    public function verifikasi()
+    {
+        $id = $this->request->getVar('id');
+        $data = [
+            'title' => "Verifikasi Data",
+            'subtitle' => "Rekap Data Lokasi PKL",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'validation' => \Config\Services::validation(),
+            'data' => $this->masterData->findById($id)
+        ];
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/verifikasi-data-pkl',
+            $data
+        );
+
+    }
+
+    public function verificationData()
+    {
+        helper(['form']);
+        $id = $this->request->getVar('id');
+        $status = $this->request->getVar('status');
+        $oldImage = $this->request->getVar('oldImage');
+        $fileImage = $this->request->getFile('image');
+        try {
+            if (!$this->validate($this->config->formValidationVerifikasiDataPKL())) {
+                return redirect()->to('/admin/verifikasi?id=' . $id)->withInput();
+            }
+            if ($fileImage->getError() == 4) {
+                $imageName = $oldImage;
+            } else {
+                $imageName = $fileImage->getRandomName();
+                $fileImage->move('assets/img/verifikasi', $imageName);
+                if ($oldImage != 'no_image.jpg') {
+                    unlink('assets/img/verifikasi/' . $oldImage);
+                }
+            }
+            $this->masterData->update($id, [
+                'image' => $imageName,
+                'status' => $status
+            ]);
+            $this->session->setFlashdata('success', 'Data is updated!!!');
+            return redirect()->to('/admin/rekap');
+        } catch (ReflectionException $e) {
+            $this->session->setFlashdata('error', $e);
+        }
     }
 
     public function master_sekolah()
