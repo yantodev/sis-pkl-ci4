@@ -65,4 +65,23 @@ class YantoDevConfig extends BaseConfig
             ],
         ];
     }
+
+    public function formValidationVerifikasiDataPKL(): array
+    {
+        return [
+            'status' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi!!!',
+                ]
+            ],
+            'image' => [
+                'rules' => 'max_size[image,10240]|is_image[image]',
+                'errors' => [
+                    'max_size' => 'Ukuran foto terlalu besar!!!',
+                    'is_image' => 'Yang dipilih bukan image!!!'
+                ]
+            ]
+        ];
+    }
 }

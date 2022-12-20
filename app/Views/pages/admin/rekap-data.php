@@ -33,6 +33,7 @@
                 <th>Iduka</th>
                 <th>Alamat</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -47,6 +48,11 @@
                     <td id="name"><?= $d->idukaName; ?></td>
                     <td id="name"><?= $d->address; ?></td>
                     <td id="name"><?= statusPKL($d->status); ?></td>
+                    <td>
+                        <a href="<?= base_url('admin/verifikasi?id=' . $d->id); ?>">
+                            <button class="btn bg-green">Verifikasi</button>
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
