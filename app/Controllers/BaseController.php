@@ -55,7 +55,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['tanggal_helper'];
+    protected $helpers = ['pkl_helper'];
 
     /**
      * Constructor.
