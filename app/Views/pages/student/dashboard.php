@@ -15,10 +15,32 @@
                                  alt="User Image" width="150px">
                         </div>
                         <div class="col-lg-9">
-                            <h4>
-                                Saat ini anda terdaftar PKL di <b><?= $dataIduka->name; ?></b>
-                                yang beralamat di <b><?= $dataIduka->address; ?></b>
-                            </h4>
+                            <div>
+                                <div class="row">
+                                    <p class="column">Lokasi PKL</p>
+                                    <p class="column-name">: <?= $dataIduka->iduka; ?></p>
+                                </div>
+                                <div class="row">
+                                    <p class="column">Alamat</p>
+                                    <p class="column-name">: <?= $dataIduka->address; ?> </p>
+                                </div>
+                                <div class="row">
+                                    <p class="column">Status</p>
+                                    <p class="column-name">:
+                                        <?= statusPKL($dataIduka->status); ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <?php if (!$dataIduka->status): ?>
+                                    <a href="<?= base_url('student/verifikasi?id=' . $dataIduka->id . '&statusData=student'); ?>">
+                                        <button class="btn bg-gradient-green">
+                                            <em class="fas fa-check-circle"></em>
+                                            VERIFIKASI SEKARANG
+                                        </button>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>

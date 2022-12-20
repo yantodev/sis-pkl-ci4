@@ -82,4 +82,15 @@ class APIResponseBuilder extends BaseConfig
         }
         return view($url, $data);
     }
+
+    public function ReturnViewValidationStudent($session, $url, $data)
+    {
+        if (!$session->get('logged_in')) {
+            return redirect()->to($this->IApplicationConstant->auth);
+        }
+        if ($session->get('role') != 3) {
+            return redirect()->to($this->IApplicationConstant->authError);
+        }
+        return view($url, $data);
+    }
 }
