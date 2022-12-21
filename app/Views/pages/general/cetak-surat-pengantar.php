@@ -49,12 +49,13 @@
         </p>
         <p>
             Selanjutnya para peserta PKL kami serahkan sepenuhnya kepada Bapak/Ibu untuk mendapatkan
-            bimbingan, pendidikan dan pelatihan, mulai tanggal 04 Januari 2022 sampai dengan 31 Maret 2022.
+            bimbingan, pendidikan dan pelatihan, mulai tanggal 02 januari 2023 sampai dengan 31 maret 2023.
             Pada akhir PKL nanti kami mohon kepada Bapak/Ibu berkenan memberikan nilai terhadap siswa
-            peserta PKL tersebut. Mengenai format penilaian, petunjuk penilaian, buku absen siswa ada
-            pada buku laporan pembimbing. Setelah selesai masa PKL para siswa juga diwajibkan
-            mengumpulkan buku laporan kegiatan PKL yang telah ditandatangani oleh Pembimbing
-            IDUKA pada setiap jenis pekerjaan
+            peserta PKL tersebut.
+            <strong>Mengenai format penilaian, petunjuk penilaian, buku absen siswa ada
+                pada buku laporan pembimbing. Setelah selesai masa PKL para siswa juga diwajibkan
+                mengumpulkan buku laporan kegiatan PKL yang telah ditandatangani oleh Pembimbing
+                IDUKA pada setiap jenis pekerjaan.</strong>
         </p>
         <p>
             Demikian atas perhatian dan kerjasamanya kami sampaikan terimakasih.
