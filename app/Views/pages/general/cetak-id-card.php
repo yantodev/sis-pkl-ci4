@@ -134,7 +134,7 @@
                         <?= $siswa->detail_tgl; ?>
                     </div>
                     <div class="link">
-                        <a href="https://data.smkmuhkarangmojo.sch.id" target="_blank">https://data.smkmuhkarangmojo.sch.id</a>
+                        <a href="https://pkl.smkmuhkarangmojo.sch.id" target="_blank">https://pkl.smkmuhkarangmojo.sch.id</a>
                     </div>
                 </div>
             </div>
