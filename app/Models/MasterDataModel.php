@@ -64,13 +64,16 @@ class MasterDataModel extends Model
                 ->select(
                     'md.id, md.status, ud.name, i.id as idukaId, i.name as idukaName,
                 ud.user_id as nis, class.name as kelas, m.name as majorName,
-                di.address, tp.name as tpName')
+                di.address, tp.name as tpName, teacher.name as teacherName, teacher.hp, surat.detail_tgl')
                 ->join('tp', 'tp.id = md.tp_id')
                 ->join('iduka i', 'i.id = md.iduka_id')
                 ->join('detail_iduka di', 'di.id_iduka = i.id')
                 ->join('major m', 'm.id = i.major')
                 ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
                 ->join('class', 'class.id = ud.class_id', 'left')
+                ->join('tutor', 'tutor.iduka_id = i.id', 'left')
+                ->join('teacher', 'teacher.user_public_id = tutor.teacher_id', 'left')
+                ->join('tbl_surat surat', 'surat.id_tp = md.tp_id', 'left')
                 ->where('md.tp_id', $tp)
                 ->where('m.id', $major)
                 ->orderBy('i.name', 'ASC')

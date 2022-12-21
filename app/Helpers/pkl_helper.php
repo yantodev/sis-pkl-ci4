@@ -356,7 +356,7 @@ if (!function_exists('bulan')) {
         if ($data == 1) {
             return "<badge class='badge badge-success'> <em class='fas fa-check-circle'></em> VERIFIKASI</badge>";
         } elseif ($data == 2) {
-            return "<badge class='badge danger'><em class='fas fa-times-circle'></em> REJECTED</badge>";
+            return "<badge class='badge badge-danger'><em class='fas fa-times-circle'></em> REJECTED</badge>";
         } else {
             return "<badge class='badge badge-warning'><em class='fas fa-question-circle'></em> BELUM VERIFIKASI</badge>";
         }
