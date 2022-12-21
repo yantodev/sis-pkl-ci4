@@ -103,7 +103,7 @@ class  Admin extends BaseController
             'subtitle' => "Guru Pendamping Siswa",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
-            'tutor' => $major != null ? $this->tutor->findByTpAndMajor($tp, $major) : $this->tutor->findAllBy(),
+            'tutor' => $this->tutor->findByTpAndMajor($tp, $major),
             'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll(),
             'teacher' => $this->users->findAllTeacher()

@@ -74,6 +74,7 @@ class MasterDataModel extends Model
                 ->join('tutor', 'tutor.iduka_id = i.id', 'left')
                 ->join('teacher', 'teacher.user_public_id = tutor.teacher_id', 'left')
                 ->join('tbl_surat surat', 'surat.id_tp = md.tp_id', 'left')
+                ->where('tutor.deleted_at', null)
                 ->where('md.tp_id', $tp)
                 ->where('m.id', $major)
                 ->orderBy('i.name', 'ASC')
