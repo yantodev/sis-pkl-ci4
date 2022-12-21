@@ -7,6 +7,7 @@
     "require": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         "php": "^7.4 || ^8.0",
         "ext-curl": "*",
         "ext-intl": "*",
@@ -21,6 +22,8 @@
 =======
 =======
 >>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
+=======
+>>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
       "php": "^7.4 || ^8.0",
       "ext-curl": "*",
       "ext-intl": "*",
@@ -33,7 +36,10 @@
       "phpoffice/phpspreadsheet": "^1.25",
       "mpdf/qrcode": "^1.2"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 93a884fdeb50785095a30e8ab310951c8d224312
+=======
+>>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
 =======
 >>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
     },

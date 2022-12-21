@@ -135,7 +135,11 @@
                     </div>
                     <div class="link">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="https://data.smkmuhkarangmojo.sch.id" target="_blank">https://data.smkmuhkarangmojo.sch.id</a>
+=======
+                        <a href="https://pkl.smkmuhkarangmojo.sch.id" target="_blank">https://pkl.smkmuhkarangmojo.sch.id</a>
+>>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
 =======
                         <a href="https://pkl.smkmuhkarangmojo.sch.id" target="_blank">https://pkl.smkmuhkarangmojo.sch.id</a>
 >>>>>>> 23daa9033de941e68df975a12ca3b1edb2a0fb57
