@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-surat-tugas">
+<div class="modal fade" id="modal-id-card">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,11 +8,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('/admin/printAssignmentLetter'); ?>" method="post">
+                <form action="<?= base_url('/admin/printIdCard'); ?>" method="post">
                     <div class="form-group">
                         <label for="tp-tugas">Tahun Pelajaran</label>
-                        <select class="form-control" type="text" id="tp-tugas" name="tp-tugas" required
-                                onchange="findTeacherByTp()">
+                        <select class="form-control" type="text" id="tpIdCard" name="tpIdCard" required>
                             <option value="">--Pilih Tahun Pelajaran--</option>
                             <?php foreach ($tp as $m): ?>
                                 <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
@@ -20,9 +19,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="teacher">Guru</label>
-                        <select class="form-control" type="text" id="teacher" name="teacher" required>
-                            <option value="">--Pilih Guru--</option>
+                        <label for="teacher">Jurusan</label>
+                        <select class="form-control" type="text" id="majorIdCard" name="majorIdCard" required>
+                            <option value="">--Pilih Jurusan--</option>
+                            <?php foreach ($major as $m): ?>
+                                <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
             </div>

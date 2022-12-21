@@ -610,4 +610,24 @@ class  Admin extends BaseController
         $mpdf->Output('Surat Pengantar.pdf', 'I');
     }
 
+    public function printIdCard()
+    {
+        $tp = $this->request->getVar('tpIdCard');
+        $major = $this->request->getVar('majorIdCard');
+        $result = $this->masterData->findByTpAndMajor($tp, $major);
+        $data = [
+            'instansi' => $this->request->getVar('instansi'),
+            'result' => $result,
+            'surat' => $this->nomorModel->findByTp($tp),
+            'data' => $this->masterData->findByTpAndMajor($tp, $major)
+        ];
+        view('pages/general/cetak-id-card', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-id-card', []);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
 }
