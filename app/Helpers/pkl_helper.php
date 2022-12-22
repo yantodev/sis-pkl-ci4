@@ -372,4 +372,29 @@ if (!function_exists('bulan')) {
             return "BELUM VERIFIKASI";
         }
     }
+
+    function numberWA($data): string
+    {
+        // kadang ada penulisan no hp 0811 239 345
+        $data = str_replace(" ", "", $data);
+        // kadang ada penulisan no hp (0274) 778787
+        $data = str_replace("(", "", $data);
+        // kadang ada penulisan no hp (0274) 778787
+        $data = str_replace(")", "", $data);
+        // kadang ada penulisan no hp 0811.239.345
+        $data = str_replace(".", "", $data);
+        // cek apakah no hp mengandung karakter + dan 0-9
+        if (!preg_match('/[^+0-9]/', trim($data))) {
+            // cek apakah no hp karakter 1-3 adalah +62
+            if (substr(trim($data), 0, 3) == '+62') {
+                $result = trim($data);
+                // cek apakah no hp karakter 1 adalah 0
+            } elseif (substr(trim($data), 0, 1) == '0') {
+                $result = '62' . substr(trim($data), 1);
+            } elseif (substr(trim($data), 0, 1) == '8') {
+                $result = '628' . substr(trim($data), 1);
+            }
+        }
+        return $result;
+    }
 }

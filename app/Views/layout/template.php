@@ -17,6 +17,7 @@
             $(".preloader").finish();
         })
     </script>
+    <script src="https://kit.fontawesome.com/41781f79df.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">

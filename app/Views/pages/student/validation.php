@@ -130,6 +130,9 @@
                 </div>
                 <input type="text" class="form-control" id="tp_id" name="tp_id" value="<?= $data ? $data->tp : ''; ?>"
                        hidden>
+                <input type="text" class="form-control" id="user_public_id" name="user_public_id"
+                       value="<?= $data ? $data->id : ''; ?>"
+                       hidden>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
