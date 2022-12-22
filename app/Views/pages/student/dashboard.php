@@ -15,22 +15,38 @@
                                  alt="User Image" width="150px">
                         </div>
                         <div class="col-lg-9">
-                            <div>
-                                <div class="row">
-                                    <p class="column">Lokasi PKL</p>
-                                    <p class="column-name">: <?= $dataIduka->iduka; ?></p>
-                                </div>
-                                <div class="row">
-                                    <p class="column">Alamat</p>
-                                    <p class="column-name">: <?= $dataIduka->address; ?> </p>
-                                </div>
-                                <div class="row">
-                                    <p class="column">Status</p>
-                                    <p class="column-name">:
-                                        <?= statusPKL($dataIduka->status); ?>
-                                    </p>
-                                </div>
-                            </div>
+                            <table>
+                                <tr>
+                                    <td class="column">Lokasi PKL</td>
+                                    <td class="column2">:</td>
+                                    <td class="column-name"><?= $dataIduka->iduka; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="column">Alamat</td>
+                                    <td class="column2">:</td>
+                                    <td class="column-name"><?= $dataIduka->address; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="column">Status</td>
+                                    <td class="column2">:</td>
+                                    <td class="column-name"><?= statusPKL($dataIduka->status); ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="column">Pendamping</td>
+                                    <td class="column2">:</td>
+                                    <td class="column-name"><?= $dataIduka->teacher; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="column">Hp. Guru</td>
+                                    <td class="column2">:</td>
+                                    <td class="column-name">
+                                        <a href="https://wa.me/<?= numberWA($dataIduka->hp); ?>?text=Assalamu'alikum">
+                                            <em class="fa-brands fa-whatsapp"></em>
+                                            <?= numberWA($dataIduka->hp); ?>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                             <div class="mt-3">
                                 <?php if (!$dataIduka->status): ?>
                                     <a href="<?= base_url('student/verifikasi?id=' . $dataIduka->id . '&statusData=student'); ?>">

@@ -37,31 +37,39 @@ class Student extends BaseController
         $response = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
-        $data = [
+        if ($response && $res) {
+            return $this->ResponseBuilder->ReturnViewValidationStudent(
+                $this->session,
+                'pages/student/dashboard',
+                [
+                    'title' => "Dashboard",
+                    'validation' => \Config\Services::validation(),
+                    'users' => $this->session->get('email'),
+                    'users_id' => $this->session->get('id'),
+                    'role' => $this->session->get('role'),
+                    'data' => $response,
+                    'master' => $res,
+                    'dataIduka' => $this->masterData->findByUserPublicId($response->id),
+                    'major' => $this->major->findAll(),
+                    'tp' => $this->tp->findAll(),
+                    'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
+                    'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
+                ]
+            );
+//            return view('pages/student/dashboard', $data);
+        }
+        return view('pages/student/validation', [
             'title' => "Dashboard",
             'validation' => \Config\Services::validation(),
             'users' => $this->session->get('email'),
             'users_id' => $this->session->get('id'),
-            'role' => $this->session->get('role'),
-            'data' => $response,
-            'major' => $this->major->findAll(),
             'tp' => $this->tp->findAll(),
+            'major' => $this->major->findAll(),
             'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
+            'data' => $response,
             'master' => $res,
-            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
-            'dataIduka' => $this->masterData->findByUserPublicId($response->id),
-        ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 3) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
-        if ($response && $res) {
-            return view('pages/student/dashboard', $data);
-        }
-        return view('pages/student/validation', $data);
+            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : false),
+        ]);
     }
 
     function addDetail(): \CodeIgniter\HTTP\RedirectResponse
@@ -117,6 +125,7 @@ class Student extends BaseController
             return redirect()->to('/student')->withInput();
         }
         $data = [
+            'user_public_id' => $this->request->getVar('user_public_id'),
             'nis' => $this->request->getVar('nis'),
             'tp_id' => $this->request->getVar('tp_id'),
             'iduka_id' => $this->request->getVar('iduka_id'),
