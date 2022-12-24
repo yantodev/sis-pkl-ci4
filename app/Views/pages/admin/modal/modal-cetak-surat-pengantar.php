@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <form action="<?= base_url('/admin/printCoveringLetter'); ?>" method="post">
                     <div class="form-group">
-                        <select class="form-control" type="text" id="tp2" name="tp2" required>
+                        <select class="form-control" type="text" id="tp_pengantar" name="tp_pengantar" required>
                             <option value="">--Pilih Tahun Pelajaran--</option>
                             <?php foreach ($tp as $m): ?>
                                 <option value="<?= $m['id']; ?>"><?= $m['name']; ?></option>
@@ -18,7 +18,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <select class="form-control" type="text" id="major_id2" name="major_id2"
+                        <select class="form-control" type="text" id="major_id_pengantar" name="major_id_pengantar"
                                 required>
                             <option value="">--Pilih Jurusan--</option>
                             <?php foreach ($major as $m): ?>

@@ -190,7 +190,6 @@ class  Admin extends BaseController
         $major = $this->request->getVar('major');
         $data = [
             'title' => "Rekap Data",
-            'subtitle' => "Rekap Data Lokasi PKL",
             'users' => $this->session->get('email'),
             'role' => $this->session->get('role'),
             'data' => $this->masterData->findByTpAndMajor($tp, $major),
@@ -569,7 +568,7 @@ class  Admin extends BaseController
      */
     public function printAssignmentLetter()
     {
-        $tp = $this->request->getVar('tp-tugas');
+        $tp = $this->request->getVar('tp_tugas');
         $teacherId = $this->request->getVar('teacher');
         $result = $this->teacher->findByUserPublicId($teacherId);
         $iduka = $this->tutor->findByTeacherIdAndTp($teacherId, $tp);
@@ -592,8 +591,8 @@ class  Admin extends BaseController
      */
     public function printCoveringLetter()
     {
-        $tp = $this->request->getVar('tp2');
-        $major = $this->request->getVar('major_id2');
+        $tp = $this->request->getVar('tp_pengantar');
+        $major = $this->request->getVar('major_id_pengantar');
         $result = $this->masterData->findByTpAndMajor($tp, $major);
         $data = [
             'instansi' => $this->request->getVar('instansi'),
@@ -625,6 +624,72 @@ class  Admin extends BaseController
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->showImageErrors = true;
         $html = view('pages/general/cetak-id-card', []);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
+    public function printLetterHead()
+    {
+        $tp = $this->request->getVar('tp_kop');
+        $major = $this->request->getVar('major_id_kop');
+        $data = [
+            'instansi' => $this->request->getVar('instansi'),
+            'surat' => $this->nomorModel->findByTp($tp),
+            'data' => $this->idukaModel->findById($this->request->getVar('kop-surat-iduka')),
+            'hal' => $this->request->getVar('hal')
+        ];
+        view('pages/general/cetak-kop-surat', $data);
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => [110, 220],
+            'orientation' => 'L',
+            'setAutoTopMargin' => false,
+        ]);
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-kop-surat', []);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
+    public function printLetterDisposition()
+    {
+        $tp = $this->request->getVar('tp_surat_jalan');
+        $data = [
+            'instansi' => $this->request->getVar('instansi'),
+            'surat' => $this->nomorModel->findByTp($tp),
+            'iduka' => $this->masterData->findByTp($tp),
+            'nomor' => $this->nomorModel->findByTpAndCategory($tp, 3),
+            'tp' => $tp
+        ];
+        view('pages/general/cetak-surat-jalan', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-surat-jalan', [
+            ini_set("pcre.backtrack_limit", "5000000")
+        ]);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
+    public function printParticipantList()
+    {
+        $tp = $this->request->getVar('tp_daftar_siswa');
+        $data = [
+            'surat' => $this->nomorModel->findByTp($tp),
+            'iduka' => $this->masterData->findByTp($tp),
+            'nomor' => $this->nomorModel->findByTpAndCategory($tp, 3),
+            'tp' => $tp,
+            'dataTp' => $this->tp->find($tp)
+        ];
+        view('pages/general/cetak-daftar-peserta', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-daftar-peserta', [
+            ini_set("pcre.backtrack_limit", "5000000")
+        ]);
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $mpdf->Output('ID Card.pdf', 'I');
