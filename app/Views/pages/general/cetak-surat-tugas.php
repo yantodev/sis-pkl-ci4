@@ -22,18 +22,20 @@
 <p>Kepala SMK Muhammadiyah Karangmojo Gunungkidul, memberi tugas kepada :
 </p>
 <div class="container">
-    <div class="row">
-        <p class="column">Nama</p>
-        <p class="column-name">: <?= $result->name; ?></p>
-    </div>
-    <div class="row">
-        <p class="column">NBM</p>
-        <p class="column-name">: <?= $result->nbm; ?></p>
-    </div>
-    <div class="row">
-        <p class="column">Jabatan</p>
-        <p class="column-name">: Guru</p>
-    </div>
+    <table>
+        <tr>
+            <td>Nama</td>
+            <td class="column-name">: <?= $result->name; ?></td>
+        </tr>
+        <tr>
+            <td>NBM</td>
+            <td class="column-name">: <?= $result->nbm; ?></td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td class="column-name">: <?= $result->position; ?></td>
+        </tr>
+    </table>
 </div>
 
 <p>Sebagai guru pembimbing dalam praktik kerja lapangan, pada :</p>
