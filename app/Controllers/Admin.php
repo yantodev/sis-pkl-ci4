@@ -156,7 +156,8 @@ class  Admin extends BaseController
             ->setCellValue('E4', 'Kelas')
             ->setCellValue('F4', 'Iduka')
             ->setCellValue('G4', 'Alamat')
-            ->setCellValue('H4', 'Status');
+            ->setCellValue('H4', 'Guru Pendamping')
+            ->setCellValue('I4', 'Status');
 
         $column = 5;
 
@@ -169,7 +170,8 @@ class  Admin extends BaseController
                 ->setCellValue('E' . $column, $d->kelas)
                 ->setCellValue('F' . $column, $d->idukaName)
                 ->setCellValue('G' . $column, $d->address)
-                ->setCellValue('H' . $column, statusPKLExcel($d->status));
+                ->setCellValue('H' . $column, $d->teacherName)
+                ->setCellValue('I' . $column, statusPKLExcel($d->status));
 
             $column++;
         }

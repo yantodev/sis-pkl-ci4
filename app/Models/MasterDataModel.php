@@ -89,13 +89,14 @@ class MasterDataModel extends Model
                     select md.id,
                            md.status,
                            ud.name,
-                           i.id       as idukaId,
-                           i.name     as idukaName,
-                           ud.user_id as nis,
-                           c.name as kelas,
-                           m.name     as majorName,
+                           i.id         as idukaId,
+                           i.name       as idukaName,
+                           ud.user_id   as nis,
+                           c.name       as kelas,
+                           m.name       as majorName,
                            di.address,
-                           t.name    as tpName
+                           t.name       as tpName,
+                           teacher.name as teacherName
                     from master_data md
                              inner join tp t on md.tp_id = t.id
                              inner join iduka i on md.iduka_id = i.id
@@ -103,6 +104,8 @@ class MasterDataModel extends Model
                              inner join major m on i.major = m.id
                              inner join user_details ud on md.user_public_id = ud.user_public_id
                              left join class c on ud.class_id = c.id
+                             left join tutor on i.id = tutor.iduka_id
+                             left join teacher on teacher.user_public_id = tutor.teacher_id
                     order by i.name ASC
             ')->getResult();
         }
