@@ -161,4 +161,18 @@ class MasterDataModel extends Model
                 order by i.major ASC
         ')->getResult();
     }
+
+    public function findIdukaByTpAndMajor($tp, $major): array
+    {
+        return $this->db->query('
+                select distinct md.iduka_id, i.name as idukaName, di.address, t.name as tpName
+                from master_data md
+                         inner join iduka i on md.iduka_id = i.id
+                         inner join detail_iduka di on md.iduka_id = di.id
+                         inner join tp t on md.tp_id = t.id
+                where di.major = ' . $major . '
+                  and md.tp_id = ' . $tp . '
+                order by i.name
+        ')->getResult();
+    }
 }

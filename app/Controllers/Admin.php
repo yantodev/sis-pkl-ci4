@@ -595,7 +595,7 @@ class  Admin extends BaseController
     {
         $tp = $this->request->getVar('tp_pengantar');
         $major = $this->request->getVar('major_id_pengantar');
-        $result = $this->masterData->findByTpAndMajor($tp, $major);
+        $result = $this->masterData->findIdukaByTpAndMajor($tp, $major);
         $data = [
             'instansi' => $this->request->getVar('instansi'),
             'result' => $result,
