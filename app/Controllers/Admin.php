@@ -572,12 +572,13 @@ class  Admin extends BaseController
     {
         $tp = $this->request->getVar('tp_tugas');
         $teacherId = $this->request->getVar('teacher');
-        $result = $this->teacher->findByUserPublicId($teacherId);
+        $result = $this->teacher->findAllByUserPublicId($teacherId);
         $iduka = $this->tutor->findByTeacherIdAndTp($teacherId, $tp);
         $data = [
-            'result' => $result,
+            'results' => $result,
             'surat' => $this->nomorModel->findByTp($tp),
-            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
+//            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
+            'tp' => $tp
         ];
         view('pages/general/cetak-surat-tugas', $data);
         $mpdf = new \Mpdf\Mpdf();
@@ -585,7 +586,7 @@ class  Admin extends BaseController
         $html = view('pages/general/cetak-surat-tugas', []);
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
-        $mpdf->Output('Surat Tugas ' . $result->name . '. pdf', 'I');
+        $mpdf->Output('Surat Tugas ' . $result[0]->name . '. pdf', 'I');
     }
 
     /**
