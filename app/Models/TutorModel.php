@@ -85,7 +85,9 @@ class TutorModel extends Model
 
     public function findByTp($tp): array
     {
+
         return $this->db->table('tutor')
+            ->distinct('teacher.name')
             ->select('tutor.iduka_id, teacher.name, teacher.nbm, teacher.user_public_id, teacher.position')
             ->join('teacher', 'teacher.user_public_id = tutor.teacher_id')
             ->where('tutor.tp_id', $tp)

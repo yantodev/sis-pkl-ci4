@@ -34,6 +34,14 @@ class Student extends BaseController
 
     public function index()
     {
+        if (!$this->session->get('logged_in')) {
+            return redirect()->to('/auth');
+        }
+        if ($this->session->get('role') != 3) {
+            $this->session->destroy();
+            return redirect()->to('/auth/error');
+        }
+
         $response = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
