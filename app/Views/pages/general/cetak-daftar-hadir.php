@@ -112,7 +112,7 @@
                 <div>
                     Tanggal, ..............................................
                 </div>
-                <div>
+                <div id="dh-pembimbing">
                     Pembimbing Industri
                 </div>
                 <div>
