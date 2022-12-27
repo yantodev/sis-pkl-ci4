@@ -28,6 +28,8 @@
                 <th>Nama</th>
                 <th>Kelas</th>
                 <th>Iduka</th>
+                <th>Alamat</th>
+                <th>Guru Pendamping</th>
                 <th>Status</th>
             </tr>
 
@@ -39,6 +41,8 @@
                     <td id="name"><?= $d->name; ?></td>
                     <td id="kelas"><?= $d->kelas; ?></td>
                     <td><?= $d->idukaName; ?></td>
+                    <td><?= $d->address; ?></td>
+                    <td><?= $d->teacherName; ?></td>
                     <td><?= statusPKL($d->status); ?></td>
                 </tr>
             <?php endforeach; ?>
