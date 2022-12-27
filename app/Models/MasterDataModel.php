@@ -81,8 +81,8 @@ class MasterDataModel extends Model
                 ->where('tutor.deleted_at', null)
                 ->where('md.tp_id', $tp)
                 ->where('m.id', $major)
-                ->orderBy('ud.user_id', 'ASC')
                 ->orderBy('i.name', 'ASC')
+                ->orderBy('ud.user_id', 'ASC')
                 ->get()->getResult();
         } else {
             $response = $this->db->query('

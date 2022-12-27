@@ -22,20 +22,20 @@
 <?php foreach ($result as $res): ?>
     <div id="body">
         <img src="<?= base_url('assets/img/kop.png'); ?>" alt="">
-        <div>
-            <div class="row">
-                <p class="column">Nomor</p>
-                <p class="column-name">: <?= $surat->nomor; ?></p>
-            </div>
-            <div class="row">
-                <p class="column">Lampiran</p>
-                <p class="column-name">: 1 Bandel</p>
-            </div>
-            <div class="row">
-                <p class="column">Hal</p>
-                <p class="column-name">: Pengiriman Peserta PKL</p>
-            </div>
-        </div>
+        <table>
+            <tr>
+                <td>Nomor</td>
+                <td class="column-name">: <?= $surat->nomor; ?></td>
+            </tr>
+            <tr>
+                <td>Lampiran</td>
+                <td class="column-name">: 1 Bandel</td>
+            </tr>
+            <tr>
+                <td>Hal</td>
+                <td class="column-name">: Pengiriman Peserta PKL</td>
+            </tr>
+        </table>
 
         <p>Kepada<br/>
             Yth.<b> <?= $instansi; ?> <?= $res->idukaName; ?></b><br/>
