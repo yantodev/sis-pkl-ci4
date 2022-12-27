@@ -30,19 +30,16 @@ use ReflectionException;
  * @property \CodeIgniter\Session\Session|mixed|null $session
  * @property APIResponseBuilder $ResponseBuilder
  * @property IApplicationConstantConfig $IApplicationConstant
+ * @property SuratModel $surat
+ * @property KajurModel $kajur
+ * @property TutorModel $tutor
+ * @property KategoriSuratModel $kategoriSurat
+ * @property TeacherModel $teacher
+ * @property NomorSuratModel $nomorModel
  */
 class  Admin extends BaseController
 {
     use ResponseTrait;
-
-    protected $usersModel;
-    private TeacherModel $teacher;
-    private SuratModel $surat;
-    private KajurModel $kajur;
-    private TutorModel $tutor;
-    private KategoriSuratModel $kategoriSurat;
-    private NomorSuratModel $nomorModel;
-
     public function __construct()
     {
         $this->session = session();
@@ -573,11 +570,9 @@ class  Admin extends BaseController
         $tp = $this->request->getVar('tp_tugas');
         $teacherId = $this->request->getVar('teacher');
         $result = $this->teacher->findAllByUserPublicId($teacherId);
-        $iduka = $this->tutor->findByTeacherIdAndTp($teacherId, $tp);
         $data = [
             'results' => $result,
             'surat' => $this->nomorModel->findByTp($tp),
-//            'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
             'tp' => $tp
         ];
         view('pages/general/cetak-surat-tugas', $data);
@@ -635,7 +630,6 @@ class  Admin extends BaseController
     public function printLetterHead()
     {
         $tp = $this->request->getVar('tp_kop');
-        $major = $this->request->getVar('major_id_kop');
         $data = [
             'instansi' => $this->request->getVar('instansi'),
             'surat' => $this->nomorModel->findByTp($tp),
@@ -653,7 +647,7 @@ class  Admin extends BaseController
         $html = view('pages/general/cetak-kop-surat', []);
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
-        $mpdf->Output('ID Card.pdf', 'I');
+        $mpdf->Output('kop-surat.pdf', 'I');
     }
 
     public function printLetterDisposition()
@@ -674,7 +668,7 @@ class  Admin extends BaseController
         ]);
         $mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
-        $mpdf->Output('ID Card.pdf', 'I');
+        $mpdf->Output('surat-jalan.pdf', 'I');
     }
 
     public function printParticipantList()
@@ -691,6 +685,27 @@ class  Admin extends BaseController
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->showImageErrors = true;
         $html = view('pages/general/cetak-daftar-peserta', [
+            ini_set("pcre.backtrack_limit", "5000000")
+        ]);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
+    public function printMonitoringSheet()
+    {
+        $tp = $this->request->getVar('tp_monitoring');
+        $data = [
+            'surat' => $this->nomorModel->findByTp($tp),
+            'iduka' => $this->masterData->findByTp($tp),
+            'nomor' => $this->nomorModel->findByTpAndCategory($tp, 3),
+            'tp' => $tp,
+            'dataTp' => $this->tp->find($tp)
+        ];
+        view('pages/general/cetak-lembar-monitoring', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-lembar-monitoring', [
             ini_set("pcre.backtrack_limit", "5000000")
         ]);
         $mpdf->WriteHTML($html);
