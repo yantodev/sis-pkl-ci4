@@ -96,6 +96,7 @@ class MasterDataModel extends Model
                            m.name       as majorName,
                            di.address,
                            t.name       as tpName,
+                           teacher.id as teacherId,
                            teacher.name as teacherName
                     from master_data md
                              inner join tp t on md.tp_id = t.id
@@ -104,7 +105,7 @@ class MasterDataModel extends Model
                              inner join major m on i.major = m.id
                              inner join user_details ud on md.user_public_id = ud.user_public_id
                              left join class c on ud.class_id = c.id
-                             left join tutor on i.id = tutor.iduka_id
+                             inner join tutor on i.id = tutor.iduka_id
                              left join teacher on teacher.user_public_id = tutor.teacher_id
                     where tutor.deleted_at is null
                     order by i.name ASC
@@ -130,18 +131,17 @@ class MasterDataModel extends Model
     public function findByUserPublicId($id)
     {
         return $this->db->table('master_data md')
-            ->select('md . id, md . image, md . status,
-                            ud . name, ud . user_id as nis,
-                            i . name as iduka,
-                            di . address,
-                            teacher . name as teacher, teacher . hp')
-            ->join('user_details ud', 'ud . user_public_id = md . user_public_id')
-            ->join('iduka i', 'i . id = md . iduka_id')
-            ->join('detail_iduka di', 'di . id_iduka = md . iduka_id')
-            ->join('tutor', 'tutor . iduka_id = i . id', 'left')
-            ->join('teacher', 'teacher . user_public_id = tutor . teacher_id', 'left')
-            ->where('md . user_public_id', $id)
-            ->where('tutor . deleted_at', null)
+            ->select('md.id, md.image, md.status,
+                            ud.name, ud.user_id as nis,
+                            i.name as iduka,
+                            di.address,
+                            teacher.name as teacher, teacher.hp')
+            ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->join('detail_iduka di', 'di.id_iduka = md.iduka_id')
+            ->join('tutor', 'tutor.iduka_id = i.id', 'left')
+            ->join('teacher', 'teacher.user_public_id = tutor.teacher_id', 'left')
+            ->where('md.user_public_id', $id)
             ->get()->getRow();
     }
 

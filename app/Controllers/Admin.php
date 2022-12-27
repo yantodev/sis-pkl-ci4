@@ -576,7 +576,7 @@ class  Admin extends BaseController
         $iduka = $this->tutor->findByTeacherIdAndTp($teacherId, $tp);
         $data = [
             'result' => $result,
-            'surat' => $this->surat->findByTp($tp)->getRow(),
+            'surat' => $this->nomorModel->findByTp($tp),
             'data' => $this->masterData->findByIdukaAndTp($iduka->id, $tp)
         ];
         view('pages/general/cetak-surat-tugas', $data);

@@ -76,7 +76,7 @@
     <tbody>
     <tr>
         <td width="400px" rowspan="4"></td>
-        <td><?= $surat->tgl_surat; ?></td>
+        <td>Karangmojo, <?= tanggal($surat->tanggal); ?></td>
     </tr>
     <tr>
         <td>
