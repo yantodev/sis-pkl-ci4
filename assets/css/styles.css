@@ -158,3 +158,47 @@ table tr th, table tr td {
 #monitoring-ttd-data {
     text-align: center;
 }
+
+#dh {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#dh-iduka-left {
+    margin-right: 500px;
+    float: left;
+    font-size: 16px
+}
+
+#dh-iduka-right {
+    float: right;
+    text-align: right;
+    font-size: 16px
+}
+
+#dh-number {
+    vertical-align: top;
+    text-align: center;
+    width: 10px;
+}
+
+#tgl {
+    width: 25px;
+}
+
+#dh-jumlah {
+    column-span: 5;
+}
+
+#dh-ttd-iduka-left {
+    margin-right: 550px;
+    float: left;
+    font-size: 16px;
+    color: rgb(242, 246, 242);
+}
+
+#dh-ttd-iduka-right {
+    float: right;
+    text-align: center;
+    font-size: 16px
+}

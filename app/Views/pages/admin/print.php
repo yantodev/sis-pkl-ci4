@@ -63,6 +63,13 @@
                     <span class="print-name">Lembar Monitoring</span>
                 </button>
             </div>
+            <div class="print">
+                <button class="btn bg-gradient-primary btn-sm" data-toggle="modal"
+                        data-target="#modal-daftar-hadir">
+                    <em class="fa fa-users"></em>
+                    <span class="print-name">Daftar Hadir Siswa</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -74,4 +81,5 @@
 <?= $this->include('pages/admin/modal/modal-cetak-surat-jalan'); ?>
 <?= $this->include('pages/admin/modal/modal-cetak-daftar-peserta'); ?>
 <?= $this->include('pages/admin/modal/modal-cetak-lembar-monitoring'); ?>
+<?= $this->include('pages/admin/modal/modal-cetak-daftar-hadir'); ?>
 <?= $this->endSection() ?>; ?>

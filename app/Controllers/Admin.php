@@ -698,7 +698,6 @@ class  Admin extends BaseController
         $data = [
             'surat' => $this->nomorModel->findByTp($tp),
             'iduka' => $this->masterData->findByTp($tp),
-            'nomor' => $this->nomorModel->findByTpAndCategory($tp, 3),
             'tp' => $tp,
             'dataTp' => $this->tp->find($tp)
         ];
@@ -706,6 +705,31 @@ class  Admin extends BaseController
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->showImageErrors = true;
         $html = view('pages/general/cetak-lembar-monitoring', [
+            ini_set("pcre.backtrack_limit", "5000000")
+        ]);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
+
+    public function printStudentPresence()
+    {
+        $tp = $this->request->getVar('tp_dh');
+        $data = [
+            'surat' => $this->nomorModel->findByTp($tp),
+            'iduka' => $this->masterData->findByTp($tp),
+            'tp' => $tp,
+            'dataTp' => $this->tp->find($tp)
+        ];
+        view('pages/general/cetak-daftar-hadir', $data);
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'L',
+            'setAutoTopMargin' => false,
+        ]);
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-daftar-hadir', [
             ini_set("pcre.backtrack_limit", "5000000")
         ]);
         $mpdf->WriteHTML($html);
