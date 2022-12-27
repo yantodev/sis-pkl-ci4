@@ -106,6 +106,7 @@ class MasterDataModel extends Model
                              left join class c on ud.class_id = c.id
                              left join tutor on i.id = tutor.iduka_id
                              left join teacher on teacher.user_public_id = tutor.teacher_id
+                    where tutor.deleted_at is null
                     order by i.name ASC
             ')->getResult();
         }
