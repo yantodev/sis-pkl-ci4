@@ -117,14 +117,14 @@ class MasterDataModel extends Model
     public function findById($id)
     {
         return $this->db->table('master_data md')
-            ->select('md . id, md . image,
-                            ud . name, ud . user_id as nis,
-                            i . name as iduka,
-                            di . address')
-            ->join('user_details ud', 'ud . user_public_id = md . user_public_id')
-            ->join('iduka i', 'i . id = md . iduka_id')
-            ->join('detail_iduka di', 'di . id_iduka = md . iduka_id')
-            ->where('md . id', $id)
+            ->select('md.id, md.image,
+                            ud.name, ud.user_id as nis,
+                            i.name as iduka,
+                            di.address')
+            ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
+            ->join('iduka i', 'i.id = md.iduka_id')
+            ->join('detail_iduka di', 'di.id_iduka = md.iduka_id')
+            ->where('md.id', $id)
             ->get()->getRow();
     }
 
