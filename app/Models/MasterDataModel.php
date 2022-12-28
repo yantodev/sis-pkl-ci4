@@ -169,9 +169,9 @@ class MasterDataModel extends Model
                 select distinct md.iduka_id, i.name as idukaName, di.address, t.name as tpName
                 from master_data md
                          inner join iduka i on md.iduka_id = i.id
-                         inner join detail_iduka di on md.iduka_id = di.id
+                         inner join detail_iduka di on md.iduka_id = di.id_iduka
                          inner join tp t on md.tp_id = t.id
-                where di.major = ' . $major . '
+                where i.major = ' . $major . '
                   and md.tp_id = ' . $tp . '
                 order by i.name
         ')->getResult();
