@@ -176,7 +176,11 @@ class Student extends BaseController
                 $data
             );
         }
-        return view('pages/student/validation', $data);
+        return $this->ResponseBuilder->ReturnViewValidationStudent(
+            $this->session,
+            'pages/student/validation',
+            $data
+        );
     }
 
     /**
@@ -290,10 +294,9 @@ class Student extends BaseController
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
             'data' => $users,
-            'master_data' => $this->masterLaporan->findAllByMajorId($users->major_id),
-            'laporan' => $this->laporanSiswa->findByUserPublicId($users->id)
+            'master_data' => $users ? $this->masterLaporan->findAllByMajorId($users->major_id) : null,
+            'laporan' => $users ? $this->laporanSiswa->findByUserPublicId($users->id) : null
         ];
-
         if ($masterLaporan && $subLaporan) {
             $result = $this->laporanSiswa->save([
                 'user_public_id' => $users->id,
@@ -310,7 +313,6 @@ class Student extends BaseController
             }
             return redirect()->to('student/laporan');
         }
-
         return $this->ResponseBuilder->ReturnViewValidationStudent(
             $this->session,
             'pages/student/laporan',

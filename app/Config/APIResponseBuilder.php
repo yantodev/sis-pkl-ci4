@@ -11,12 +11,15 @@ use CodeIgniter\Config\BaseConfig;
 
 /**
  * @property IApplicationConstantConfig $IApplicationConstant
+ * @property \CodeIgniter\Session\Session|mixed|null $session
  */
 class APIResponseBuilder extends BaseConfig
 {
+
     public function __construct()
     {
         $this->IApplicationConstant = new IApplicationConstantConfig();
+        $this->session = session();
     }
 
     public function ok($result): array
