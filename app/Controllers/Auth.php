@@ -105,9 +105,8 @@ class Auth extends BaseController
 
     public function logout(): \CodeIgniter\HTTP\RedirectResponse
     {
-        $session = session();
-        $session->setFlashdata('success', 'Logout successfully!!!');
-        $session->destroy();
+        $this->session->setFlashdata('success', 'Logout successfully!!!');
+        $this->session->destroy();
         return redirect()->to("/auth");
     }
 

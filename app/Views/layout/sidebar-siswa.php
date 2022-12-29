@@ -80,6 +80,8 @@
                     </li>
                 </ul>
             </nav>
+        <?php elseif (!$role): ?>
+            <?php header('Location: ' . $_ENV['app.baseURL']); ?>
         <?php endif; ?>
     </div>
 </aside>
