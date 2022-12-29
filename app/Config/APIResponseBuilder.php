@@ -24,8 +24,8 @@ class APIResponseBuilder extends BaseConfig
         return [
             'result' => $result,
             'responseData' => [
-                'responseCode' => 200,
-                'responseMsg' => 'success'
+                'responseCode' => $result == [] ? 204 : 200,
+                'responseMsg' => $result == [] ? 'no content' : 'success'
             ],
             'metaData' => [
                 'total_data' => $this->cekData($result)

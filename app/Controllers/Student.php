@@ -3,10 +3,13 @@
 namespace App\Controllers;
 
 use App\Models\ClassModel;
+use App\Models\DataLaporanSiswaModal;
 use App\Models\MajorModel;
 use App\Models\MasterDataModel;
+use App\Models\MasterLaporanModal;
 use App\Models\UserDetailModel;
 use App\Models\UsersModel;
+use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Session\Session;
 use Config\APIResponseBuilder;
 use Config\YantoDevConfig;
@@ -16,9 +19,12 @@ use Config\YantoDevConfig;
  * @property ClassModel $class
  * @property UserDetailModel $userDetail
  * @property APIResponseBuilder $ResponseBuilder
+ * @property MasterLaporanModal $masterLaporan
+ * @property DataLaporanSiswaModal $laporanSiswa
  */
 class Student extends BaseController
 {
+    use ResponseTrait;
 
     public function __construct()
     {
@@ -30,18 +36,12 @@ class Student extends BaseController
         $this->class = new ClassModel();
         $this->userDetail = new UserDetailModel();
         $this->masterData = new MasterDataModel();
+        $this->masterLaporan = new MasterLaporanModal();
+        $this->laporanSiswa = new DataLaporanSiswaModal();
     }
 
     public function index()
     {
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 3) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
-
         $response = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
@@ -64,20 +64,23 @@ class Student extends BaseController
                     'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
                 ]
             );
-//            return view('pages/student/dashboard', $data);
         }
-        return view('pages/student/validation', [
-            'title' => "Dashboard",
-            'validation' => \Config\Services::validation(),
-            'users' => $this->session->get('email'),
-            'users_id' => $this->session->get('id'),
-            'tp' => $this->tp->findAll(),
-            'major' => $this->major->findAll(),
-            'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
-            'data' => $response,
-            'master' => $res,
-            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : false),
-        ]);
+        return $this->ResponseBuilder->ReturnViewValidationStudent(
+            $this->session,
+            'pages/student/validation',
+            [
+                'title' => "Dashboard",
+                'validation' => \Config\Services::validation(),
+                'users' => $this->session->get('email'),
+                'users_id' => $this->session->get('id'),
+                'tp' => $this->tp->findAll(),
+                'major' => $this->major->findAll(),
+                'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
+                'data' => $response,
+                'master' => $res,
+                'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : false),
+            ]
+        );
     }
 
     function addDetail(): \CodeIgniter\HTTP\RedirectResponse
@@ -141,7 +144,7 @@ class Student extends BaseController
         try {
             $this->masterData->insert($data);
         } catch (\ReflectionException $e) {
-            $this->session->setFlashdata('eror', $e);
+            $this->session->setFlashdata('error', $e);
         }
         $this->session->setFlashdata('success', 'Data is updated!!!');
         return redirect()->to('/student');
@@ -166,15 +169,12 @@ class Student extends BaseController
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
             'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 3) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
         if ($response && $res) {
-            return view('pages/student/profile', $data);
+            return $this->ResponseBuilder->ReturnViewValidationStudent(
+                $this->session,
+                'pages/student/profile',
+                $data
+            );
         }
         return view('pages/student/validation', $data);
     }
@@ -215,8 +215,11 @@ class Student extends BaseController
             ];
 
             $this->users->update(
-                $this->request->getVar('id'), [
-                'image' => $imageName]);
+                $this->request->getVar('id'),
+                [
+                    'image' => $imageName
+                ]
+            );
             $this->userDetail->update($this->request->getVar('ids'), $data);
 
             $this->session->setFlashdata('success', 'Data is updated!!!');
@@ -241,14 +244,11 @@ class Student extends BaseController
             'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
             'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 3) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
-        return view('pages/student/iduka', $data);
+        return $this->ResponseBuilder->ReturnViewValidationStudent(
+            $this->session,
+            'pages/student/iduka',
+            $data
+        );
     }
 
     public function verifikasi()
@@ -270,6 +270,69 @@ class Student extends BaseController
             $this->session,
             'pages/admin/verifikasi-data-pkl',
             $data
+        );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function laporan()
+    {
+        $masterLaporan = $this->request->getVar('master_laporan');
+        $subLaporan = $this->request->getVar('sub_laporan');
+        $subLaporan1 = $this->request->getVar('sub_laporan_1');
+        $date = $this->request->getVar('date');
+        $users = $this->users->findUserDetailByEmail(
+            $this->session->get('email'))->getRow();
+        $data = [
+            'title' => "Laporan PKL",
+            'users' => $this->session->get('email'),
+            'users_id' => $this->session->get('id'),
+            'role' => $this->session->get('role'),
+            'data' => $users,
+            'master_data' => $this->masterLaporan->findAllByMajorId($users->major_id),
+            'laporan' => $this->laporanSiswa->findByUserPublicId($users->id)
+        ];
+
+        if ($masterLaporan && $subLaporan) {
+            $result = $this->laporanSiswa->save([
+                'user_public_id' => $users->id,
+                'master_laporan_id' => $masterLaporan,
+                'master_sub_laporan_id' => $subLaporan,
+                'master_sub_laporan_1_id' => $subLaporan1,
+                'major_id' => $users->major_id,
+                'date' => $date
+            ]);
+            if ($result) {
+                $this->session->setFlashdata('success', 'tambah laporan berhasil');
+            } else {
+                $this->session->setFlashdata('error', 'tambah laporan gagal');
+            }
+            return redirect()->to('student/laporan');
+        }
+
+        return $this->ResponseBuilder->ReturnViewValidationStudent(
+            $this->session,
+            'pages/student/laporan',
+            $data
+        );
+    }
+
+    public function findSubLaporan(): \CodeIgniter\HTTP\Response
+    {
+        $id = $this->request->getVar('id');
+        $result = $this->masterLaporan->findSubLaporanByMasterId($id);
+        return $this->respond(
+            $this->ResponseBuilder->ok($result)
+        );
+    }
+
+    public function findSubLaporan1(): \CodeIgniter\HTTP\Response
+    {
+        $id = $this->request->getVar('id');
+        $result = $this->masterLaporan->findSubLaporan1BySubLaporanId($id);
+        return $this->respond(
+            $this->ResponseBuilder->ok($result)
         );
     }
 }

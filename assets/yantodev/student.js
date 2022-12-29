@@ -136,3 +136,73 @@ async function updateIdukaStudent(nis, id) {
         }
     });
 }
+
+async function showMasterSubLaporan() {
+    let id = document.getElementById("master_laporan").value;
+    let result = await findMasterSubLaporan(id)
+    if (result) {
+        document.getElementById("master_sub_laporan").innerHTML =
+            '<label for="sub_laporan"></label>' +
+            '<select class="form-control" id="sub_laporan" name="sub_laporan"' +
+            'onchange="showMasterSubLaporan1()">' +
+            '<option value="">Pilih Sub Laporan</option>' +
+            result +
+            '</select>'
+    }
+}
+
+async function showMasterSubLaporan1() {
+    let id = document.getElementById("sub_laporan").value;
+    let result = await findSubLaporan(id)
+    if (result) {
+        document.getElementById("master_sub_laporan_1").innerHTML =
+            '<label for="sub_laporan_1"></label>' +
+            '<select class="form-control" id="sub_laporan_1" name="sub_laporan_1">' +
+            '<option value="">Pilih Sub Laporan</option>' +
+            result +
+            '</select>'
+    } else {
+        document.getElementById("master_sub_laporan_1").style.display = 'none';
+    }
+
+}
+
+async function findMasterSubLaporan(id) {
+    let result = [];
+    await fetchingData('/Student/findSubLaporan',
+        {id}
+    ).then(response => {
+        if (response.responseData.responseCode === 200) {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.text;
+                result.push("<option value=" + id + ">" + name + "</option>");
+            }
+        } else {
+            result = false;
+        }
+    }).catch(error => {
+        console.log(error)
+    })
+    return result;
+}
+
+async function findSubLaporan(id) {
+    let result = [];
+    await fetchingData('/Student/findSubLaporan1',
+        {id}
+    ).then(response => {
+        if (response.responseData.responseCode === 200) {
+            for (const element of response.result) {
+                let id = element.id;
+                let name = element.text;
+                result.push("<option value=" + id + ">" + name + "</option>");
+            }
+        } else {
+            result = false;
+        }
+    }).catch(error => {
+        console.log(error)
+    })
+    return result;
+}
