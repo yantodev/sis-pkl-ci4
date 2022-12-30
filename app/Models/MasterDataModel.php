@@ -176,4 +176,22 @@ class MasterDataModel extends Model
                 order by i.name
         ')->getResult();
     }
+
+    public function findByTeacherId($id): array
+    {
+        return $this->db->query("
+        select md.id,
+               md.nis,
+               ud.name,
+               i.name
+        from master_data md
+                 inner join tutor t on md.iduka_id = t.iduka_id
+                 inner join iduka i on t.iduka_id = i.id
+                 inner join user_details ud on md.user_public_id = ud.user_public_id
+        where t.deleted_at is null
+          and md.deleted_at is null
+          and t.teacher_id = 551
+        order by i.name asc
+        ")->getResult();
+    }
 }

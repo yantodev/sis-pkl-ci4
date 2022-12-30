@@ -52,6 +52,11 @@ table tr th, table tr td {
     vertical-align: top;
 }
 
+.top-center {
+    text-align: center;
+    vertical-align: top;
+}
+
 .container {
     margin-left: 50px;
     margin-bottom: 0;
@@ -205,4 +210,8 @@ table tr th, table tr td {
 
 #dh-pembimbing {
     height: 80px;
+}
+
+button {
+    border: none;
 }

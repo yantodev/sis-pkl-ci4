@@ -68,4 +68,25 @@ class UserDetailModel extends Model
             'teacher' => $teacher
         ];
     }
+
+    public function findByUserPublicId($id)
+    {
+        return $this->db->table('users u')
+            ->select(
+                'ud.name, ud.user_id as nis, ud.nisn, ud.tp as tpId,
+                ud.jk,
+                 m.id as majorId, m.name as major,
+                c.id as classId, c.name as kelas,
+                i.id as idukaId, i.name as iduka,
+                tp.id as tpId, tp.name as tp
+                ')
+            ->join('user_details ud', 'u.id = ud.user_public_id')
+            ->join('major m', 'm.id = ud.major_id', 'left')
+            ->join('class c', 'c.id = ud.class_id', 'left')
+            ->join('master_data md', 'md.nis = ud.user_id', 'left')
+            ->join('iduka i', 'i.id = md.iduka_id', 'left')
+            ->join('tp', 'tp.id = ud.tp', 'left')
+            ->where('ud.user_public_id', $id)
+            ->get()->getRow();
+    }
 }
