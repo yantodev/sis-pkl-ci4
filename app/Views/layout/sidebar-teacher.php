@@ -31,6 +31,23 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <em class="nav-icon fas fa-bookmark"></em>
+                            <p>
+                                Data PKL
+                                <em class="right fas fa-angle-left"></em>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('teacher/laporan'); ?>" class="nav-link">
+                                    <em class="far fa-circle nav-icon"></em>
+                                    <p>Laporan Siswa</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <hr style="border-color: white;">

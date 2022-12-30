@@ -9,5 +9,5 @@ class MasterSubLaporanModal extends Model
     protected $table = 'master_sub_laporan';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['text', 'master_id', 'major'];
+    protected $allowedFields = ['text', 'master_laporan_id', 'major'];
 }

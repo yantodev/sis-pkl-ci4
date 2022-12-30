@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ClassModel;
+use App\Models\DataLaporanSiswaModal;
 use App\Models\MajorModel;
 use App\Models\MasterDataModel;
 use App\Models\TutorModel;
@@ -11,6 +12,7 @@ use App\Models\UsersModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Session\Session;
 use Config\APIResponseBuilder;
+use Config\IApplicationConstantConfig;
 use Config\YantoDevConfig;
 
 /**
@@ -18,6 +20,8 @@ use Config\YantoDevConfig;
  * @property ClassModel $class
  * @property UserDetailModel $userDetail
  * @property TutorModel $tutor
+ * @property DataLaporanSiswaModal $laporan
+ * @property IApplicationConstantConfig $IApplicationConstant
  */
 class Teacher extends BaseController
 {
@@ -29,6 +33,7 @@ class Teacher extends BaseController
     {
         $this->session = session();
         $this->ResponseBuilder = new APIResponseBuilder();
+        $this->IApplicationConstant = new IApplicationConstantConfig();
         $this->config = new YantoDevConfig();
         $this->usersModel = new UsersModel();
         $this->major = new MajorModel();
@@ -36,13 +41,14 @@ class Teacher extends BaseController
         $this->userDetail = new UserDetailModel();
         $this->masterData = new MasterDataModel();
         $this->tutor = new TutorModel();
+        $this->laporan = new DataLaporanSiswaModal();
     }
 
     public function index()
     {
         $response = $this->users->findTeacherDetailByEmail(
             $this->session->get('email'))->getRow();
-        $tutor = $this->tutor->findByTeacherId($response->id);
+        $tutor = $response ? $this->tutor->findByTeacherId($response->id) : null;
 
         $data = [
             'title' => "Dashboard",
@@ -65,72 +71,6 @@ class Teacher extends BaseController
             'pages/teacher/validation',
             $data
         );
-    }
-
-    function addDetail(): \CodeIgniter\HTTP\RedirectResponse
-    {
-        if (!$this->validate([
-            'nis' => [
-                'rules' => 'required|is_unique[user_details.user_id]',
-                'errors' => [
-                    'required' => '{field} harus diisi!!!',
-                    'is_unique' => '{field} sudah ada! Silahkan gunakan NIS lainnya'
-                ]
-            ],
-            'user_public_id' => [
-                'rules' => 'required|is_unique[user_details.user_public_id]',
-                'errors' => [
-                    'required' => '{field} harus diisi!!!',
-                    'is_unique' => 'user sudah ada! Silahkan hubungi admin anda!!!'
-                ]
-            ]
-        ])) {
-            return redirect()->to('/student')->withInput();
-        }
-        $data = [
-            'user_id' => $this->request->getVar('nis'),
-            'user_public_id' => $this->request->getVar('user_public_id'),
-            'nisn' => $this->request->getVar('nisn'),
-            'name' => $this->request->getVar('name'),
-            'jk' => $this->request->getVar('jk'),
-            'tp' => $this->request->getVar('tp'),
-            'major_id' => $this->request->getVar('major_id'),
-            'class_id' => $this->request->getVar('class_id')
-        ];
-        try {
-            $this->userDetail->insert($data);
-        } catch (\ReflectionException $e) {
-            $this->session->setFlashdata('eror', $e);
-        }
-        $this->session->setFlashdata('success', 'Data is updated!!!');
-        return redirect()->to('/student');
-    }
-
-    function addMasterData(): \CodeIgniter\HTTP\RedirectResponse
-    {
-        if (!$this->validate([
-            'nis' => [
-                'rules' => 'required|is_unique[master_data.nis]',
-                'errors' => [
-                    'required' => '{field} harus diisi!!!',
-                    'is_unique' => '{field} sudah memilih lokasi PKL!!!'
-                ]
-            ]
-        ])) {
-            return redirect()->to('/student')->withInput();
-        }
-        $data = [
-            'nis' => $this->request->getVar('nis'),
-            'tp_id' => $this->request->getVar('tp_id'),
-            'iduka_id' => $this->request->getVar('iduka_id'),
-        ];
-        try {
-            $this->masterData->insert($data);
-        } catch (\ReflectionException $e) {
-            $this->session->setFlashdata('eror', $e);
-        }
-        $this->session->setFlashdata('success', 'Data is updated!!!');
-        return redirect()->to('/student');
     }
 
     public function profile()
@@ -201,8 +141,11 @@ class Teacher extends BaseController
             ];
 
             $this->users->update(
-                $this->request->getVar('id'), [
-                'image' => $imageName]);
+                $this->request->getVar('id'),
+                [
+                    'image' => $imageName
+                ]
+            );
             $this->userDetail->update($this->request->getVar('ids'), $data);
 
             $this->session->setFlashdata('success', 'Data is updated!!!');
@@ -210,31 +153,6 @@ class Teacher extends BaseController
         }
         $this->session->setFlashdata('error', 'major is null');
         return redirect()->to('/student/profile');
-    }
-
-    public function iduka()
-    {
-        $response = $this->users->findUserDetailByEmail(
-            $this->session->get('email'))->getRow();
-        $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
-        $data = [
-            'title' => "Daftar Iduka",
-            'validation' => \Config\Services::validation(),
-            'users' => $this->session->get('email'),
-            'users_id' => $this->session->get('id'),
-            'role' => $this->session->get('role'),
-            'data' => $response,
-            'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null)->getResult(),
-            'dataIduka' => $this->idukaModel->findById($res ? $res->iduka_id : null)
-        ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 3) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
-        return view('pages/student/iduka', $data);
     }
 
     public function updateTeacher(): \CodeIgniter\HTTP\Response
@@ -265,5 +183,42 @@ class Teacher extends BaseController
             $response = $this->ResponseBuilder->internalServerError($e->getMessage());
         }
         return $this->respond($response);
+    }
+
+    public function laporan()
+    {
+        $response = $this->users->findTeacherDetailByEmail(
+            $this->session->get('email'))->getRow();
+        $data = [
+            'title' => "Laporan Siswa",
+            'validation' => \Config\Services::validation(),
+            'users' => $this->session->get('email'),
+            'users_id' => $this->session->get('id'),
+            'role' => $this->session->get('role'),
+            'data' => $response,
+            'laporan' => $this->laporan->findStudentReport($this->session->get('id'))
+        ];
+
+        return $this->ResponseBuilder->ReturnViewValidationTeacher(
+            $this->session,
+            'pages/teacher/laporan',
+            $data
+        );
+    }
+
+    public function printReport($id)
+    {
+        $userDetail = $this->userDetail->findByUserPublicId($id);
+        $data = [
+            'userDetail' => $userDetail,
+            'laporan' => $this->laporan->findByUserPublicId($id)
+        ];
+        view('pages/general/cetak-laporan-siswa', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/general/cetak-laporan-siswa');
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('laporan.pdf', 'I');
     }
 }

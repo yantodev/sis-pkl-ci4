@@ -21,8 +21,8 @@
                                         <?php foreach ($tutor as $t): ?>
                                             <?php
                                             $db = db_connect();
-                                            $student = $db->query("
-                                            select ud.name    as name,
+                                            $dataStudent = $db->query("
+                                            select ud.name,
                                                    ud.user_id as nis,
                                                    i.name     as iduka,
                                                    ud.jk,
@@ -33,20 +33,19 @@
                                                     inner join user_details as ud on md.nis = ud.user_id
                                                     inner join iduka i on md.iduka_id = i.id
                                                     inner join major m on i.major = m.id
-                                                    inner join class c on ud.class_id = c.id
+                                                    left join class c on ud.class_id = c.id
                                                     left join detail_iduka di on di.id_iduka = i.id
-                                            where md.deleted_at is null 
-                                                and md.user_public_id is not null
+                                            where md.deleted_at is null
+                                                and ud.user_public_id is not null
                                                 and md.iduka_id =  $t->idIduka 
                                                 and md.tp_id = $t->tpId
                                             ")->getResult(); ?>
-
                                             <ul>
                                                 <li><strong><?= $t->iduka; ?></strong></li>
                                                 Daftar Siswa:
                                                 <ol>
-                                                    <?php if ($student): ?>
-                                                        <?php foreach ($student as $s): ?>
+                                                    <?php if ($dataStudent): ?>
+                                                        <?php foreach ($dataStudent as $s): ?>
                                                             <li><?= $s->name; ?></li>
                                                         <?php endforeach; ?>
                                                     <?php else: ?>

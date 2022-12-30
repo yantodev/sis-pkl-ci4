@@ -24,10 +24,10 @@ class MasterLaporanModal extends Model
     public function findSubLaporanByMasterId($id): array
     {
         return $this->db->query("
-            SELECT msl.id, msl.master_id, msl.text
+            SELECT msl.id, msl.master_laporan_id, msl.text
             FROM master_laporan ml
             inner join master_sub_laporan msl
-            ON ml.id = msl.master_id
+            ON ml.id = msl.master_laporan_id
             where ml.id = $id
         ")->getResult();
     }

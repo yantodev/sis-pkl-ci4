@@ -141,8 +141,7 @@ class UsersModel extends Model
     {
         return $this->db->table('users as u')
             ->select('u.id as id, u.email, u.password, u.role_pkl, u.is_active, u.image,
-                            ud.id as ids, ud.name, ud.user_id as nis, ud.major_id,
-                            ud.nisn, ud.jk')
+                            ud.id as ids, ud.name, ud.jk')
             ->join('user_details as ud', 'u.id = ud.user_public_id', 'left')
             ->where('u.email', $email)
             ->get();
