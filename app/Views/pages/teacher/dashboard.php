@@ -17,22 +17,48 @@
                             <div class="col-lg-9">
                                 <?php if ($tutor): ?>
                                     <h4>
-                                        Saat ini anda terdaftar sebagai pendamping di <b><?= $tutor->iduka; ?></b>
-                                        yang beralamat di <b><?= $tutor->address; ?></b>
-                                    </h4>
-                                    <h5>Daftar Siswa:</h5>
-                                <?php else: ?>
-                                    <h4>Mohon maaf, saat ini anda terdaftar sebagai pendamping</h4>
-                                <?php endif; ?>
-                                <ol>
-                                    <?php if ($student): ?>
-                                        <?php foreach ($student as $s): ?>
-                                            <li><?= $s->name; ?></li>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
+                                        Saat ini anda terdaftar sebagai pendamping di :
+                                        <?php foreach ($tutor as $t): ?>
+                                            <?php
+                                            $db = db_connect();
+                                            $student = $db->query("
+                                            select ud.name    as name,
+                                                   ud.user_id as nis,
+                                                   i.name     as iduka,
+                                                   ud.jk,
+                                                   m.name     as jurusan,
+                                                   c.name     as kelas,
+                                                   di.address as alamat
+                                            from master_data md
+                                                    inner join user_details as ud on md.nis = ud.user_id
+                                                    inner join iduka i on md.iduka_id = i.id
+                                                    inner join major m on i.major = m.id
+                                                    inner join class c on ud.class_id = c.id
+                                                    left join detail_iduka di on di.id_iduka = i.id
+                                            where md.deleted_at is null 
+                                                and md.user_public_id is not null
+                                                and md.iduka_id =  $t->idIduka 
+                                                and md.tp_id = $t->tpId
+                                            ")->getResult(); ?>
 
-                                    <?php endif; ?>
-                                </ol>
+                                            <ul>
+                                                <li><strong><?= $t->iduka; ?></strong></li>
+                                                Daftar Siswa:
+                                                <ol>
+                                                    <?php if ($student): ?>
+                                                        <?php foreach ($student as $s): ?>
+                                                            <li><?= $s->name; ?></li>
+                                                        <?php endforeach; ?>
+                                                    <?php else: ?>
+
+                                                    <?php endif; ?>
+                                                </ol>
+                                            </ul>
+                                        <?php endforeach; ?>
+                                    </h4>
+                                <?php else: ?>
+                                    <h4>Saat ini anda tidak terdaftar sebagai pendamping</h4>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

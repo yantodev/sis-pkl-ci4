@@ -67,20 +67,28 @@ class TutorModel extends Model
 
     public function findByTeacherId($id)
     {
-        return $this->db->table('tutor t')
-            ->select('t.id,
-                            tp.id as tpId, tp.name as tp, 
-                            ud.user_public_id as userId, ud.user_id as nbm, ud.name,
-                            i.id as idIduka, i.name as iduka, i.major, di.address,
-                            major.id as majorId, major.name as jurusan')
-            ->join('tp', 't.tp_id = tp.id')
-            ->join('user_details as ud', 't.teacher_id = ud.user_public_id')
-            ->join('iduka i', 'i.id = t.iduka_id')
-            ->join('detail_iduka di', 'di.id_iduka = t.iduka_id')
-            ->join('major', 'major.id = t.major_id')
-            ->where('t.teacher_id', $id)
-            ->where('t.deleted_at', null)
-            ->get()->getRow();
+        return $this->db->query("
+                select t.id,
+                       tp.id             as tpId,
+                       tp.name           as tp,
+                       ud.user_public_id as userId,
+                       ud.user_id        as nbm,
+                       ud.name,
+                       i.id              as idIduka,
+                       i.name            as iduka,
+                       i.major,
+                       di.address,
+                       major.id          as majorId,
+                       major.name        as jurusan
+                from tutor t
+                         inner join tp on t.tp_id = tp.id
+                         inner join user_details ud on t.teacher_id = ud.user_public_id
+                         inner join iduka i on t.iduka_id = i.id
+                         inner join detail_iduka di on t.iduka_id = di.id
+                         inner join major on t.major_id = major.id
+                where t.teacher_id = $id
+                  and t.deleted_at is null
+              ")->getResult();
     }
 
     public function findByTp($tp): array
