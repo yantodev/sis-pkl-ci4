@@ -2,41 +2,47 @@
 <?= $this->section('content'); ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col-lg-4">
             <div class="card card-primary card-outline">
                 <div class="card-body">
-                    <div class="card-header">
-                        <div>
-                            <h3>Daftar Laporan</h3>
-                            <form action="<?= base_url('Student/laporan'); ?>" method="get">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div>
-                                            <div>
-                                                <label for="date">Tanggal</label>
-                                                <input type="date" class="form-control" id="date" name="date">
-                                            </div>
-                                            <label for="master_laporan"></label>
-                                            <select class="form-control"
-                                                    name="master_laporan"
-                                                    id="master_laporan"
-                                                    onchange="showMasterSubLaporan()">
-                                                <option value="">Pilih Bidang Pekerjaan</option>
-                                                <?php foreach ($master_data as $md): ?>
-                                                    <option value="<?= $md->id; ?>"><?= $md->name; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                        <div id="master_sub_laporan"></div>
-                                        <div id="master_sub_laporan_1"></div>
+                    <div class="container-sm">
+                        <h3>Input Laporan</h3>
+                        <form action="<?= base_url('student/laporan'); ?>" method="POST">
+                            <div class="form-group">
+                                <div>
+                                    <div>
+                                        <label for="date">Tanggal</label>
+                                        <input type="date" class="form-control"
+                                               id="date" name="date" required>
                                     </div>
+                                    <label for="master_laporan">Bidang Pekerjaan</label>
+                                    <select class="form-control"
+                                            name="master_laporan"
+                                            id="master_laporan"
+                                            onchange="showMasterSubLaporan()"
+                                            required>
+                                        <option value="">Pilih Bidang Pekerjaan</option>
+                                        <?php foreach ($master_data as $md): ?>
+                                            <option value="<?= $md->id; ?>"><?= $md->name; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary" type="submit">SIMPAN</button>
-                                </div>
-                            </form>
-                        </div>
+                                <div id="other_input"></div>
+                                <div id="master_sub_laporan"></div>
+                                <div id="master_sub_laporan_1"></div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">SIMPAN</button>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3>Daftar laporan</h3>
                 </div>
                 <div class="card-body">
                     <table id="dataTable" class="table table-bordered table-striped">
@@ -51,11 +57,29 @@
                         <tbody>
                         <?php $no = 1; ?>
                         <?php foreach ($laporan as $l): ?>
+                            <?php
+                            if ($l->uraian_1 && $l->uraian_2) {
+                                $uraian = "
+                                        <ol>
+                                            <li>$l->uraian_1</li>
+                                            <li>$l->uraian_2</li>
+                                        </ol>";
+                            } elseif ($l->uraian_1) {
+                                $uraian = "
+                                        <ol>
+                                            <li>$l->uraian_1</li>
+                                        </ol>";
+                            } elseif ($l->other) {
+                                $uraian = "
+                                        <ol>
+                                            <li>$l->other</li>
+                                        </ol>";
+                            } ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= tanggal($l->date); ?></td>
                                 <td><?= $l->bidang_pekerjaan; ?></td>
-                                <td><?= $l->uraian_1; ?></td>
+                                <td><?= $uraian; ?></td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

@@ -142,12 +142,15 @@ async function showMasterSubLaporan() {
     let result = await findMasterSubLaporan(id)
     if (result) {
         document.getElementById("master_sub_laporan").innerHTML =
-            '<label for="sub_laporan"></label>' +
+            '<label for="sub_laporan">Uraian Kegiatan</label>' +
             '<select class="form-control" id="sub_laporan" name="sub_laporan"' +
-            'onchange="showMasterSubLaporan1()">' +
-            '<option value="">Pilih Sub Laporan</option>' +
+            'onchange="showMasterSubLaporan1()" required>' +
+            '<option value="">Pilih Uraian</option>' +
             result +
             '</select>'
+    } else {
+        document.getElementById("other_input").innerHTML =
+            `<label for="other">Uraian Kegiatan</label><input class="form-control" type="text"id="other" name="other"placeholder="masukan uraian kegiatan" required>`
     }
 }
 
@@ -156,9 +159,9 @@ async function showMasterSubLaporan1() {
     let result = await findSubLaporan(id)
     if (result) {
         document.getElementById("master_sub_laporan_1").innerHTML =
-            '<label for="sub_laporan_1"></label>' +
-            '<select class="form-control" id="sub_laporan_1" name="sub_laporan_1">' +
-            '<option value="">Pilih Sub Laporan</option>' +
+            '<label for="sub_laporan_1">Uraian Kegiatan</label>' +
+            '<select class="form-control" id="sub_laporan_1" name="sub_laporan_1" required>' +
+            '<option value="">Pilih uraian</option>' +
             result +
             '</select>'
     } else {

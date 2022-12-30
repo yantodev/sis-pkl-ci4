@@ -43,11 +43,7 @@ class Teacher extends BaseController
         $response = $this->users->findTeacherDetailByEmail(
             $this->session->get('email'))->getRow();
         $tutor = $this->tutor->findByTeacherId($response->id);
-        if ($tutor) {
-            $dataStudent = $this->masterData->findByIdukaAndTp($tutor->idIduka, $tutor->tpId);
-        } else {
-            $dataStudent = null;
-        }
+
         $data = [
             'title' => "Dashboard",
             'validation' => \Config\Services::validation(),
@@ -55,20 +51,20 @@ class Teacher extends BaseController
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
             'data' => $response,
-            'tutor' => $tutor,
-            'student' => $dataStudent
+            'tutor' => $tutor
         ];
-        if (!$this->session->get('logged_in')) {
-            return redirect()->to('/auth');
-        }
-        if ($this->session->get('role') != 2) {
-            $this->session->destroy();
-            return redirect()->to('/auth/error');
-        }
         if ($response) {
-            return view('pages/teacher/dashboard', $data);
+            return $this->ResponseBuilder->ReturnViewValidationTeacher(
+                $this->session,
+                'pages/teacher/dashboard',
+                $data
+            );
         }
-        return view('pages/teacher/validation', $data);
+        return $this->ResponseBuilder->ReturnViewValidationTeacher(
+            $this->session,
+            'pages/teacher/validation',
+            $data
+        );
     }
 
     function addDetail(): \CodeIgniter\HTTP\RedirectResponse

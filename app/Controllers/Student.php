@@ -286,6 +286,7 @@ class Student extends BaseController
         $subLaporan = $this->request->getVar('sub_laporan');
         $subLaporan1 = $this->request->getVar('sub_laporan_1');
         $date = $this->request->getVar('date');
+        $other = $this->request->getVar('other');
         $users = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
         $data = [
@@ -297,13 +298,14 @@ class Student extends BaseController
             'master_data' => $users ? $this->masterLaporan->findAllByMajorId($users->major_id) : null,
             'laporan' => $users ? $this->laporanSiswa->findByUserPublicId($users->id) : null
         ];
-        if ($masterLaporan && $subLaporan) {
-            $result = $this->laporanSiswa->save([
+        if ($masterLaporan) {
+            $result = $this->laporanSiswa->insert([
                 'user_public_id' => $users->id,
                 'master_laporan_id' => $masterLaporan,
                 'master_sub_laporan_id' => $subLaporan,
                 'master_sub_laporan_1_id' => $subLaporan1,
                 'major_id' => $users->major_id,
+                'other' => $other,
                 'date' => $date
             ]);
             if ($result) {
