@@ -375,6 +375,9 @@ if (!function_exists('bulan')) {
 
     function numberWA($data): string
     {
+        if (!$data) {
+            return "";
+        }
         // kadang ada penulisan no hp 0811 239 345
         $data = str_replace(" ", "", $data);
         // kadang ada penulisan no hp (0274) 778787
