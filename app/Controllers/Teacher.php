@@ -187,8 +187,8 @@ class Teacher extends BaseController
 
     public function laporan()
     {
-        $response = $this->users->findTeacherDetailByEmail(
-            $this->session->get('email'))->getRow();
+        $response = $this->session ? $this->users->findTeacherDetailByEmail(
+            $this->session->get('email'))->getRow() : null;
         $data = [
             'title' => "Laporan Siswa",
             'validation' => \Config\Services::validation(),
@@ -196,7 +196,7 @@ class Teacher extends BaseController
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
             'data' => $response,
-            'laporan' => $this->laporan->findStudentReport($this->session->get('id'))
+            'laporan' => $response ? $this->laporan->findStudentReport($response->id) : null
         ];
 
         return $this->ResponseBuilder->ReturnViewValidationTeacher(
