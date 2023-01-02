@@ -74,11 +74,13 @@ class TutorModel extends Model
                        ud.user_id        as nbm,
                        ud.name,
                        i.id              as idIduka,
-                       i.name            as iduka
+                       i.name            as iduka,
+                       di.address
                 from tutor t
                          inner join tp on t.tp_id = tp.id
                          inner join user_details ud on t.teacher_id = ud.user_public_id
                          inner join iduka i on t.iduka_id = i.id
+                        inner join detail_iduka di on i.id = di.id_iduka
                 where t.teacher_id = $id
                   and t.deleted_at is null
               ")->getResult();

@@ -52,6 +52,7 @@
                             <th>Tanggal</th>
                             <th>Bidang Pekerjaan</th>
                             <th>Uraian Pekerjaan</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -80,6 +81,11 @@
                                 <td><?= tanggal($l->date); ?></td>
                                 <td><?= $l->bidang_pekerjaan; ?></td>
                                 <td><?= $uraian; ?></td>
+                                <td>
+                                    <button class="badge bg-gradient-red" onclick="deleteReport(<?= $l->id; ?>)">
+                                        <i class="fa fa-trash-o"> Hapus</i>
+                                    </button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

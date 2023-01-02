@@ -33,6 +33,7 @@ class DataLaporanSiswaModal extends Model
                                    on dls.master_sub_laporan_1_id = msl1.id
                          inner join major m on dls.major_id = m.id
                 where dls.user_public_id =  $id
+                and dls.deleted_at is null
                 order by dls.date ASC
         ")->getResult();
     }

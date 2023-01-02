@@ -209,3 +209,28 @@ async function findSubLaporan(id) {
     })
     return result;
 }
+
+function deleteReport(id) {
+    console.log(id)
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Data setelah di hapus tidak bisa dikembalikan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Yakin!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetchingData("/Student/deleteReport", {id})
+                .then(response => {
+                    if (response.responseData.responseCode === 200) {
+                        Swal.fire("Deleted!", "Your file has been deleted is.", "success");
+                    }
+                })
+            setTimeout(function () {
+                window.location.reload(1);
+            }, 2000);
+        }
+    });
+}
