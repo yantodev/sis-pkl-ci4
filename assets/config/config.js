@@ -15,7 +15,7 @@ async function fetchingData(url = '', data = {}) {
     }).then(response => {
         return response.json()
     }).catch(error => {
-        console.log(error)
+        return error
     })
 }
 

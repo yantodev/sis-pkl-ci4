@@ -26,10 +26,7 @@ class APIResponseBuilder extends BaseConfig
     {
         return [
             'result' => $result,
-            'responseData' => [
-                'responseCode' => $result == [] ? 204 : 200,
-                'responseMsg' => $result == [] ? 'no content' : 'success'
-            ],
+            'responseData' => $this->cekResponseData($result),
             'metaData' => [
                 'total_data' => $this->cekData($result)
             ]
@@ -44,6 +41,23 @@ class APIResponseBuilder extends BaseConfig
             return sizeof($data);
         } else {
             return 0;
+        }
+    }
+
+    function cekResponseData($data): array
+    {
+        switch ($data) {
+            case $data === []:
+                return [
+                    'responseCode' => 204,
+                    'responseMsg' => 'no content'
+                ];
+            case is_bool($data):
+            default:
+                return [
+                    'responseCode' => 200,
+                    'responseMsg' => 'success'
+                ];
         }
     }
 

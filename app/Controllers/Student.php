@@ -215,7 +215,6 @@ class Student extends BaseController
                 'jk' => $this->request->getVar('jk'),
                 'tp' => $this->request->getVar('tp'),
                 'class_id' => $this->request->getVar('class_id'),
-                'major_id' => $major['major_id']
             ];
 
             $this->users->update(
@@ -338,5 +337,14 @@ class Student extends BaseController
         return $this->respond(
             $this->ResponseBuilder->ok($result)
         );
+    }
+
+    public function deleteReport(): \CodeIgniter\HTTP\Response
+    {
+        return $this->respond($this->ResponseBuilder->ok(
+            $this->laporanSiswa->delete(
+                $this->request->getVar('id')
+            )
+        ));
     }
 }

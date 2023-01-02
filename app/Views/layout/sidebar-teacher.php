@@ -48,6 +48,23 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <em class="nav-icon fas fa-print"></em>
+                            <p>
+                                Cetak
+                                <em class="right fas fa-angle-left"></em>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('teacher/monitoring/' . $data->id); ?>" class="nav-link">
+                                    <em class="far fa-circle nav-icon"></em>
+                                    <p>Lembar Monitoring</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <hr style="border-color: white;">

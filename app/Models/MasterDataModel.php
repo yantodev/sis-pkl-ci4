@@ -183,14 +183,18 @@ class MasterDataModel extends Model
         select md.id,
                md.nis,
                ud.name,
-               i.name
+               t2.name as tp,
+               t2.id   as tpId,
+               di.address
         from master_data md
                  inner join tutor t on md.iduka_id = t.iduka_id
                  inner join iduka i on t.iduka_id = i.id
+                 inner join detail_iduka di on md.iduka_id = di.id
                  inner join user_details ud on md.user_public_id = ud.user_public_id
+                 inner join tp t2 on md.tp_id = t2.id
         where t.deleted_at is null
           and md.deleted_at is null
-          and t.teacher_id = 551
+          and t.teacher_id = $id
         order by i.name asc
         ")->getResult();
     }

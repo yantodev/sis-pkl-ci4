@@ -12,11 +12,6 @@
     <link rel="stylesheet" href=<?= base_url('assets/template/plugins/fontawesome-free/css/all.min.css') ?>>
     <link rel="stylesheet" href=<?= base_url('assets/template/dist/css/adminlte.min.css') ?>>
     <link rel="stylesheet" href="<?= base_url('assets/css/styles.css'); ?>">
-    <script>
-        $(document).ready(function () {
-            $(".preloader").finish();
-        })
-    </script>
     <script src="https://kit.fontawesome.com/41781f79df.js" crossorigin="anonymous"></script>
 </head>
 
@@ -54,6 +49,28 @@
     <?= $this->include('layout/footer'); ?>
 </div>
 <?= $this->include('layout/script'); ?>
+<?php if ($role == 1): ?>
+    <script>
+        $(document).ready(async function () {
+            console.log("test data")
+            let users, completed, uncompleted, iduka;
+            await fetchingData('/RestApi/countData')
+                .then(async response => {
+                    users = await response.result.users;
+                    completed = await response.result.users_completed[0].total;
+                    iduka = await response.result.iduka;
+                    uncompleted = users - completed;
+                    document.getElementById('count-users').innerHTML = users;
+                    document.getElementById('count-profile-completed').innerHTML = completed;
+                    document.getElementById('count-profile-uncompleted').innerHTML = uncompleted;
+                    document.getElementById('count-iduka').innerHTML = iduka;
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        });
+    </script>
+<?php endif; ?>
 </body>
 
 </html>

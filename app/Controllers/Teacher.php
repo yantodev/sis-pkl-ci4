@@ -221,4 +221,23 @@ class Teacher extends BaseController
         $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
         $mpdf->Output('laporan.pdf', 'I');
     }
+
+    public function monitoring($id)
+    {
+        $teacher = $this->tutor->findByTeacherId($id);
+        $data = [
+            'iduka' => $teacher,
+            'tp' => 5,
+            'dataTp' => $this->tp->find(5)
+        ];
+        view('pages/teacher/cetak-lembar-monitoring', $data);
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->showImageErrors = true;
+        $html = view('pages/teacher/cetak-lembar-monitoring', [
+            ini_set("pcre.backtrack_limit", "5000000")
+        ]);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('ID Card.pdf', 'I');
+    }
 }
