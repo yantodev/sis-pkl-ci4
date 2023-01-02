@@ -175,7 +175,7 @@ async function findMasterSubLaporan(id) {
     await fetchingData('/Student/findSubLaporan',
         {id}
     ).then(response => {
-        if (response.responseData.responseCode === 200) {
+        if (response.result.length !== 0) {
             for (const element of response.result) {
                 let id = element.id;
                 let name = element.text;
@@ -195,7 +195,8 @@ async function findSubLaporan(id) {
     await fetchingData('/Student/findSubLaporan1',
         {id}
     ).then(response => {
-        if (response.responseData.responseCode === 200) {
+        console.log(response.result.length)
+        if (response.result.length !== 0) {
             for (const element of response.result) {
                 let id = element.id;
                 let name = element.text;

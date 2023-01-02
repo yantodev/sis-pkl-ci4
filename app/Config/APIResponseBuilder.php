@@ -33,18 +33,7 @@ class APIResponseBuilder extends BaseConfig
         ];
     }
 
-    public function cekData($data): int
-    {
-        if (is_object($data)) {
-            return 1;
-        } elseif (is_array($data)) {
-            return sizeof($data);
-        } else {
-            return 0;
-        }
-    }
-
-    function cekResponseData($data): array
+    public function cekResponseData($data): array
     {
         switch ($data) {
             case $data === []:
@@ -53,11 +42,24 @@ class APIResponseBuilder extends BaseConfig
                     'responseMsg' => 'no content'
                 ];
             case is_bool($data):
-            default:
+            case $data !== []:
                 return [
                     'responseCode' => 200,
-                    'responseMsg' => 'success'
+                    'responseMsg' => '$data'
                 ];
+            default:
+                return [];
+        }
+    }
+
+    public function cekData($data): int
+    {
+        if (is_object($data)) {
+            return 1;
+        } elseif (is_array($data)) {
+            return sizeof($data);
+        } else {
+            return 0;
         }
     }
 
