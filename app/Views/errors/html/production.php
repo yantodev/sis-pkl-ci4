@@ -28,6 +28,7 @@
     <h1 class="headline">Whoops!</h1>
     <img src="https://cdn.dribbble.com/users/6117646/screenshots/14461914/media/623783422c006f714b3fb34f4fc1ebc3.gif"
          alt="mohon antri" height="250px">
+    <p>Mohon maaf website sedang ramai, silahkan tunggu</p>
     <p class="lead">Please try again later after...</p>
     <div class="box">
       <span id="time">
