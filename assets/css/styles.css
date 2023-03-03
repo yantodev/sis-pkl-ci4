@@ -215,3 +215,11 @@ table tr th, table tr td {
 button {
     border: none;
 }
+
+.form-select {
+    width: 30%;
+}
+
+#label-swal-left {
+    text-align: left;
+}

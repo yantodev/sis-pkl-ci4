@@ -198,4 +198,59 @@ class MasterDataModel extends Model
         order by i.name asc
         ")->getResult();
     }
+
+    public function findAllStudent(): array
+    {
+        return $this->db->table("master_data md")
+            ->select("md.id, ud.user_id as nis, ud.name, m.name as major,m.id as majorId,
+             i.name as iduka,i.id as idukaId, mdtl.id as ids, mdtl.name as mentor, tp.name as tp, tp.id as tpId")
+            ->join("users u", "md.user_public_id = u.id")
+            ->join("user_details ud", "u.id = ud.user_public_id")
+            ->join("major m", "ud.major_id = m.id")
+            ->join("iduka i", "md.iduka_id = i.id")
+            ->join("detail_iduka di", "i.id = di.id_iduka")
+            ->join("tp", "md.tp_id = tp.id")
+            ->join("mentor_detail mdtl", "md.tp_id = mdtl.tp_id and md.iduka_id = mdtl.iduka_id", "LEFT")
+            ->where("u.role_pkl", 3)
+            ->orderBy("md.tp_id", "DESC")
+            ->orderBy("i.id")
+            ->get()->getResult();
+    }
+
+    public function findAllStudentByTpAndMajor(mixed $tpInput, mixed $majorInput): array
+    {
+        return $this->db->table("master_data md")
+            ->select("md.id, ud.user_id as nis, ud.name, m.name as major,m.id as majorId,
+            i.name as iduka, i.id as idukaId, mdtl.id as ids, mdtl.name as mentor, tp.name as tp, tp.id as tpId")
+            ->join("users u", "md.user_public_id = u.id")
+            ->join("user_details ud", "u.id = ud.user_public_id")
+            ->join("major m", "ud.major_id = m.id")
+            ->join("iduka i", "md.iduka_id = i.id")
+            ->join("detail_iduka di", "i.id = di.id_iduka")
+            ->join("tp", "md.tp_id = tp.id")
+            ->join("mentor_detail mdtl", "md.tp_id = mdtl.tp_id and md.iduka_id = mdtl.iduka_id", "LEFT")
+            ->where("u.role_pkl", 3)
+            ->where("tp.id", $tpInput)
+            ->where("m.id", $majorInput)
+            ->orderBy("md.tp_id", "DESC")
+            ->orderBy("i.id")
+            ->get()->getResult();
+    }
+
+    public function findStudentById(mixed $id)
+    {
+        return $this->db->table("master_data md")
+            ->select("md.id, ud.user_id as nis, ud.name, m.name as major, m.id as majorId,
+            i.id as idukaId, i.name as iduka, mdtl.name as mentor, tp.id as tpId, tp.name as tp,
+            di.address, u.id as userPublicId")
+            ->join("users u", "md.user_public_id = u.id")
+            ->join("user_details ud", "u.id = ud.user_public_id")
+            ->join("major m", "ud.major_id = m.id")
+            ->join("iduka i", "md.iduka_id = i.id")
+            ->join("detail_iduka di", "i.id = di.id_iduka")
+            ->join("tp", "md.tp_id = tp.id")
+            ->join("mentor_detail mdtl", "md.tp_id = mdtl.tp_id and md.iduka_id = mdtl.iduka_id", "LEFT")
+            ->where("md.id", $id)
+            ->get()->getRow();
+    }
 }

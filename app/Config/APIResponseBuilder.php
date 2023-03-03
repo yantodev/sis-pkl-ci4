@@ -35,21 +35,14 @@ class APIResponseBuilder extends BaseConfig
 
     public function cekResponseData($data): array
     {
-        switch ($data) {
-            case $data === []:
-                return [
-                    'responseCode' => 204,
-                    'responseMsg' => 'no content'
-                ];
-            case is_bool($data):
-            case $data !== []:
-                return [
-                    'responseCode' => 200,
-                    'responseMsg' => '$data'
-                ];
-            default:
-                return [];
-        }
+        return match ($data) {
+            $data === [] => [
+                'responseCode' => 204,
+                'responseMsg' => 'no content'
+            ],
+            default => ['responseCode' => 200,
+                'responseMsg' => "success"],
+        };
     }
 
     public function cekData($data): int
@@ -82,7 +75,7 @@ class APIResponseBuilder extends BaseConfig
         return [
             'result' => '',
             'responseData' => [
-                'responseCode' => 404,
+                'responseCode' => 500,
                 'responseMsg' => $message
             ],
             'metaData' => [
@@ -91,18 +84,20 @@ class APIResponseBuilder extends BaseConfig
         ];
     }
 
-    public function ReturnViewValidation($session, $url, $data)
+    public function ReturnViewValidation($session, $url, $data): string|\CodeIgniter\HTTP\RedirectResponse
     {
         if (!$session->get('logged_in')) {
             return redirect()->to($this->IApplicationConstant->auth);
         }
-        if ($session->get('role') != 1) {
+        $i = $session->get('role');
+        if ($i == 2 || $i == 3 || $i == 1) {
+            return view($url, $data);
+        } else {
             return redirect()->to($this->IApplicationConstant->authError);
         }
-        return view($url, $data);
     }
 
-    public function ReturnViewValidationTeacher($session, $url, $data)
+    public function ReturnViewValidationTeacher($session, $url, $data): string|\CodeIgniter\HTTP\RedirectResponse
     {
         if (!$this->session->get('logged_in')) {
             return redirect()->to($this->IApplicationConstant->auth);
@@ -113,7 +108,7 @@ class APIResponseBuilder extends BaseConfig
         return view($url, $data);
     }
 
-    public function ReturnViewValidationStudent($session, $url, $data)
+    public function ReturnViewValidationStudent($session, $url, $data): string|\CodeIgniter\HTTP\RedirectResponse
     {
         if (!$session->get('logged_in')) {
             return redirect()->to($this->IApplicationConstant->auth);

@@ -23,6 +23,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
+
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -32,6 +33,11 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Auth::index');
+$routes->get("nilai", "NilaiController::index");
+$routes->post("add-nilai", "NilaiController::addNilai");
+$routes->get("certificate", "Admin::certificate");
+$routes->match(['get', 'put'], "front-certificate", "Admin::frontCertificate");
+$routes->match(['get', 'put'], "back-certificate", "Admin::backCertificate");
 
 /*
  * --------------------------------------------------------------------
