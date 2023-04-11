@@ -59,13 +59,12 @@ class  Admin extends BaseController
         $this->nomorModel = new NomorSuratModel();
     }
 
-    public function index(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function index()
     {
-        $session = session();
         $data = [
             'title' => "Dashboard",
-            'users' => $session->get('email'),
-            'role' => $session->get('role'),
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
         ];
         return $this->ResponseBuilder->ReturnViewValidation(
             $this->session,
