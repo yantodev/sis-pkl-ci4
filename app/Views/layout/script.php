@@ -20,6 +20,7 @@
 <script src=<?= base_url('assets/config/config.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Flashdata.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Iduka.js') ?>></script>
+<script src=<?= base_url('assets/yantodev/Mentor.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/tp.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/Guru.js') ?>></script>
 <script src=<?= base_url('assets/yantodev/users.js') ?>></script>

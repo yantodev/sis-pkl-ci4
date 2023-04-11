@@ -5,7 +5,7 @@
         <div class="info-box">
             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
             <div class="info-box-content">
-                <h3 class="info-box-number" id="count-users">0</h3>
+                <h3 class="info-box-number" id="count-users"></h3>
                 <span class="info-box-text">Total Users</span>
             </div>
         </div>

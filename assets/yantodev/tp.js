@@ -1,7 +1,24 @@
+async function getAllTp() {
+    return await fetchingData('/Tp/findAllTp').then(response => {
+        let major = [];
+        for (const element of response.result) {
+            let id = element.id;
+            let name = element.name;
+            major.push("<option value=" + id + ">" + name + "</option>");
+        }
+        return major;
+    }).catch(error => {
+        Swal.fire({
+            icon: "error",
+            title: "Opss!!!",
+            text: error
+        })
+    })
+}
+
 async function findById(id) {
     return fetchingData('/Tp/findById', {id: id})
         .then(response => {
-            console.log(response)
             return response;
         })
 }

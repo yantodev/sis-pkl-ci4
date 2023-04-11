@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Copyright (c) yantodev all right reserved
  * The Admin Controller
  * @author  Eko Cahyanto
  * mail to: ekocahyanto007@gmail.com
@@ -21,6 +22,7 @@ use Config\APIResponseBuilder;
 use Config\IApplicationConstantConfig;
 use Config\YantoDevConfig;
 use Mpdf\MpdfException;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use ReflectionException;
@@ -40,6 +42,7 @@ use ReflectionException;
 class  Admin extends BaseController
 {
     use ResponseTrait;
+
     public function __construct()
     {
         $this->session = session();
@@ -56,7 +59,7 @@ class  Admin extends BaseController
         $this->nomorModel = new NomorSuratModel();
     }
 
-    public function index()
+    public function index(): string|\CodeIgniter\HTTP\RedirectResponse
     {
         $session = session();
         $data = [
@@ -71,7 +74,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function data()
+    public function data(): string|\CodeIgniter\HTTP\RedirectResponse
     {
         $major = $this->request->getVar('major') ?: false;
         $data = [
@@ -91,7 +94,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function pendamping()
+    public function pendamping(): string|\CodeIgniter\HTTP\RedirectResponse
     {
         $tp = $this->request->getVar('tp') ?: false;
         $major = $this->request->getVar('major') ?: false;
@@ -114,7 +117,7 @@ class  Admin extends BaseController
         return view('pages/admin/data-pendamping', $data);
     }
 
-    public function rekap()
+    public function rekap(): string|\CodeIgniter\HTTP\RedirectResponse
     {
         $tp = $this->request->getVar('tp') ?: false;
         $major = $this->request->getVar('major') ?: false;
@@ -137,6 +140,10 @@ class  Admin extends BaseController
         );
     }
 
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     public function rekapExcel()
     {
         $tp = $this->request->getVar('tp');
@@ -183,6 +190,9 @@ class  Admin extends BaseController
         $writer->save('php://output');
     }
 
+    /**
+     * @throws MpdfException
+     */
     public function rekapPDF()
     {
         $tp = $this->request->getVar('tp');
@@ -692,6 +702,9 @@ class  Admin extends BaseController
         $mpdf->Output('ID Card.pdf', 'I');
     }
 
+    /**
+     * @throws MpdfException
+     */
     public function printMonitoringSheet()
     {
         $tp = $this->request->getVar('tp_monitoring');
@@ -712,6 +725,9 @@ class  Admin extends BaseController
         $mpdf->Output('ID Card.pdf', 'I');
     }
 
+    /**
+     * @throws MpdfException
+     */
     public function printStudentPresence()
     {
         $tp = $this->request->getVar('tp_dh');
@@ -737,4 +753,82 @@ class  Admin extends BaseController
         $mpdf->Output('ID Card.pdf', 'I');
     }
 
+    public function certificate(): string|\CodeIgniter\HTTP\RedirectResponse
+    {
+        $tpInput = $this->request->getVar("tp");
+        $majorInput = $this->request->getVar("major");
+        if ($tpInput && $majorInput) {
+            $result = $this->masterData->findAllStudentByTpAndMajor($tpInput, $majorInput);
+        } else {
+            $result = $this->masterData->findAllStudent();
+        }
+        $data = [
+            'title' => "Cetak Sertifikat",
+            'subtitle' => "Daftar Siswa",
+            'users' => $this->session->get('email'),
+            'role' => $this->session->get('role'),
+            'data' => $result,
+            'jurusan' => $this->major->findAll(),
+            'tp' => $this->tp->findAll()
+        ];
+
+        return $this->ResponseBuilder->ReturnViewValidation(
+            $this->session,
+            'pages/admin/certificate',
+            $data
+        );
+    }
+
+    public function frontCertificate(): void
+    {
+        $id = $this->request->getVar('id');
+        $majorId = $this->request->getVar('majorId');
+        $result = $this->masterData->findStudentById($id);
+        $data = [
+            'data' => $result,
+            'school' => $this->schoolModel->find(1),
+            'mentor' => $this->mentorDetailModel->findByIdukaIdAndTpId($result->idukaId, $result->tpId)
+        ];
+        $file = 'pages/general/front-certificate-' . $majorId;
+        view($file, $data);
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => [215, 330],
+            'orientation' => 'L',
+            'setAutoTopMargin' => false,
+        ]);
+        $mpdf->showImageErrors = true;
+        $html = view($file);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('Sertifikat-' . $data['data']->name . '.pdf', 'I');
+    }
+
+    public function backCertificate(): void
+    {
+        $id = $this->request->getVar('id');
+        $majorId = $this->request->getVar('majorId');
+        $result = $this->masterData->findStudentById($id);
+        $data = [
+            'data' => $result,
+            'school' => $this->schoolModel->find(1),
+            'mentor' => $this->mentorDetailModel->findByIdukaIdAndTpId($result->idukaId, $result->tpId),
+            'tableNonTeknis' => $this->masterCategoryNilai->findAllByMajorIdAndMasterCodeId($majorId, 1),
+            'tableTeknis' => $this->masterCategoryNilai->findAllByMajorIdAndMasterCodeId($majorId, 2),
+            'nilai' => $this->masterNilai->findAllByUserPublicId($result->userPublicId)
+        ];
+        $file = 'pages/general/back-certificate';
+        view($file, $data);
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => [215, 330],
+            'orientation' => 'L',
+            'setAutoTopMargin' => false,
+        ]);
+        $mpdf->showImageErrors = true;
+        $html = view($file);
+        $mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', $this->IApplicationConstant->contentType('pdf'));
+        $mpdf->Output('Sertifikat-' . $data['data']->name . '.pdf', 'I');
+    }
 }

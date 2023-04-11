@@ -41,7 +41,7 @@
     <?= $this->include('./flash/flash'); ?>
     <div class="preloader">
         <div class="loading">
-            <img src="<?= base_url('/assets/img/gif-muhka.gif'); ?>" width="300">
+            <img src="<?= base_url('/assets/img/gif-muhka.gif'); ?>" width="300" alt="loading">
         </div>
     </div>
     <?= $this->renderSection('content'); ?>
@@ -52,22 +52,21 @@
 <?php if ($role == 1): ?>
     <script>
         $(document).ready(async function () {
-            console.log("test data")
             let users, completed, uncompleted, iduka;
-            await fetchingData('/RestApi/countData')
-                .then(async response => {
-                    users = await response.result.users;
-                    completed = await response.result.users_completed[0].total;
-                    iduka = await response.result.iduka;
-                    uncompleted = users - completed;
-                    document.getElementById('count-users').innerHTML = users;
-                    document.getElementById('count-profile-completed').innerHTML = completed;
-                    document.getElementById('count-profile-uncompleted').innerHTML = uncompleted;
-                    document.getElementById('count-iduka').innerHTML = iduka;
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            // await fetchingData('/RestApi/countData')
+            //     .then(async response => {
+            //         users = await response.result.users;
+            //         completed = await response.result.users_completed[0].total;
+            //         iduka = await response.result.iduka;
+            //         uncompleted = users - completed;
+            //         document.getElementById('count-users').innerHTML = users;
+            //         document.getElementById('count-profile-completed').innerHTML = completed;
+            //         document.getElementById('count-profile-uncompleted').innerHTML = uncompleted;
+            //         document.getElementById('count-iduka').innerHTML = iduka;
+            //     })
+            //     .catch(error => {
+            //         console.log(error)
+            //     })
         });
     </script>
 <?php endif; ?>

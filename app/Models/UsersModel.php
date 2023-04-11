@@ -56,6 +56,9 @@ class UsersModel extends Model
 
     public function findAllSiswaByMajor($major): array
     {
+        if (!$major) {
+            return [];
+        }
         return $this->db->query('
                     select ud.id,
                            ud.name,
@@ -145,6 +148,37 @@ class UsersModel extends Model
             ->join('user_details as ud', 'u.id = ud.user_public_id', 'left')
             ->where('u.email', $email)
             ->get();
+    }
+
+    public function findAllSiswaByMajorAndTpId(mixed $majorId, mixed $tp, mixed $iduka): array
+    {
+        if (!$majorId && !$tp && $iduka) {
+            return [];
+        }
+        return $this->db->table("users u")
+            ->select("u.id as userPublicId,
+                           ud.name,
+                           ud.jk,
+                           ud.user_id as nis,
+                           c.name   as kelas,
+                           m.name   as jurusan,
+                           i.name   as iduka,
+                           t.name as tp,
+                           md.id as masterDataId,
+                           mn.*")
+            ->join("user_details ud", "u.id = ud.user_public_id")
+            ->join("class c", "ud.class_id = c.id")
+            ->join("major m", "ud.major_id = m.id")
+            ->join("master_data md", "md.nis = ud.user_id", "LEFT")
+            ->join("iduka i", "i.id = md.iduka_id", "LEFT")
+            ->join("tp t", "t.id = ud.tp")
+            ->join("master_nilai mn", "u.id = mn.user_public_id", "LEFT")
+            ->where("u.role_pkl", 3)
+            ->where("ud.major_id", $majorId)
+            ->where("ud.tp", $tp)
+            ->where("i.id", $iduka)
+            ->get()->getResult();
+
     }
 
 }

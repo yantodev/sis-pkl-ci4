@@ -3,18 +3,13 @@ function getIduka() {
     window.location.href = baseUrl + '/admin/iduka?jurusan=' + idJurusan;
 }
 
-function addIduka() {
-    fetchingData('/Major/findAllMajor').then(response => {
-        let major = [];
-        for (const element of response.result) {
-            let id = element.id;
-            let name = element.name;
-            major.push("<option value=" + id + ">" + name + "</option>");
-        }
-
-        Swal.fire({
-            title: "Add Iduka",
-            html: `
+async function addIduka() {
+    let major = await getAllMajor().then(data => {
+        return data;
+    });
+    Swal.fire({
+        title: "Add Iduka",
+        html: `
             <div>
                 <div class="mb-3">
                     <select class="form-control" type="text" id="major" class="swal2-input">
@@ -30,43 +25,36 @@ function addIduka() {
                 </div>
             </div>
                 `,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: "Add",
-            showLoaderOnConfirm: true,
-            preConfirm: () => {
-                fetchingData('/Iduka/addIduka', {
-                    name: Swal.getPopup().querySelector("#name").value,
-                    address: Swal.getPopup().querySelector("#address").value,
-                    major: Swal.getPopup().querySelector("#major").value
-                }).then(response => {
-                    console.log(response)
-                    if (response.responseData.responseCode === 200) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Added data successfully!!!",
-                            text: response.responseData.responseMsg
-                        })
-                        setTimeout(function () {
-                            window.location.reload(1);
-                        }, 3000);
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: response.code,
-                            text: response.message
-                        })
-                    }
-                })
-            },
-        });
-    }).catch(error => {
-        Swal.fire({
-            icon: "error",
-            title: "Added data not successfully!!!",
-            text: error
-        })
-    })
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: "Add",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            fetchingData('/Iduka/addIduka', {
+                name: Swal.getPopup().querySelector("#name").value,
+                address: Swal.getPopup().querySelector("#address").value,
+                major: Swal.getPopup().querySelector("#major").value
+            }).then(response => {
+                console.log(response)
+                if (response.responseData.responseCode === 200) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Added data successfully!!!",
+                        text: response.responseData.responseMsg
+                    })
+                    setTimeout(function () {
+                        window.location.reload(1);
+                    }, 3000);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: response.code,
+                        text: response.message
+                    })
+                }
+            })
+        },
+    });
 }
 
 async function updateIduka(idIduka, idMajor) {
@@ -180,4 +168,63 @@ function deleteIduka(id) {
             }, 2000);
         }
     });
+}
+
+async function getAllMajor() {
+    return await fetchingData('/Major/findAllMajor').then(response => {
+        let major = [];
+        for (const element of response.result) {
+            let id = element.id;
+            let name = element.name;
+            major.push("<option value=" + id + ">" + name + "</option>");
+        }
+        return major;
+    }).catch(error => {
+        Swal.fire({
+            icon: "error",
+            title: "Opss!!!",
+            text: error
+        })
+    })
+}
+
+async function getAllIduka(major, tp) {
+    return await fetchingData('/Iduka/findAllIdukaByMajorAndTp',
+        {
+            major: major,
+            tp: tp
+        }).then(response => {
+        let major = [];
+        for (const element of response.result) {
+            let id = element.id;
+            let name = element.name;
+            major.push("<option value=" + id + ">" + name + "</option>");
+        }
+        return major;
+    }).catch(error => {
+        Swal.fire({
+            icon: "error",
+            title: "Opss!!!",
+            text: error
+        })
+    })
+}
+
+function getAllIdukaByTpAndMajor() {
+    let tp = document.getElementById("tp").value
+    let major = document.getElementById("jurusan").value
+    fetchingData('/Iduka/findAllIdukaByMajorAndTp', {
+        major,
+        tp
+    }).then(response => {
+        let major = [];
+        for (const element of response.result) {
+            let id = element.id;
+            let name = element.name;
+            major.push("<option value=" + id + ">" + name + "</option>");
+        }
+        document.getElementById("iduka").innerHTML = major;
+    }).catch(error => {
+        console.log(error)
+    })
 }

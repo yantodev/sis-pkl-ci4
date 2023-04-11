@@ -40,17 +40,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('admin/nilai'); ?>" class="nav-link">
+                            <a href="<?= base_url('nilai'); ?>" class="nav-link">
                                 <em class="far fa-circle nav-icon"></em>
                                 <p>Nilai Siswa</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('admin/laporan'); ?>" class="nav-link">
-                                <em class="far fa-circle nav-icon"></em>
-                                <p>Laporan Siswa</p>
-                            </a>
-                        </li>
+                        <!--                        <li class="nav-item">-->
+                        <!--                            <a href="-->
+                        <?php //= base_url('admin/laporan'); ?><!--" class="nav-link">-->
+                        <!--                                <em class="far fa-circle nav-icon"></em>-->
+                        <!--                                <p>Laporan Siswa</p>-->
+                        <!--                            </a>-->
+                        <!--                        </li>-->
                         <li class="nav-item">
                             <a href="<?= base_url('admin/pendamping'); ?>" class="nav-link">
                                 <em class="far fa-circle nav-icon"></em>
@@ -78,6 +79,12 @@
                             <a href="<?= base_url('admin/iduka'); ?>" class="nav-link">
                                 <em class="far fa-circle nav-icon"></em>
                                 <p>Iduka</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('Mentor/mentor'); ?>" class="nav-link">
+                                <em class="far fa-circle nav-icon"></em>
+                                <p>Mentor</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -135,6 +142,12 @@
                     <a href="<?= base_url('admin/print'); ?>" class="nav-link">
                         <em class="nav-icon fa fa-print"></em>
                         <p>Cetak</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('certificate'); ?>" class="nav-link">
+                        <em class="nav-icon fa fa-certificate"></em>
+                        <p>Cetak Sertifikat</p>
                     </a>
                 </li>
             </ul>

@@ -6,7 +6,10 @@ use App\Models\GuruModel;
 use App\Models\IdukaModel;
 use App\Models\JurusanModel;
 use App\Models\MajorModel;
+use App\Models\MasterCategoryNilaiModel;
 use App\Models\MasterDataModel;
+use App\Models\MasterNilaiModel;
+use App\Models\MentorDetailModel;
 use App\Models\SchoolModel;
 use App\Models\TpModel;
 use App\Models\UserDetailModel;
@@ -38,6 +41,9 @@ use Psr\Log\LoggerInterface;
  * @property UsersModel $users
  * @property UserDetailModel $userDetail
  * @property MasterDataModel $masterData
+ * @property MentorDetailModel $mentorDetailModel
+ * @property MasterCategoryNilaiModel $masterCategoryNilai
+ * @property MasterNilaiModel $masterNilai
  */
 class BaseController extends Controller
 {
@@ -76,6 +82,9 @@ class BaseController extends Controller
         $this->major = new MajorModel();
         $this->tp = new TpModel();
         $this->userDetail = new UserDetailModel();
-        $this->masterData =  new MasterDataModel();
+        $this->masterData = new MasterDataModel();
+        $this->mentorDetailModel = new MentorDetailModel();
+        $this->masterCategoryNilai = new MasterCategoryNilaiModel();
+        $this->masterNilai = new MasterNilaiModel();
     }
 }
