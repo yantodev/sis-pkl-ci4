@@ -73,7 +73,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function data(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function data()
     {
         $major = $this->request->getVar('major') ?: false;
         $data = [
@@ -93,7 +93,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function pendamping(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function pendamping()
     {
         $tp = $this->request->getVar('tp') ?: false;
         $major = $this->request->getVar('major') ?: false;
@@ -116,7 +116,7 @@ class  Admin extends BaseController
         return view('pages/admin/data-pendamping', $data);
     }
 
-    public function rekap(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function rekap()
     {
         $tp = $this->request->getVar('tp') ?: false;
         $major = $this->request->getVar('major') ?: false;
@@ -428,7 +428,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function deleteNomor(): \CodeIgniter\HTTP\Response
+    public function deleteNomor()
     {
         $id = $this->request->getVar('id');
         $result = $this->nomorModel->delete($id);
@@ -752,7 +752,7 @@ class  Admin extends BaseController
         $mpdf->Output('ID Card.pdf', 'I');
     }
 
-    public function certificate(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function certificate()
     {
         $tpInput = $this->request->getVar("tp");
         $majorInput = $this->request->getVar("major");
@@ -778,7 +778,7 @@ class  Admin extends BaseController
         );
     }
 
-    public function frontCertificate(): void
+    public function frontCertificate()
     {
         $id = $this->request->getVar('id');
         $majorId = $this->request->getVar('majorId');
@@ -803,7 +803,7 @@ class  Admin extends BaseController
         $mpdf->Output('Sertifikat-' . $data['data']->name . '.pdf', 'I');
     }
 
-    public function backCertificate(): void
+    public function backCertificate()
     {
         $id = $this->request->getVar('id');
         $majorId = $this->request->getVar('majorId');
