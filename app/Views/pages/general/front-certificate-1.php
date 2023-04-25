@@ -100,6 +100,10 @@
         .content-margin-bottom {
             height: 120px;
         }
+
+        .nomor-certificate {
+            margin: 0px;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +123,8 @@
         <h3>
             <u>SERTIFIKAT</u>
         </h3>
-        <h4>Nomor : - </h4>
+        <?php $year = explode("/", $data->tp); ?>
+        <div class="nomor-certificate">Nomor : SMKMUHKA/<?= $year[1] . "/" . $data->code . "/" . $data->nis; ?> </div>
     </div>
     <div class="content">
         <div>Diberikan Kepada :</div>
