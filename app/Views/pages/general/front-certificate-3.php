@@ -100,6 +100,10 @@
         .content-margin-bottom {
             height: 120px;
         }
+
+        .nomor-certificate {
+            margin: 0px;
+        }
     </style>
 </head>
 <body>
@@ -119,7 +123,8 @@
         <h3>
             <u>SERTIFIKAT</u>
         </h3>
-        <h4>Nomor : - </h4>
+        <?php $year = explode("/", $data->tp); ?>
+        <div class="nomor-certificate">Nomor : SMKMUHKA/<?= $year[1] . "/" . $data->code . "/" . $data->nis; ?> </div>
     </div>
     <div class="content">
         <div>Diberikan Kepada :</div>
@@ -127,11 +132,11 @@
             <?= ucwords(strtolower($data->name)); ?>
         </div>
         <div>
-            Sekolah Asal : <b>SMK Muhammadiyah Karangmojo</b>
+            Sekolah Asal : <b><?= $school['name']; ?></b>
         </div>
         <div class="content-detail">
             Telah melaksanakan Praktek Kerja Lapangan (PKL) Selama 3 (tiga) Bulan
-            terhitung mulai tanggal 02 Januari 2021 sampai dengan 31 Maret 2021
+            terhitung mulai tanggal <?= $mentor->pkl; ?>
             di <b><?= $data->iduka; ?></b> dengan hasil terlampir dibelakang sertifikat ini.
         </div>
     </div>

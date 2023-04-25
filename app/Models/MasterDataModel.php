@@ -240,9 +240,12 @@ class MasterDataModel extends Model
     public function findStudentById(mixed $id)
     {
         return $this->db->table("master_data md")
-            ->select("md.id, ud.user_id as nis, ud.name, m.name as major, m.id as majorId,
-            i.id as idukaId, i.name as iduka, mdtl.name as mentor, tp.id as tpId, tp.name as tp,
-            di.address, u.id as userPublicId")
+            ->select("md.id, ud.user_id as nis, ud.name,
+                            m.name as major, m.id as majorId, m.code as code,
+                            i.id as idukaId, i.name as iduka,
+                            mdtl.name as mentor,
+                            tp.id as tpId, tp.name as tp,
+                            di.address, u.id as userPublicId")
             ->join("users u", "md.user_public_id = u.id")
             ->join("user_details ud", "u.id = ud.user_public_id")
             ->join("major m", "ud.major_id = m.id")
