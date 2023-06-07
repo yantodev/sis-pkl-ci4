@@ -39,6 +39,14 @@ $routes->get("certificate", "Admin::certificate");
 $routes->match(['get', 'put'], "front-certificate", "Admin::frontCertificate");
 $routes->match(['get', 'put'], "back-certificate", "Admin::backCertificate");
 
+$routes->group("sertifikat", static function ($routes) {
+    $routes->match(['post', 'get'], "/", "Certificate\CertificateController::index");
+    $routes->post("master-sekolah", "Certificate\CertificateController::masterSekolah");
+    $routes->post("master-accessor", "Certificate\CertificateController::masterAccessor");
+    $routes->get("sertifikat-depan", "Certificate\CertificateController::frontCertificate");
+    $routes->get("sertifikat-belakang", "Certificate\CertificateController::backCertificate");
+    $routes->post("import-excel", "Certificate\CertificateController::importExcel");
+});
 /*
  * --------------------------------------------------------------------
  * Additional Routing
