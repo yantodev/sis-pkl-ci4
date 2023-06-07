@@ -400,4 +400,34 @@ if (!function_exists('bulan')) {
         }
         return $result;
     }
+
+    function getJurusan($kelas)
+    {
+        switch ($kelas) {
+            case 'TKRO':
+                return 'Teknik Kendaraan Ringan Otomotif';
+                break;
+            case 'TBSM':
+                return 'Teknik dan Bisnis Sepeda Motor';
+                break;
+            case 'AKL':
+                return 'Akuntansi dan Keuangan Lembaga';
+                break;
+            case 'OTKP':
+                return 'Otomatisasi Tata Kelola Perkantoran';
+                break;
+            case 'BDP':
+                return 'Bisnis Daring dan Pemasaran';
+                break;
+            default:
+                break;
+        }
+    }
+
+    function getMaster()
+    {
+        return [
+            "content" => "Sertifikasi diselenggarakan berdasarkan Pedoman Direktur Jenderal Pendidikan Vokasi Pementerian Pendidikan dan Kebudayaan Tentang Penyelenggaraan Uji Kompetensi Keahlian Tahun Pelajaran 2021/2022 Tanggal 08 Maret 2022."
+        ];
+    }
 }
