@@ -64,7 +64,7 @@
         <tbody>
         <tr>
             <th height="100px" valign="bottom" align="center">
-                Munawar, S.Pd.I
+                <?= $sekolah->kepala_sekolah; ?>
             </th>
             <td></td>
             <th valign="bottom" align="center">
@@ -72,7 +72,7 @@
             </th>
         </tr>
         <tr>
-            <th>NBM. 1 076 230</th>
+            <th>NBM. <?= $sekolah->nip; ?></th>
         </tr>
         </tbody>
     </table>
