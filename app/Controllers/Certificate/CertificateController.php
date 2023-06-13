@@ -4,6 +4,7 @@ namespace App\Controllers\Certificate;
 
 use App\Controllers\BaseController;
 use App\Models\CertificateModel;
+use App\Models\MasterSettingCertificateUkkModel;
 use CodeIgniter\API\ResponseTrait;
 use Config\IApplicationConstantConfig;
 use Mpdf\Mpdf;
@@ -15,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
  * @property CertificateModel $certificate
  * @property IApplicationConstantConfig $IApplicationConstant
  * @property \CodeIgniter\Session\Session|mixed|null $session
+ * @property MasterSettingCertificateUkkModel $masterSettingCertificateModel
  */
 class CertificateController extends BaseController
 {
@@ -25,6 +27,7 @@ class CertificateController extends BaseController
         $this->certificate = new CertificateModel();
         $this->IApplicationConstant = new IApplicationConstantConfig();
         $this->session = session();
+        $this->masterSettingCertificateModel = new MasterSettingCertificateUkkModel();
     }
 
     public function index()
@@ -246,5 +249,37 @@ class CertificateController extends BaseController
         }
         $this->session->destroy();
         return view("certificate/page/index", $data);
+    }
+
+    public function setting()
+    {
+        $code = $this->request->getPost('code');
+        $request = [
+            'tp_id' => $this->request->getPost('tp'),
+            'code' => $code,
+            'name' => $this->request->getPost('name')
+        ];
+
+        $kelas = $this->request->getVar('kelas');
+        $data = [
+            'title' => 'sertifikat',
+            'kelas' => $kelas,
+            'sekolah' => $this->certificate->getDataSekolah(),
+            'asesor' => $this->certificate->getDataAsesor($kelas),
+            'data' => $this->masterSettingCertificateModel->getDataByClass($kelas),
+            'tp' => $this->tp->findAll()
+        ];
+        if ($code) {
+            $result = $this->masterSettingCertificateModel->insert($request);
+            if ($result) {
+                $this->session->setFlashdata("success", "tambah data berhasil!!!");
+            } else {
+                $this->session->setFlashdata("error", "Tambah data gaga!!!");
+            }
+            $this->session->destroy();
+            return redirect()->to("/sertifikat/setting?kelas=" . $code);
+        } else {
+            return view("certificate/page/setting", $data);
+        }
     }
 }

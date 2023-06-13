@@ -46,6 +46,7 @@ $routes->group("sertifikat", static function ($routes) {
     $routes->get("sertifikat-depan", "Certificate\CertificateController::frontCertificate");
     $routes->get("sertifikat-belakang", "Certificate\CertificateController::backCertificate");
     $routes->post("import-excel", "Certificate\CertificateController::importExcel");
+    $routes->match(['post', 'get'], "setting", "Certificate\CertificateController::setting");
 });
 /*
  * --------------------------------------------------------------------

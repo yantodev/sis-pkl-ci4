@@ -69,13 +69,22 @@
                     <label>Pilih File Excel</label>
                     <input type="file" id="validatedCustomFile" name="fileURL">
                 </div>
-                <div>
+                <div class="form-group mt-3">
                     <button class='btn btn-success' type="submit" name="import">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         Import
                     </button>
                 </div>
             </form>
+            <?php if ($kelas): ?>
+                <div class="col mt-3">
+                    <h3>Setting Tabel Sertifikat</h3>
+                    <a class="nav-link" aria-current="page"
+                       href="<?= base_url('sertifikat/setting?kelas=' . $kelas); ?>">
+                        <button class="btn btn-warning">Setting Tabel <?= $kelas; ?></button>
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

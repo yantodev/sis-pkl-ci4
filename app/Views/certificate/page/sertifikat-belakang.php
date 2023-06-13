@@ -72,17 +72,17 @@
             <?php if ($kelas == 'TKRO') { ?>
                 <tr>
                     <th>1</th>
-                    <th>Pemeliharaan Sistem Bahan Bakar Konvensional</th>
+                    <th>Pemeliharaan system Transmisi manual</th>
                     <th> <?= $data->nil_1; ?></th>
                 </tr>
                 <tr>
                     <th>2</th>
-                    <th>Pemeliharaan /Perbaikan Sistem Transmisi Manual</th>
+                    <th>Pemeliharaan / Service Chasis Kemudi</th>
                     <th> <?= $data->nil_2; ?></th>
                 </tr>
                 <tr>
                     <th>3</th>
-                    <th>Pemeliharaan /Service Chasis Rem</th>
+                    <th>Pemeliharaan / Service Chasis Rem</th>
                     <th> <?= $data->nil_3; ?></th>
                 </tr>
                 <tr>
@@ -92,13 +92,23 @@
                 </tr>
                 <tr>
                     <th>5</th>
-                    <th>Pemeliharaan/Service System Stater</th>
+                    <th>Pemeliharaan Gasoline Konvensional</th>
                     <th> <?= $data->nil_5; ?></th>
                 </tr>
                 <tr>
                     <th>6</th>
                     <th>Pemeliharaan AC dan Overhoule System AC pada Kendaraan</th>
                     <th> <?= $data->nil_6; ?></th>
+                </tr>
+                <tr>
+                    <th>7</th>
+                    <th>Pemeliharaan System Starter</th>
+                    <th> <?= $data->nil_7; ?></th>
+                </tr>
+                <tr>
+                    <th>8</th>
+                    <th>Pemeliharaan system Pengisian</th>
+                    <th> <?= $data->nil_8; ?></th>
                 </tr>
             <?php } else if ($kelas == 'TBSM') { ?>
                 <tr>
