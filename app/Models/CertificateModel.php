@@ -10,7 +10,7 @@ class CertificateModel extends Model
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $allowedFields = ['nis', 'nisn', 'name', 'kelas', 'nil_1',
-        'nil_2', 'nil_3', 'nil_4', 'nil_5', 'nil_6', 'nil_7'];
+        'nil_2', 'nil_3', 'nil_4', 'nil_5', 'nil_6', 'nil_7', 'nil_8', 'nil_9'];
 
     public function getDataSekolah()
     {

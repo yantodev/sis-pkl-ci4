@@ -75,7 +75,7 @@
                     <th><?= $number++; ?></th>
                     <th><?= $t->name; ?></th>
                     <th> <?php
-                        $named = "nil_" . $number;
+                        $named = "nil_" . $number - 1;
                         echo $data->$named; ?></th>
                 </tr>
             <?php endforeach; ?>
