@@ -430,4 +430,15 @@ if (!function_exists('bulan')) {
             "content" => "Sertifikasi diselenggarakan berdasarkan Pedoman Direktur Jenderal Pendidikan Vokasi Pementerian Pendidikan dan Kebudayaan Tentang Penyelenggaraan Uji Kompetensi Keahlian Tahun Pelajaran 2021/2022 Tanggal 08 Maret 2022."
         ];
     }
+
+    function cekImage($image): string
+    {
+        $file = base_url('assets/img/logo/' . $image . '.png');
+        if (@GetImageSize($file)) {
+            $image = "<img src='$file' height='80px' alt='logo iduka'>";
+        } else {
+            $image = "";
+        }
+        return $image;
+    }
 }
