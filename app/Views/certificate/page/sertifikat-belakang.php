@@ -69,152 +69,16 @@
             </tr>
             </thead>
             <tbody>
-            <?php if ($kelas == 'TKRO') { ?>
+            <?php $number = 1; ?>
+            <?php foreach ($table as $t): ?>
                 <tr>
-                    <th>1</th>
-                    <th>Pemeliharaan system Transmisi manual</th>
-                    <th> <?= $data->nil_1; ?></th>
+                    <th><?= $number++; ?></th>
+                    <th><?= $t->name; ?></th>
+                    <th> <?php
+                        $named = "nil_" . $number;
+                        echo $data->$named; ?></th>
                 </tr>
-                <tr>
-                    <th>2</th>
-                    <th>Pemeliharaan / Service Chasis Kemudi</th>
-                    <th> <?= $data->nil_2; ?></th>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <th>Pemeliharaan / Service Chasis Rem</th>
-                    <th> <?= $data->nil_3; ?></th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>Pemeliharaan Sistem Elektrical</th>
-                    <th> <?= $data->nil_4; ?></th>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <th>Pemeliharaan Gasoline Konvensional</th>
-                    <th> <?= $data->nil_5; ?></th>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <th>Pemeliharaan AC dan Overhoule System AC pada Kendaraan</th>
-                    <th> <?= $data->nil_6; ?></th>
-                </tr>
-                <tr>
-                    <th>7</th>
-                    <th>Pemeliharaan System Starter</th>
-                    <th> <?= $data->nil_7; ?></th>
-                </tr>
-                <tr>
-                    <th>8</th>
-                    <th>Pemeliharaan system Pengisian</th>
-                    <th> <?= $data->nil_8; ?></th>
-                </tr>
-            <?php } else if ($kelas == 'TBSM') { ?>
-                <tr>
-                    <th>1</th>
-                    <th>PEMELIHARAAN MESIN</th>
-                    <th> <?= $data->nil_1; ?></th>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <th>PEMELIHARAAN REM</th>
-                    <th> <?= $data->nil_2; ?></th>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <th>PEMELIHARAAN KOPLING</th>
-                    <th> <?= $data->nil_3; ?></th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>PEMELIRAHAAN KEMUDI</th>
-                    <th> <?= $data->nil_4; ?></th>
-                </tr>
-                5
-                <th>5</th>
-                <th>PEMELIHARAAN KELISTRIKAN</th>
-                <th> <?= $data->nil_5; ?></th>
-                </tr>
-            <?php } else if ($kelas == 'AKL') { ?>
-                <tr>
-                    <th>1</th>
-                    <th>Pengetahuan</th>
-                    <th> <?= $data->nil_1; ?></th>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <th>Mengelola Entry Jurnal</th>
-                    <th> <?= $data->nil_2; ?></th>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <th>Mengelola Buku Besar</th>
-                    <th> <?= $data->nil_3; ?></th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>Menyusun Laporan Keuangan</th>
-                    <th> <?= $data->nil_4; ?></th>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <th>Mengoperasikan Aplikasi Komputer Akuntansi</th>
-                    <th> <?= $data->nil_5; ?></th>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <th>Mengoperasikan Paket Program Pengolah Data/ Spreadsheet</th>
-                    <th> <?= $data->nil_6; ?></th>
-                </tr>
-            <?php } else if ($kelas == "OTKP") { ?>
-                <tr>
-                    <th>1</th>
-                    <th>Pemeliharaan Sistem Injeksi</th>
-                    <th> <?= $data->nil_1; ?></th>
-                </tr>
-            <?php } else if ($kelas == "BDP") { ?>
-                <tr>
-                    <th>1</th>
-                    <th>Pengetahuan</th>
-                    <th> <?= $data->nil_1; ?></th>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <th>PLANOGRAM</th>
-                    <th> <?= $data->nil_2; ?></th>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <th>DISPLAY</th>
-                    <th> <?= $data->nil_3; ?></th>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <th>SURAT BISNIS</th>
-                    <th> <?= $data->nil_4; ?></th>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <th>STOCK OPNAME MANUAL</th>
-                    <th> <?= $data->nil_5; ?></th>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <th>BISNIS ONLINE</th>
-                    <th> <?= $data->nil_6; ?></th>
-                </tr>
-                <tr>
-                    <th>7</th>
-                    <th>KASIR</th>
-                    <th> <?= $data->nil_7; ?></th>
-                </tr>
-                <tr>
-                    <th>8</th>
-                    <th>PRESENTASI</th>
-                    <th> <?= $data->nil_8; ?></th>
-                </tr>
-            <?php } ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

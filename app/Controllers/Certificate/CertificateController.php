@@ -103,7 +103,8 @@ class CertificateController extends BaseController
             'jurusan' => getJurusan($kelas),
             'data' => $this->certificate->getMasterData($nisn),
             'asesor' => $this->certificate->getDataAsesor($kelas),
-            'nilai' => $this->certificate->getNilai($kelas)
+            'nilai' => $this->certificate->getNilai($kelas),
+            'table' => $this->masterSettingCertificateModel->getDataByClass($kelas)
         ];
 
         view("certificate/page/sertifikat-belakang", $data);
