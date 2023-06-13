@@ -8,8 +8,8 @@
                 <thead>
                 <tr>
                     <th>No</th>
+                    <th>NIS</th>
                     <th>NISN</th>
-                    <th>No Peserta</th>
                     <th>Nama</th>
                     <th>Kelas</th>
                     <th>Action</th>
