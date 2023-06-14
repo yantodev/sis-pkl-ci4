@@ -88,6 +88,9 @@
             <?php if ($data->nisn == '0042239848'): ?>
                 <th></th>
                 <th align="center">NBM. 1191215</th>
+            <?php else: ?>
+                <th></th>
+                <th>NIP/NRP. <?= $asesor->nopeg; ?></th>
             <?php endif; ?>
         </tr>
         </tbody>
