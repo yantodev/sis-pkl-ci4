@@ -50,7 +50,7 @@
             <tr>
                 <th>Nama Siswa</th>
                 <th>:</th>
-                <th><?= $data->name; ?></th>
+                <th><?= ucwords(strtolower($data->name)); ?></th>
             </tr>
             <tr>
                 <th>Nomot Induk Siswa Nasional</th>

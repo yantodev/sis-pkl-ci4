@@ -42,7 +42,7 @@
     <div style="text-align: center;margin:0px 100px;">
         <h3><?= $sekolah->content; ?></h3>
         <h3>Menyatakan Bahwa:</h3>
-        <h1 style="text-decoration: underline;margin-bottom:0px"><?= $data->name; ?></h1>
+        <h1 style="text-decoration: underline;margin-bottom:0px"><?= ucwords(strtolower($data->name)); ?></h1>
         <h3 style="margin-top: 0px;">Nomor Induk Siswa Nasional : <?= $data->nisn; ?></h3>
         <div style="margin:0px 100px">
             <h3 style="margin:0px">
