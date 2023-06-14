@@ -72,7 +72,7 @@
             <?php $number = 1; ?>
             <?php foreach ($table as $t): ?>
                 <tr>
-                    <th align="center"><?= $number++; ?></th>
+                    <th align="center" width="50px"><?= $number++; ?></th>
                     <th><?= $t->name; ?></th>
                     <th width="100px" align="center"> <?php
                         $named = "nil_" . $number - 1;
