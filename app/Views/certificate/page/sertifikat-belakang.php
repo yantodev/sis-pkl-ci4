@@ -72,11 +72,11 @@
             <?php $number = 1; ?>
             <?php foreach ($table as $t): ?>
                 <tr>
-                    <th><?= $number++; ?></th>
+                    <th align="center"><?= $number++; ?></th>
                     <th><?= $t->name; ?></th>
-                    <th> <?php
+                    <th width="100px" align="center"> <?php
                         $named = "nil_" . $number - 1;
-                        echo $data->$named; ?></th>
+                        echo number_format($data->$named, 2); ?></th>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -99,7 +99,7 @@
                 </th>
             </tr>
             <tr>
-                <th>NBM. <?= $sekolah->nip; ?></th>
+                <th align="center">NBM. <?= $sekolah->nip; ?></th>
             </tr>
         </table>
     </div>

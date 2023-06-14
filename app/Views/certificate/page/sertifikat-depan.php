@@ -56,8 +56,13 @@
     <table align="center" style="margin-top:40px;">
         <thead>
         <tr>
-            <td align="center">Kepala Sekolah</td>
+            <td align="center"><?= $sekolah->print_date; ?></td>
             <td width="250px"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td align="center">Kepala Sekolah</td>
+            <td></td>
             <td align="center">Penguji/Asesor</td>
         </tr>
         </thead>
