@@ -27,7 +27,10 @@
 
 <body>
 <div class="logo">
-    <?= cekImage($kelas); ?>
+    <?php if ($data->nisn == '0042239848'): ?>
+    <?php else: ?>
+        <?= cekImage($kelas); ?>
+    <?php endif; ?>
     <img src="<?= base_url('assets/img/logo/logo-login.png'); ?>" height="80px">
 </div>
 <div style="text-align: center;">
@@ -57,7 +60,7 @@
         <thead>
         <tr>
             <td align="center"><?= $sekolah->print_date; ?></td>
-            <td width="250px"></td>
+            <td width="200px"></td>
             <td></td>
         </tr>
         <tr>
@@ -68,16 +71,24 @@
         </thead>
         <tbody>
         <tr>
-            <th height="100px" valign="bottom" align="center">
+            <th height="80px" valign="bottom" align="center">
                 <?= $sekolah->kepala_sekolah; ?>
             </th>
             <td></td>
             <th valign="bottom" align="center">
-                <?= $asesor->name_assessor; ?>
+                <?php if ($data->nisn == '0042239848'): ?>
+                    Ferida Eka Pratiwi MH, S.E
+                <?php else: ?>
+                    <?= $asesor->name_assessor; ?>
+                <?php endif; ?>
             </th>
         </tr>
         <tr>
             <th>NBM. <?= $sekolah->nip; ?></th>
+            <?php if ($data->nisn == '0042239848'): ?>
+                <th></th>
+                <th align="center">NBM. 1191215</th>
+            <?php endif; ?>
         </tr>
         </tbody>
     </table>

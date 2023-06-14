@@ -83,10 +83,10 @@
         </table>
     </div>
     <div class="footer">
-        <table align="center" style="margin-top:40px;">
+        <table align="center" style="margin-top:40px;" width="100%">
             <tr>
                 <th align="center">Kepala Sekolah</th>
-                <th width="250px"></th>
+                <th width="200px"></th>
                 <th align="center">Penguji/Asesor</th>
             </tr>
             <tr>
@@ -95,11 +95,19 @@
                 </th>
                 <td></td>
                 <th valign="bottom" align="center">
-                    <?= $asesor->name_assessor; ?>
+                    <?php if ($data->nisn == '0042239848'): ?>
+                        Ferida Eka Pratiwi MH, S.E
+                    <?php else: ?>
+                        <?= $asesor->name_assessor; ?>
+                    <?php endif; ?>
                 </th>
             </tr>
             <tr>
                 <th align="center">NBM. <?= $sekolah->nip; ?></th>
+                <?php if ($data->nisn == '0042239848'): ?>
+                    <th></th>
+                    <th align="center">NBM. 1191215</th>
+                <?php endif; ?>
             </tr>
         </table>
     </div>
