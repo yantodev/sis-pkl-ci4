@@ -43,4 +43,22 @@ class MasterNilaiModel extends Model
         }
         return [];
     }
+
+    public function findALlByTpIdAndClassId($tp, $kelas)
+    {
+        return $this->db->table("master_nilai")
+            ->select("master_nilai.*,
+                            class.name as kelas,
+                            tp.name as tpName,
+                            ud.major_id,
+                            ud.user_id as nis, 
+                            ud.nisn,
+                            ud.name")
+            ->join("user_details ud", "master_nilai.user_public_id = ud.user_public_id")
+            ->join("class", "ud.class_id = class.id")
+            ->join("tp", "ud.tp = tp.id")
+            ->where("ud.tp", $tp)
+            ->where("ud.class_id", $kelas)
+            ->get()->getResult();
+    }
 }

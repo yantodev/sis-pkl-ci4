@@ -34,4 +34,12 @@ class ClassModel extends Model
             ->where('major_id', $majorId)
             ->get()->getRow();
     }
+
+    public function findAllByIsActiveTrue()
+    {
+        return $this->db->table('class')
+            ->select('*')
+            ->where('is_active', 1)
+            ->get()->getResult();
+    }
 }

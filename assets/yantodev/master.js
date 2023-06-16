@@ -342,19 +342,3 @@ async function findAllCategory() {
     })
     return category;
 }
-
-// function testPrinter() {
-//     let settings = {
-//         "url": "http://192.168.195.178:10010",
-//         "method": "POST",
-//         "timeout": 0,
-//         "headers": {
-//             "Content-Type": "text/plain"
-//         },
-//         "data": "{09890000;YOGI AHMAD;15/02/2022;23040510009;LAB KEBAYORAN;5888888;9655555;10/10/2000;07/03/2023;L;AAA;Jalan Pabubuwono no 24 RT 10 RW 10;Kelurahan Gunung;3276011006690014;}",
-//     };
-//
-//     $.ajax(settings).done(function (response) {
-//         console.log(response);
-//     });
-// }

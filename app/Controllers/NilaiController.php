@@ -8,6 +8,7 @@
 
 namespace App\Controllers;
 
+use App\Models\ClassModel;
 use App\Models\MajorModel;
 use App\Models\MasterCategoryNilaiModel;
 use App\Models\TpModel;
@@ -15,6 +16,8 @@ use App\Models\UsersModel;
 use Config\APIResponseBuilder;
 use Config\IApplicationConstantConfig;
 use Config\YantoDevConfig;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * @property \CodeIgniter\Session\Session|mixed|null $session
@@ -24,6 +27,7 @@ use Config\YantoDevConfig;
  * @property UsersModel $usersModel
  * @property MajorModel $major
  * @property MasterCategoryNilaiModel $masterCategoryNilai
+ * @property ClassModel $classModel
  */
 class NilaiController extends BaseController
 {
@@ -38,6 +42,7 @@ class NilaiController extends BaseController
         $this->major = new MajorModel();
         $this->tp = new TpModel();
         $this->masterCategoryNilai = new MasterCategoryNilaiModel();
+        $this->classModel = new ClassModel();
     }
 
     public function index(): string|\CodeIgniter\HTTP\RedirectResponse
@@ -56,7 +61,8 @@ class NilaiController extends BaseController
             'categoryNilai' => $this->masterCategoryNilai->findByMajorId($majorId),
             'majorId' => $majorId ? $majorId : 0,
             'tpId' => $tp ? $tp : 0,
-            'idukaId' => $iduka ? $iduka : 0
+            'idukaId' => $iduka ? $iduka : 0,
+            'kelas' => $this->classModel->findAllByIsActiveTrue()
         ];
         return $this->ResponseBuilder->ReturnViewValidation(
             $this->session,
@@ -120,5 +126,54 @@ class NilaiController extends BaseController
             $this->session->setFlashdata('error', $e);
         }
         return redirect()->to("nilai?tp=$tp&jurusan=$major&iduka=$iduka");
+    }
+
+    public function exportNilai()
+    {
+        $tp = $this->request->getVar("tp");
+        $kelas = $this->request->getVar("kelas");
+        $result = $this->masterNilai->findALlByTpIdAndClassId($tp, $kelas);
+        $categoryNilai = $this->masterCategoryNilai->findByMajorId($result[0]->major_id);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue("A1", "Daftar Nilai Kelas " . $result[0]->kelas);
+        $sheet->setCellValue("A2", "Tahun Pelajaran " . $result[0]->tpName);
+        $sheet->setCellValue('A4', 'NIS');
+        $sheet->setCellValue('B4', 'NISN');
+        $sheet->setCellValue('C4', 'NAMA');
+        $sheet->setCellValue('D4', 'KELAS');
+
+        $row = range('E', 'Z');
+        $idx = 0;
+        foreach ($categoryNilai as $cat) {
+            $sheet->setCellValue($row[$idx++] . "4", $cat->name);
+        }
+
+        $rows = 5;
+        foreach ($result as $val) {
+            $sheet->setCellValue('A' . $rows, $val->nis);
+            $sheet->setCellValue('B' . $rows, $val->nisn);
+            $sheet->setCellValue('C' . $rows, $val->name);
+            $sheet->setCellValue('D' . $rows, $val->kelas);
+            $sheet->setCellValue('E' . $rows, $val->nilai_1);
+            $sheet->setCellValue('F' . $rows, $val->nilai_2);
+            $sheet->setCellValue('G' . $rows, $val->nilai_3);
+            $sheet->setCellValue('H' . $rows, $val->nilai_4);
+            $sheet->setCellValue('I' . $rows, $val->nilai_5);
+            $sheet->setCellValue('J' . $rows, $val->nilai_6);
+            $sheet->setCellValue('K' . $rows, $val->nilai_7);
+            $sheet->setCellValue('L' . $rows, $val->nilai_8);
+            $sheet->setCellValue('M' . $rows, $val->nilai_9);
+            $sheet->setCellValue('N' . $rows, $val->nilai_10);
+            $sheet->setCellValue('O' . $rows, $val->nilai_11);
+            $rows++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'Daftar Nilai PKL Kelas ' . $result[0]->kelas;
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 }

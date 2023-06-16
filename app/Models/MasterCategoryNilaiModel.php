@@ -11,12 +11,13 @@ class MasterCategoryNilaiModel extends Model
     protected $useSoftDeletes = true;
     protected $allowedFields = ['name', 'code', 'major', 'master_code_nilai_id'];
 
-    public function findByMajorId(mixed $majorId): array
+    public function findByMajorId($majorId): array
     {
         if ($majorId) {
             return $this->db->table("master_category_nilai")
                 ->select("*")
                 ->where("major", $majorId)
+                ->orderBy("id", "ASC")
                 ->get()->getResult();
         }
         return [];

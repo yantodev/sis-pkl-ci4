@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Auth::index');
 $routes->get("nilai", "NilaiController::index");
+$routes->get("export-nilai", "NilaiController::exportNilai");
 $routes->post("add-nilai", "NilaiController::addNilai");
 $routes->get("certificate", "Admin::certificate");
 $routes->match(['get', 'put'], "front-certificate", "Admin::frontCertificate");
