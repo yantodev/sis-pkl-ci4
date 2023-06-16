@@ -28,10 +28,11 @@
 <body>
 <div class="logo">
     <?php if ($data->nisn == '0042239848'): ?>
+        <img src="<?= base_url('assets/img/logo/moeka-mart.jpg'); ?>" height="80px" alt="logo">
     <?php else: ?>
         <?= cekImage($kelas); ?>
     <?php endif; ?>
-    <img src="<?= base_url('assets/img/logo/logo-login.png'); ?>" height="80px">
+    <img src="<?= base_url('assets/img/logo/logo-login.png'); ?>" height="80px" alt="logo">
 </div>
 <div style="text-align: center;">
     <h1 style="font-size:50px;margin: 0px;">Certificate</h1>
