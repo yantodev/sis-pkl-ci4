@@ -37,9 +37,12 @@ class ClassModel extends Model
 
     public function findAllByIsActiveTrue()
     {
-        return $this->db->table('class')
-            ->select('*')
-            ->where('is_active', 1)
+        return $this->db->table("master_nilai")
+            ->distinct("class.id")
+            ->select("class.id, class.name")
+            ->join("user_details ud", "master_nilai.user_public_id = ud.user_public_id")
+            ->join("class", "ud.class_id = class.id")
+            ->join("tp", "ud.tp = tp.id")
             ->get()->getResult();
     }
 }
