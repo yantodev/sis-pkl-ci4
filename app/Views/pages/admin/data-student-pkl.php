@@ -31,7 +31,9 @@
             </thead>
             <tbody>
             <?php $no = 1; ?>
-            <?php foreach ($siswa as $s) : ?>
+            <?php
+            //            dd($siswa);
+            foreach ($siswa as $s) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
                     <td id="name"><?= $s->nis; ?></td>
@@ -42,7 +44,7 @@
                     <td id="major"><?= $s->iduka; ?></td>
                     <td>
                         <button class="btn btn-primary btn-xs" onclick="
-                                editStudent(<?= $s->id; ?>,<?= $s->masterDataId != null ? $s->masterDataId : "false"; ?>)
+                                editStudent(<?= $s->id; ?>,<?= $s->masterdataid != null ? $s->masterdataid : "false"; ?>)
                                 "> Edit
                         </button>
                     </td>

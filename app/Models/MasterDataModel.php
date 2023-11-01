@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 namespace App\Models;
 
@@ -63,55 +69,30 @@ class MasterDataModel extends Model
 
     public function findByTpAndMajor($tp, $major): array
     {
-        if ($tp && $major) {
-            $response = $this->db->table('master_data md')
-                ->select('
+        $builder = $this->db->table('master_data md');
+        $builder->select('
                             md.id, md.status, ud.name, i.id as idukaId, i.name as idukaName,
                             ud.user_id as nis, ud.jk, class.name as kelas, m.name as majorName,
-                            di.address, tp.name as tpName, teacher.name as teacherName, teacher.hp, surat.detail_tgl')
-                ->join('tp', 'tp.id = md.tp_id')
-                ->join('iduka i', 'i.id = md.iduka_id')
-                ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
-                ->join('major m', 'm.id = i.major')
-                ->join('user_details ud', 'ud.user_public_id = md.user_public_id')
-                ->join('class', 'class.id = ud.class_id', 'left')
-                ->join('tutor', 'tutor.iduka_id = i.id', 'left')
-                ->join('teacher', 'teacher.user_public_id = tutor.teacher_id', 'left')
-                ->join('tbl_surat surat', 'surat.id_tp = md.tp_id', 'left')
-                ->where('tutor.deleted_at', null)
-                ->where('md.tp_id', $tp)
-                ->where('m.id', $major)
-                ->orderBy('i.name', 'ASC')
-                ->orderBy('ud.user_id', 'ASC')
-                ->get()->getResult();
-        } else {
-            $response = $this->db->query('
-                    select md.id,
-                           md.status,
-                           ud.name,
-                           i.id         as idukaId,
-                           i.name       as idukaName,
-                           ud.user_id   as nis,
-                           c.name       as kelas,
-                           m.name       as majorName,
-                           di.address,
-                           t.name       as tpName,
-                           teacher.id as teacherId,
-                           teacher.name as teacherName
-                    from master_data md
-                             inner join tp t on md.tp_id = t.id
-                             inner join iduka i on md.iduka_id = i.id
-                             left join detail_iduka di on md.iduka_id = di.id_iduka
-                             inner join major m on i.major = m.id
-                             inner join user_details ud on md.user_public_id = ud.user_public_id
-                             left join class c on ud.class_id = c.id
-                             inner join tutor on i.id = tutor.iduka_id
-                             left join teacher on teacher.user_public_id = tutor.teacher_id
-                    where tutor.deleted_at is null
-                    order by i.name ASC
-            ')->getResult();
+                            di.address, tp.name as tpName, teacher.name as teacherName, teacher.hp, surat.detail_tgl');
+        $builder->join('tp', 'tp.id = md.tp_id');
+        $builder->join('iduka i', 'i.id = md.iduka_id');
+        $builder->join('detail_iduka di', 'di.id_iduka = i.id', 'left');
+        $builder->join('major m', 'm.id = i.major_id');
+        $builder->join('user_details ud', 'ud.user_public_id = md.user_public_id');
+        $builder->join('class', 'class.id = ud.class_id', 'left');
+        $builder->join('tutor', 'tutor.iduka_id = i.id', 'left');
+        $builder->join('teacher', 'teacher.user_public_id = tutor.teacher_id', 'left');
+        $builder->join('tbl_surat surat', 'surat.id_tp = md.tp_id', 'left');
+        $builder->where('tutor.deleted_at', null);
+        if ($tp && $major) {
+            $builder->where('md.tp_id', $tp);
+            $builder->where('m.id', $major);
         }
-        return $response;
+        $builder->orderBy('i.name', 'ASC');
+        $builder->orderBy('ud.user_id', 'ASC');
+
+        $sql = $builder->get();
+        return $sql->getResult();
     }
 
     public function findById($id)

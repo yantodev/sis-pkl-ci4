@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
+
 function getIduka() {
     let idJurusan = document.getElementById("jurusan").value;
     window.location.href = baseUrl + '/admin/iduka?jurusan=' + idJurusan;
@@ -213,10 +220,12 @@ async function getAllIduka(major, tp) {
 function getAllIdukaByTpAndMajor() {
     let tp = document.getElementById("tp").value
     let major = document.getElementById("jurusan").value
+    console.log(tp, major)
     fetchingData('/Iduka/findAllIdukaByMajorAndTp', {
         major,
         tp
     }).then(response => {
+        console.log(response)
         let major = [];
         for (const element of response.result) {
             let id = element.id;

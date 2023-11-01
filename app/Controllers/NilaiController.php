@@ -1,9 +1,9 @@
 <?php
-/**
- * Copyright (c) yantodev all right reserved
- * Nilai Controller
- * @author  Eko Cahyanto
- * mail to: ekocahyanto007@gmail.com
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
  */
 
 namespace App\Controllers;
@@ -45,7 +45,7 @@ class NilaiController extends BaseController
         $this->classModel = new ClassModel();
     }
 
-    public function index(): string|\CodeIgniter\HTTP\RedirectResponse
+    public function index()
     {
         $majorId = $this->request->getVar("jurusan");
         $tp = $this->request->getVar("tp");

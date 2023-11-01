@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 /**
  * The Admin Controller
@@ -22,7 +28,6 @@ class Auth extends BaseController
     public function __construct()
     {
         $this->session = session();
-        $this->users = new UsersModel();
     }
 
     public function index(): string

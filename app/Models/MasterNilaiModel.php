@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 namespace App\Models;
 
@@ -56,8 +62,8 @@ class MasterNilaiModel extends Model
                             ud.name")
             ->join("user_details ud", "master_nilai.user_public_id = ud.user_public_id")
             ->join("class", "ud.class_id = class.id")
-            ->join("tp", "ud.tp = tp.id")
-            ->where("ud.tp", $tp)
+            ->join("tp", "ud.tp_id = tp.id")
+            ->where("ud.tp_id", $tp)
             ->where("ud.class_id", $kelas)
             ->get()->getResult();
     }

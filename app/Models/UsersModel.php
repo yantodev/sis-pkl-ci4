@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 /**
  * The Admin Controller
@@ -49,7 +55,7 @@ class UsersModel extends Model
                              inner join major m on ud.major_id = m.id
                              left join master_data md on md.nis = ud.user_id
                              left join iduka i on i.id = md.iduka_id
-                             inner join tp t on t.id = ud.tp
+                             inner join tp t on t.id = ud.tp_id
                     where u.role_pkl = 3;
         ')->getResult();
     }
@@ -75,7 +81,7 @@ class UsersModel extends Model
                              inner join major m on ud.major_id = m.id
                              left join master_data md on md.nis = ud.user_id
                              left join iduka i on i.id = md.iduka_id
-                             inner join tp t on t.id = ud.tp
+                             inner join tp t on t.id = ud.tp_id
                     where u.role_pkl = 3 and ud.major_id =' . $major
         )->getResult();
     }
@@ -150,7 +156,7 @@ class UsersModel extends Model
             ->get();
     }
 
-    public function findAllSiswaByMajorAndTpId(mixed $majorId, mixed $tp, mixed $iduka): array
+    public function findAllSiswaByMajorAndTpId($majorId, $tp, $iduka): array
     {
         if (!$majorId && !$tp && $iduka) {
             return [];
@@ -171,11 +177,11 @@ class UsersModel extends Model
             ->join("major m", "ud.major_id = m.id")
             ->join("master_data md", "md.nis = ud.user_id", "LEFT")
             ->join("iduka i", "i.id = md.iduka_id", "LEFT")
-            ->join("tp t", "t.id = ud.tp")
+            ->join("tp t", "t.id = ud.tp_id")
             ->join("master_nilai mn", "u.id = mn.user_public_id", "LEFT")
             ->where("u.role_pkl", 3)
             ->where("ud.major_id", $majorId)
-            ->where("ud.tp", $tp)
+            ->where("ud.tp_id", $tp)
             ->where("i.id", $iduka)
             ->get()->getResult();
 

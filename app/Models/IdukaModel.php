@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 namespace App\Models;
 
@@ -10,25 +16,21 @@ class IdukaModel extends Model
     protected $primaryKey = 'id';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['name', 'major'];
+    protected $allowedFields = ['name', 'major_id'];
 
-    public function findAllByMajorId($majorId): array
+    public function findAllByMajorId($majorId = null): array
     {
-        if (is_null($majorId)) {
-            return $this->db->table('iduka i')
-                ->select('i.id, i.name, i.major as majorId, di.address, major.name as major')
-                ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
-                ->join('major', 'major.id = i.major')
-                ->where('i.deleted_at', null)
-                ->get()->getResult();
+        $builder = $this->db->table('iduka i');
+        $builder->select('i.id, i.name, i.major_id as majorId, di.address, major.name as major');
+        $builder->join('detail_iduka di', 'di.id_iduka = i.id', 'LEFT');
+        $builder->join('major', 'major.id = i.major_id');
+        if ($majorId) {
+            $builder->where('i.major_id', $majorId);
         }
-        return $this->db->table('iduka i')
-            ->select('i.id, i.name, i.major as majorId, di.address, major.name as major')
-            ->join('detail_iduka di', 'di.id_iduka = i.id', 'left')
-            ->join('major', 'major.id = i.major')
-            ->where('i.major', $majorId)
-            ->where('i.deleted_at', null)
-            ->get()->getResult();
+        $builder->where('i.deleted_at', null);
+
+        $sql = $builder->get();
+        return $sql->getResult();
     }
 
     public function findAllIdukaByIdAndTp($data): array
@@ -37,7 +39,7 @@ class IdukaModel extends Model
             ->distinct('md.iduka_id')
             ->select('i.id, i.name')
             ->join('iduka i', 'md.iduka_id = i.id ')
-            ->where('i.major', $data['major'])
+            ->where('i.major_id', $data['major'])
             ->where('md.tp_id', $data['tp'])
             ->where('i.deleted_at', null)
             ->orderBy('i.name', 'ASC')

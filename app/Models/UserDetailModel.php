@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 /**
  * The Admin Controller
@@ -15,7 +21,7 @@ class UserDetailModel extends Model
     protected $table = 'user_details';
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['user_id', 'nisn', 'name', 'tp', 'jk', 'class_id', 'major_id', 'user_public_id'];
+    protected $allowedFields = ['user_id', 'nisn', 'name', 'tp_id', 'jk', 'class_id', 'major_id', 'user_public_id'];
 
     public function countCompleted(): array
     {
