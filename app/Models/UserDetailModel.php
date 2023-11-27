@@ -79,7 +79,7 @@ class UserDetailModel extends Model
     {
         return $this->db->table('users u')
             ->select(
-                'ud.name, ud.user_id as nis, ud.nisn, ud.tp as tpId,
+                'ud.name, ud.user_id as nis, ud.nisn, ud.tp_id as tpId,
                 ud.jk,
                  m.id as majorId, m.name as major,
                 c.id as classId, c.name as kelas,
@@ -87,11 +87,11 @@ class UserDetailModel extends Model
                 tp.id as tpId, tp.name as tp
                 ')
             ->join('user_details ud', 'u.id = ud.user_public_id')
-            ->join('major m', 'm.id = ud.major_id', 'left')
-            ->join('class c', 'c.id = ud.class_id', 'left')
-            ->join('master_data md', 'md.nis = ud.user_id', 'left')
-            ->join('iduka i', 'i.id = md.iduka_id', 'left')
-            ->join('tp', 'tp.id = ud.tp', 'left')
+            ->join('major m', 'm.id = ud.major_id', 'LEFT')
+            ->join('class c', 'c.id = ud.class_id', 'LEFT')
+            ->join('master_data md', 'md.nis = ud.user_id', 'LEFT')
+            ->join('iduka i', 'i.id = md.iduka_id', 'LEFT')
+            ->join('tp', 'tp.id = ud.tp_id', 'LEFT')
             ->where('ud.user_public_id', $id)
             ->get()->getRow();
     }

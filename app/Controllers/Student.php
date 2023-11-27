@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Yantodev - All Rights Reserved.
+ * @Author  :  yantodev
+ * mailto : ekocahyanto007@gmail.com
+ * link : https://yantodev.github.io/
+ */
 
 namespace App\Controllers;
 
@@ -12,6 +18,7 @@ use App\Models\UsersModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Session\Session;
 use Config\APIResponseBuilder;
+use Config\Services;
 use Config\YantoDevConfig;
 
 /**
@@ -44,14 +51,15 @@ class Student extends BaseController
     {
         $response = $this->users->findUserDetailByEmail(
             $this->session->get('email'))->getRow();
-        $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
+//        dd($response);
+        $res = $this->masterData->findByNis($response != null ? $response->nis : null)->getRow();
         if ($response && $res) {
             return $this->ResponseBuilder->ReturnViewValidationStudent(
                 $this->session,
                 'pages/student/dashboard',
                 [
                     'title' => "Dashboard",
-                    'validation' => \Config\Services::validation(),
+                    'validation' => Services::validation(),
                     'users' => $this->session->get('email'),
                     'users_id' => $this->session->get('id'),
                     'role' => $this->session->get('role'),
@@ -61,24 +69,26 @@ class Student extends BaseController
                     'major' => $this->major->findAll(),
                     'tp' => $this->tp->findAll(),
                     'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
-                    'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
+                    'iduka' => $this->idukaModel->findAllByMajorId($response->major_id),
                 ]
             );
         }
+
         return $this->ResponseBuilder->ReturnViewValidationStudent(
             $this->session,
             'pages/student/validation',
             [
                 'title' => "Dashboard",
-                'validation' => \Config\Services::validation(),
+                'validation' => Services::validation(),
                 'users' => $this->session->get('email'),
+                'usersDetail' => $response ? $this->userDetail->findByUserPublicId($response->id) : null,
                 'users_id' => $this->session->get('id'),
                 'tp' => $this->tp->findAll(),
                 'major' => $this->major->findAll(),
                 'class' => $this->class->getWhere(['is_active' => 1])->getResult(),
                 'data' => $response,
                 'master' => $res,
-                'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : false),
+                'iduka' => $this->idukaModel->findAllByMajorId($response ? $response->major_id : null),
             ]
         );
     }
@@ -109,7 +119,7 @@ class Student extends BaseController
             'nisn' => $this->request->getVar('nisn'),
             'name' => $this->request->getVar('name'),
             'jk' => $this->request->getVar('jk'),
-            'tp' => $this->request->getVar('tp'),
+            'tp_id' => $this->request->getVar('tp'),
             'major_id' => $this->request->getVar('major_id'),
             'class_id' => $this->request->getVar('class_id')
         ];
@@ -157,7 +167,7 @@ class Student extends BaseController
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
         $data = [
             'title' => "Profile",
-            'validation' => \Config\Services::validation(),
+            'validation' => Services::validation(),
             'users' => $this->session->get('email'),
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
@@ -239,7 +249,7 @@ class Student extends BaseController
         $res = $this->masterData->findByNis($response ? $response->nis : null)->getRow();
         $data = [
             'title' => "Daftar Iduka",
-            'validation' => \Config\Services::validation(),
+            'validation' => Services::validation(),
             'users' => $this->session->get('email'),
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
@@ -264,7 +274,7 @@ class Student extends BaseController
             'users' => $this->session->get('email'),
             'users_id' => $this->session->get('id'),
             'role' => $this->session->get('role'),
-            'validation' => \Config\Services::validation(),
+            'validation' => Services::validation(),
             'data' => $response,
             'master' => $this->masterData->findById($id),
             'statusData' => $this->request->getVar('statusData')

@@ -21,7 +21,9 @@
 
 <body class="hold-transition sidebar-mini">
 <div id="validation" class="wrapper">
-    <?php if (!$master && !$iduka): ?>
+    <?php
+    //    dd($master , $iduka);
+    if (!$usersDetail): ?>
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">STEP 1 | Silahkan Lengkapi Data Diri</h3>
@@ -32,7 +34,7 @@
                            value="<?= $users_id; ?>"
                            hidden>
                     <div class="form-group">
-                        <label>Email address</label>
+                        <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" value="<?= $users; ?>"
                                readonly>
                     </div>
@@ -109,13 +111,13 @@
                                readonly>
                     </div>
                     <div class="form-group">
-                        <label>NIS</label>
+                        <label for="nis">NIS</label>
                         <input type="email" class="form-control" id="nis" name="nis"
                                value="<?= $data ? $data->nis : ''; ?>"
                                readonly>
                     </div>
                     <div class="form-group">
-                        <label>Lokasi PKL</label>
+                        <label for="iduka_id">Lokasi PKL</label>
                         <select class="form-control" id="iduka_id" name="iduka_id">
                             <option value="">--Pilih Lokasi PKL--</option>
                             <?php if ($iduka): ?>
@@ -125,10 +127,10 @@
                             <?php endif; ?>
                         </select>
                         <span>*Jika lokasi PKL tidak ada silahkan hubungi admin di nomor ini
-                            <a href="https://wa.me/6283840398931?text=Assalamu'alaikum,%20mohon%20bantuan%20tambah%20lokasi%20pkl.%20%20terima%20kasih.">083840398931</a></span>
+                            <a href="https://wa.me/6287839839710?text=Assalamu'alaikum,%20mohon%20bantuan%20tambah%20lokasi%20pkl.%20%20terima%20kasih.">087839839710 (Pak Edi)</a></span>
                     </div>
                 </div>
-                <input type="text" class="form-control" id="tp_id" name="tp_id" value="<?= $data ? $data->tp : ''; ?>"
+                <input type="text" class="form-control" id="tp_id" name="tp_id" value="<?= $data ? $data->idTp : ''; ?>"
                        hidden>
                 <input type="text" class="form-control" id="user_public_id" name="user_public_id"
                        value="<?= $data ? $data->id : ''; ?>"
