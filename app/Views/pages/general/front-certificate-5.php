@@ -9,7 +9,7 @@
     <style rel="stylesheet">
         @page {
             margin: 0.5cm 0.0cm 0.0cm;
-            background: url("https://media.discordapp.net/attachments/1178712419833491567/1178712707151704064/pkl-05.png?ex=657724c0&is=6564afc0&hm=ed2fd029107fd56aa6abecddf059dc88ec448d2db6fb47a7be9136f1fac75d5e&=&format=webp&width=1021&height=665") no-repeat;
+            background: url("https://media.discordapp.net/attachments/1178712419833491567/1178712707151704064/pkl-05.png?ex=657724c0&is=6564afc0&hm=ed2fd029107fd56aa6abecddf059dc88ec448d2db6fb47a7be9136f1fac75d5e&=&format=webp") no-repeat;
             width: 1250px;
             height: 814px;
             size: auto;
