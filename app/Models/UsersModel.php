@@ -31,7 +31,7 @@ class UsersModel extends Model
                             ud.nisn, ud.jk, tp.id as idTp, tp.name as tp,
                             c.name as class, c.id as classId')
             ->join('user_details as ud', 'u.id = ud.user_public_id')
-            ->join('tp', 'tp.id = ud.tp')
+            ->join('tp', 'tp.id = ud.tp_id')
             ->join('class c', 'c.id = ud.class_id')
             ->where('u.email', $email)
             ->get();
